@@ -1,0 +1,238 @@
+[
+  {
+    "id": "01",
+    "q": "2025全年协会口径TIV哪家第一",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2025,
+    "month": null,
+    "top_name": "Perodua"
+  },
+  {
+    "id": "02",
+    "q": "2025年12月TIV品牌排名",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2025,
+    "month": 12
+  },
+  {
+    "id": "03",
+    "q": "2025全年上牌哪家第一",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "registration",
+    "year": 2025,
+    "month": null,
+    "top_name": "Perodua"
+  },
+  {
+    "id": "04",
+    "q": "2025年Proton批发销量多少",
+    "expect_hitl": false,
+    "template_id": "brand_total",
+    "metric": "tiv",
+    "year": 2025,
+    "brand_id": 2
+  },
+  {
+    "id": "05",
+    "q": "2025年Perodua TIV份额",
+    "expect_hitl": false,
+    "template_id": "share",
+    "metric": "tiv",
+    "year": 2025,
+    "brand_id": 1
+  },
+  {
+    "id": "06",
+    "q": "2025年柔佛TIV哪家最多",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2025,
+    "region_id": 2
+  },
+  {
+    "id": "07",
+    "q": "2025年EV TIV品牌排名",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2025,
+    "energy": "ev"
+  },
+  {
+    "id": "08",
+    "q": "2025全年国产车和非国产车TIV",
+    "expect_hitl": false,
+    "template_id": "origin_split",
+    "metric": "tiv",
+    "year": 2025
+  },
+  {
+    "id": "09",
+    "q": "2025年Perodua各月TIV趋势",
+    "expect_hitl": false,
+    "template_id": "month_trend",
+    "metric": "tiv",
+    "year": 2025,
+    "brand_id": 1
+  },
+  {
+    "id": "10",
+    "q": "2025年TIV车型排名",
+    "expect_hitl": false,
+    "template_id": "model_rank",
+    "metric": "tiv",
+    "year": 2025
+  },
+  {
+    "id": "11",
+    "q": "2025年12月上牌车型排名",
+    "expect_hitl": false,
+    "template_id": "model_rank",
+    "metric": "registration",
+    "year": 2025,
+    "month": 12
+  },
+  {
+    "id": "12",
+    "q": "2024全年协会口径TIV品牌排名",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2024
+  },
+  {
+    "id": "13",
+    "q": "2025年品牌TIV同比",
+    "expect_hitl": false,
+    "template_id": "yoy_brand",
+    "metric": "tiv",
+    "year": 2025
+  },
+  {
+    "id": "14",
+    "q": "2025年巴生谷TIV哪家第一",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2025,
+    "region_id": 1
+  },
+  {
+    "id": "15",
+    "q": "2025年BYD上牌总量",
+    "expect_hitl": false,
+    "template_id": "brand_total",
+    "metric": "registration",
+    "year": 2025,
+    "brand_id": 6
+  },
+  {
+    "id": "16",
+    "q": "2025年Honda批发销量多少",
+    "expect_hitl": false,
+    "template_id": "brand_total",
+    "metric": "tiv",
+    "year": 2025,
+    "brand_id": 3
+  },
+  {
+    "id": "17",
+    "q": "2025年TIV各区域排名",
+    "expect_hitl": false,
+    "template_id": "region_rank",
+    "metric": "tiv",
+    "year": 2025
+  },
+  {
+    "id": "18",
+    "q": "2025年12月协会口径谁第一",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2025,
+    "month": 12
+  },
+  {
+    "id": "19",
+    "q": "2025年非国产TIV品牌排名",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "tiv",
+    "year": 2025,
+    "origin": "non_national"
+  },
+  {
+    "id": "20",
+    "q": "2025年槟城上牌哪家第一",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "registration",
+    "year": 2025,
+    "region_id": 3
+  },
+  {
+    "id": "21",
+    "q": "2025年Proton TIV同比",
+    "expect_hitl": false,
+    "template_id": "yoy_brand",
+    "metric": "tiv",
+    "year": 2025,
+    "brand_id": 2
+  },
+  {
+    "id": "22",
+    "q": "2025年12月柔佛上牌品牌排名",
+    "expect_hitl": false,
+    "template_id": "brand_rank",
+    "metric": "registration",
+    "year": 2025,
+    "month": 12,
+    "region_id": 2
+  },
+  {
+    "id": "23",
+    "q": "2025谁卖得最好",
+    "expect_hitl": true
+  },
+  {
+    "id": "24",
+    "q": "上个月TIV谁第一",
+    "expect_hitl": true
+  },
+  {
+    "id": "25",
+    "q": "2025年华南TIV",
+    "expect_hitl": true
+  },
+  {
+    "id": "26",
+    "q": "吉利在马来西亚2025年销量",
+    "expect_hitl": true
+  },
+  {
+    "id": "27",
+    "q": "2025豪华车TIV",
+    "expect_hitl": true
+  },
+  {
+    "id": "28",
+    "q": "今年TIV谁第一",
+    "expect_hitl": true
+  },
+  {
+    "id": "29",
+    "q": "帮我看看马来西亚车市",
+    "expect_hitl": true
+  },
+  {
+    "id": "30",
+    "q": "2026年协会口径TIV哪家第一",
+    "expect_hitl": true
+  }
+]
