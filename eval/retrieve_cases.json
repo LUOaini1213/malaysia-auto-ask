@@ -1,0 +1,42 @@
+[
+  {
+    "id": "R01",
+    "q": "TIV和上牌有什么区别",
+    "expect_objects": ["metric.tiv", "metric.registration"]
+  },
+  {
+    "id": "R02",
+    "q": "份额怎么算",
+    "expect_objects": ["metric.share"]
+  },
+  {
+    "id": "R03",
+    "q": "国产车怎么定义",
+    "expect_objects": ["metric.national"]
+  },
+  {
+    "id": "R04",
+    "q": "TIV口径是什么",
+    "expect_objects": ["metric.tiv"]
+  },
+  {
+    "id": "R05",
+    "q": "上牌数从哪张表来",
+    "expect_objects": ["dwd.fact_month", "metric.registration"]
+  },
+  {
+    "id": "R06",
+    "q": "数仓分哪几层",
+    "expect_objects": ["doc.分层"]
+  },
+  {
+    "id": "R07",
+    "q": "指标owner是谁",
+    "expect_objects": ["doc.口径"]
+  },
+  {
+    "id": "R08",
+    "q": "这个数怎么溯源",
+    "expect_objects": ["dwd.fact_month", "ods.brand_year_anchor"]
+  }
+]

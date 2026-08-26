@@ -238,6 +238,50 @@ def seed(path: Path | None = None) -> Path:
         "INSERT INTO fact_month(year, month, model_id, region_id, tiv_units, registration_units) VALUES (?,?,?,?,?,?)",
         rows,
     )
+
+    anchor_rows = []
+    residual = {"Chery", "Others"}
+    for year, brand_tot in BRAND_YEAR.items():
+        for bname, units in brand_tot.items():
+            if bname in residual:
+                note = "synthetic residual / not an official MAA line"
+            else:
+                note = "public TIV-style year total (reported); not a JPJ extract"
+            anchor_rows.append((year, bname, units, note))
+    conn.executemany(
+        "INSERT INTO ods_brand_year_anchor(year, brand_name, tiv_units, source_note) VALUES (?,?,?,?)",
+        anchor_rows,
+    )
+    conn.execute(
+        """
+        INSERT INTO ads_brand_year(year, brand_id, tiv_units, registration_units)
+        SELECT f.year, m.brand_id, SUM(f.tiv_units), SUM(f.registration_units)
+        FROM fact_month f
+        JOIN dim_model m ON m.model_id = f.model_id
+        GROUP BY f.year, m.brand_id
+        """
+    )
+    conn.execute(
+        """
+        INSERT INTO ads_brand_month(year, month, brand_id, tiv_units, registration_units)
+        SELECT f.year, f.month, m.brand_id, SUM(f.tiv_units), SUM(f.registration_units)
+        FROM fact_month f
+        JOIN dim_model m ON m.model_id = f.model_id
+        GROUP BY f.year, f.month, m.brand_id
+        """
+    )
+    from .lineage import rows_for_seed
+
+    node_rows, edge_rows = rows_for_seed()
+    conn.executemany(
+        "INSERT INTO lineage_node(object_name, layer, object_kind, table_name, grain, owner, version, note) "
+        "VALUES (?,?,?,?,?,?,?,?)",
+        node_rows,
+    )
+    conn.executemany(
+        "INSERT INTO lineage_edge(edge_id, src, dst, transform, grain) VALUES (?,?,?,?,?)",
+        edge_rows,
+    )
     conn.commit()
     conn.close()
     return p

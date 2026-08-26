@@ -125,10 +125,89 @@ ORDER BY units DESC
 }
 
 
-def render(template_id: str, metric: str) -> str:
-    if template_id not in TEMPLATES:
-        raise KeyError(template_id)
+ADS_TEMPLATES = {
+    "brand_rank": """
+SELECT b.brand_name AS name,
+       SUM(a.{col}) AS units
+FROM ads_brand_year a
+JOIN dim_brand b ON b.brand_id = a.brand_id
+WHERE a.year = :year
+  AND (:origin IS NULL OR b.origin = :origin)
+GROUP BY b.brand_name
+ORDER BY units DESC
+""",
+    "brand_total": """
+SELECT b.brand_name AS name,
+       SUM(a.{col}) AS units
+FROM ads_brand_year a
+JOIN dim_brand b ON b.brand_id = a.brand_id
+WHERE a.year = :year
+  AND b.brand_id = :brand_id
+GROUP BY b.brand_name
+""",
+    "share": """
+SELECT b.brand_name AS name,
+       SUM(a.{col}) AS units,
+       ROUND(100.0 * SUM(a.{col}) / (
+         SELECT SUM(a2.{col}) FROM ads_brand_year a2 WHERE a2.year = :year
+       ), 1) AS share_pct
+FROM ads_brand_year a
+JOIN dim_brand b ON b.brand_id = a.brand_id
+WHERE a.year = :year
+  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
+GROUP BY b.brand_name
+ORDER BY units DESC
+""",
+    "yoy_brand": """
+SELECT b.brand_name AS name,
+       SUM(CASE WHEN a.year = :year THEN a.{col} ELSE 0 END) AS units,
+       SUM(CASE WHEN a.year = :year_ly THEN a.{col} ELSE 0 END) AS units_ly,
+       CASE WHEN SUM(CASE WHEN a.year = :year_ly THEN a.{col} ELSE 0 END) = 0 THEN NULL
+            ELSE ROUND(100.0 * (
+              SUM(CASE WHEN a.year = :year THEN a.{col} ELSE 0 END)
+              - SUM(CASE WHEN a.year = :year_ly THEN a.{col} ELSE 0 END)
+            ) / SUM(CASE WHEN a.year = :year_ly THEN a.{col} ELSE 0 END), 1)
+       END AS yoy_pct
+FROM ads_brand_year a
+JOIN dim_brand b ON b.brand_id = a.brand_id
+WHERE a.year IN (:year, :year_ly)
+  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
+GROUP BY b.brand_name
+ORDER BY units DESC
+""",
+    "origin_split": """
+SELECT b.origin AS name,
+       SUM(a.{col}) AS units
+FROM ads_brand_year a
+JOIN dim_brand b ON b.brand_id = a.brand_id
+WHERE a.year = :year
+GROUP BY b.origin
+ORDER BY units DESC
+""",
+}
+
+
+def scan_for(task: str, params: dict | None = None) -> str:
+    """Full-year brand totals can use ADS. Region / month / energy still scan DWD."""
+    p = params or {}
+    if task in ("model_rank", "region_rank", "month_trend"):
+        return "dwd.fact_month"
+    detail = p.get("month") is not None or p.get("region_id") is not None or p.get("energy") is not None
+    if detail:
+        return "dwd.fact_month"
+    if task in ADS_TEMPLATES:
+        return "ads.brand_year"
+    return "dwd.fact_month"
+
+
+def render(template_id: str, metric: str, scan: str = "dwd.fact_month") -> str:
     if metric not in ("tiv", "registration"):
         raise ValueError(metric)
     col = "tiv_units" if metric == "tiv" else "registration_units"
+    if scan == "ads.brand_year":
+        if template_id not in ADS_TEMPLATES:
+            raise KeyError(template_id)
+        return ADS_TEMPLATES[template_id].format(col=col)
+    if template_id not in TEMPLATES:
+        raise KeyError(template_id)
     return TEMPLATES[template_id].format(col=col)

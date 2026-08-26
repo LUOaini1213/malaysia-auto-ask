@@ -86,6 +86,34 @@ def parse(question: str) -> Intent:
         intent.hitl_reason = "库只到 2025-12。请写成「2025年12月」或「2025全年」，不要用相对时间。"
         return intent
 
+    doc_q = bool(
+        re.search(
+            r"口径|定义|什么意思|怎么算|怎么定义|从哪[来张]|哪张表|哪一层|"
+            r"血缘|溯源|有什么区别|还是上牌|还是tiv|owner|版本|"
+            r"数仓|分层|\bods\b|\bdwd\b|\bads\b|几层",
+            low,
+        )
+    )
+    num_q = bool(
+        re.search(r"哪家|第一|排名|多少|总量|合计|趋势|各月|各区域|top|how many|volume", low)
+    )
+    if doc_q and not num_q:
+        intent.task = "retrieve"
+        has_reg = bool(re.search(r"上牌|注册|jpj|registration", low))
+        has_tiv = "tiv" in low or bool(re.search(r"批发|协会口径", low))
+        if has_reg and not has_tiv:
+            intent.metric = "registration"
+            intent.notes.append("metric=registration")
+        elif has_tiv and not has_reg:
+            intent.metric = "tiv"
+            intent.notes.append("metric=tiv")
+        elif re.search(r"份额|市占|share", low):
+            intent.metric = "share"
+        elif re.search(r"国产|national", low):
+            intent.metric = "national"
+        intent.notes.append("mode=retrieve")
+        return intent
+
     if re.search(r"上牌|注册|jpj|registration", low):
         intent.metric = "registration"
         intent.notes.append("metric=registration")

@@ -60,6 +60,33 @@ def main():
             }
         )
 
+    retrieve_cases = json.loads((ROOT / "eval" / "retrieve_cases.json").read_text(encoding="utf-8"))
+    retrieve_rows = []
+    n_ret_ok = 0
+    for c in retrieve_cases:
+        r = ask(c["q"])
+        objs = set()
+        for h in r.get("retrieve") or []:
+            if h.get("object"):
+                objs.add(h["object"])
+        for name in (r.get("lineage") or {}).get("path") or []:
+            objs.add(name)
+        ok = (not r.get("hitl")) and r.get("task") == "retrieve" and any(
+            x in objs for x in c.get("expect_objects") or []
+        )
+        if ok:
+            n_ret_ok += 1
+        retrieve_rows.append(
+            {
+                "id": c["id"],
+                "ok": ok,
+                "mode": "retrieve",
+                "q": c["q"],
+                "objects": sorted(objs)[:12],
+            }
+        )
+
+    n_ret = len(retrieve_cases)
     summary = {
         "n": n,
         "success_rate": round(n_ans_ok / n_expect_ans, 4) if n_expect_ans else 0,
@@ -71,14 +98,23 @@ def main():
         "n_hitl": n_hitl,
         "n_hitl_expected_ok": n_hitl_ok,
         "hitl_precision_on_expected": round(n_hitl_ok / 8, 4),
+        "retrieve": {
+            "n": n_ret,
+            "n_ok": n_ret_ok,
+            "success_rate": round(n_ret_ok / n_ret, 4) if n_ret else 0,
+            "method": "token-overlap",
+        },
     }
     out = ROOT / "eval" / "last_run.json"
-    out.write_text(json.dumps({"summary": summary, "rows": rows}, ensure_ascii=False, indent=2), encoding="utf-8")
+    out.write_text(
+        json.dumps({"summary": summary, "rows": rows, "retrieve_rows": retrieve_rows}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
     print(json.dumps(summary, ensure_ascii=False, indent=2))
-    bad = [x for x in rows if not x["ok"]]
+    bad = [x for x in rows if not x["ok"]] + [x for x in retrieve_rows if not x["ok"]]
     if bad:
         print("failed", [x["id"] for x in bad])
-    return 0 if n_ans_ok == n_expect_ans and n_hitl_ok == 8 else 1
+    return 0 if n_ans_ok == n_expect_ans and n_hitl_ok == 8 and n_ret_ok == n_ret else 1
 
 
 if __name__ == "__main__":
