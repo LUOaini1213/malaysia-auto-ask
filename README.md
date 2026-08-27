@@ -22,6 +22,7 @@ python scripts/ask_cli.py "上牌数从哪张表来"
 python scripts/eval.py
 python scripts/serve.py
 # 浏览器 http://127.0.0.1:8766
+# 海外一线工作台 http://127.0.0.1:8766/desk
 ```
 
 无第三方包。Python 3.10+，只用标准库 sqlite3。
@@ -51,6 +52,13 @@ python scripts/serve.py
 模型不许拼 SQL。只能填白名单模板。每次出数带口径定义、owner、version、SQL、表级血缘。  
 「口径 / 从哪来 / 哪张表」不跑 SQL，返回检索片段和血缘路径。
 
+## 海外一线工作台（`/desk`）
+
+看板卡片 + 问数 + 「给海外同事的说明草稿」。草稿默认不能复制，勾选确认后才能复制。  
+产品说明：`docs/产品PRD.md`、`docs/区域产品定义.md`。
+
+不是智能外呼、不是客服、不是座舱 / RoboOS。
+
 ## 评测
 
 问数 30 条（`eval/cases.json`）+ 口径检索 8 条（`eval/retrieve_cases.json`）。本机最近一次：
@@ -74,6 +82,7 @@ python scripts/eval.py
 - 不把「填模板」写成生产 NL2SQL
 - 不把词重叠检索写成向量 RAG / 企业知识库
 - 不把 `lineage_edge` 写成企业数仓血缘平台
+- 不把 `/desk` 写成外呼、客服或吉利一线工具
 - Proton 是国产车品牌；库里没有 Geely 品牌行
 
 公开锚点来源：MAA 2025 TIV 820,752；Perodua / Proton / Honda / Toyota / Mazda 等品牌年为公开报道。其余拆分是演示。

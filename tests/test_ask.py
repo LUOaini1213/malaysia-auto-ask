@@ -89,6 +89,22 @@ class AskTests(unittest.TestCase):
         self.assertIn("ods.brand_year_anchor", w["path"])
         self.assertIn("dwd.fact_month", w["path"])
 
+    def test_brief_blocks_sales_word(self):
+        from malaysia_ask.brief import draft_note
+
+        p = draft_note("2025谁卖得最好")
+        self.assertTrue(p["blocked"])
+        self.assertIsNone(p["draft"])
+
+    def test_brief_has_confirm_flag(self):
+        from malaysia_ask.brief import draft_note
+
+        p = draft_note("2025全年协会口径TIV哪家第一")
+        self.assertFalse(p["blocked"])
+        self.assertTrue(p["needs_confirm"])
+        self.assertIn("Perodua", p["draft"])
+        self.assertIn("须人确认", p["draft"])
+
 
 if __name__ == "__main__":
     unittest.main()
