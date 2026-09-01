@@ -24,15 +24,19 @@ def metric_row(key: str) -> dict:
     return {}
 
 
-def ask(question: str, db_path=None) -> dict[str, Any]:
+def ask(question: str, db_path=None, force: bool = False) -> dict[str, Any]:
+    """force=True 关掉停问护栏，按朴素默认强行作答（消融实验用）。"""
     path = db_path or DB_PATH
     if not path.exists():
         seed(path)
-    intent = parse(question)
+    intent = parse(question, force=force)
     out: dict[str, Any] = {
         "question": question,
         "hitl": intent.hitl,
         "hitl_reason": intent.hitl_reason,
+        "hitl_code": intent.hitl_code,
+        "guesses": list(intent.guesses),
+        "forced": bool(force),
         "task": intent.task,
         "metric": intent.metric,
         "params": intent.params(),

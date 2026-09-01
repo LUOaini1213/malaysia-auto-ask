@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Rule parser. Ambiguous 销量/卖得好 stops for a human. No free SQL."""
+"""Rule parser. Ambiguous 销量/卖得好 stops for a human. No free SQL.
+
+parse(q)              正常模式：命中护栏就停下问人。
+parse(q, force=True)  消融模式：关掉护栏，按「没有护栏的系统」会做的朴素默认强行作答，
+                      并把每次猜测/丢弃记进 intent.guesses，供对照实验统计。
+"""
 from __future__ import annotations
 
 import re
@@ -42,6 +47,31 @@ REGIONS = {
 
 ENERGY = {"ev": "ev", "电动": "ev", "纯电": "ev", "hybrid": "hybrid", "混动": "hybrid"}
 
+# 停问原因码：code -> (中文名, 一句话说明)
+HITL_CODES = {
+    "OUT_OF_SCOPE_ENTITY": ("库外实体", "问句里的市场或品牌不在本库"),
+    "UNDEFINED_TERM": ("无口径措辞", "「豪华 / 最近怎么样」这类词没有可执行口径"),
+    "RELATIVE_TIME": ("相对时间", "「上个月 / 今年」依赖当前日期，库只到 2025-12"),
+    "AMBIGUOUS_METRIC": ("双口径歧义", "「销量 / 卖得好」在本库对应 TIV 与上牌两套数"),
+    "YEAR_OUT_OF_RANGE": ("年份越界", "库只有 2024 与 2025"),
+    "MISSING_YEAR": ("缺年份", "没给年份，无法确定筛选范围"),
+    "MISSING_METRIC": ("缺指标", "没说 TIV 还是上牌"),
+}
+
+# 消融模式下，各原因码对应「没有护栏的系统」会做的朴素默认
+FORCED_DEFAULT = {
+    "OUT_OF_SCOPE_ENTITY": "丢弃不认识的市场/品牌筛选，退回全库",
+    "UNDEFINED_TERM": "丢弃无口径修饰词，退回全库",
+    "RELATIVE_TIME": "把相对时间映射到库内最新时点",
+    "AMBIGUOUS_METRIC": "默认取 TIV",
+    "YEAR_OUT_OF_RANGE": "夹到库内最近年份 2025",
+    "MISSING_YEAR": "默认 2025",
+    "MISSING_METRIC": "默认取 TIV",
+}
+
+LATEST_YEAR = 2025
+LATEST_MONTH = 12
+
 
 @dataclass
 class Intent:
@@ -55,6 +85,8 @@ class Intent:
     origin: str | None = None
     hitl: bool = False
     hitl_reason: str = ""
+    hitl_code: str = ""
+    guesses: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
 
     def params(self) -> dict:
@@ -68,23 +100,44 @@ class Intent:
         }
 
 
-def parse(question: str) -> Intent:
+def parse(question: str, force: bool = False) -> Intent:
     q = question.strip()
     low = q.lower()
     intent = Intent()
 
+    def guard(code: str, reason: str) -> bool:
+        """命中护栏。正常模式记 hitl 并让调用方 return True；force 模式只记账，返回 False 继续往下猜。"""
+        if force:
+            intent.guesses.append(f"{code}: {FORCED_DEFAULT[code]}")
+            if not intent.hitl_code:
+                intent.hitl_code = code
+            return False
+        intent.hitl = True
+        intent.hitl_code = code
+        intent.hitl_reason = reason
+        return True
+
     if re.search(r"华南|华东|华北|吉利(?!.*proton)|geely(?!.*proton)", q, re.I):
-        intent.hitl = True
-        intent.hitl_reason = "问题里的市场或品牌不在本库（马来西亚 TIV 演示）。吉利不是本库品牌行；Proton 是国产车品牌。"
-        return intent
+        if guard(
+            "OUT_OF_SCOPE_ENTITY",
+            "问题里的市场或品牌不在本库（马来西亚 TIV 演示）。吉利不是本库品牌行；Proton 是国产车品牌。",
+        ):
+            return intent
     if re.search(r"豪华|luxury|最近怎么样|帮我看看", q, re.I):
-        intent.hitl = True
-        intent.hitl_reason = "「豪华/最近怎么样」没有口径。请指定年份、指标（TIV 还是上牌）和品牌或区域。"
-        return intent
+        if guard(
+            "UNDEFINED_TERM",
+            "「豪华/最近怎么样」没有口径。请指定年份、指标（TIV 还是上牌）和品牌或区域。",
+        ):
+            return intent
     if re.search(r"上个月|今年|this year|last month", low):
-        intent.hitl = True
-        intent.hitl_reason = "库只到 2025-12。请写成「2025年12月」或「2025全年」，不要用相对时间。"
-        return intent
+        if guard(
+            "RELATIVE_TIME",
+            "库只到 2025-12。请写成「2025年12月」或「2025全年」，不要用相对时间。",
+        ):
+            return intent
+        intent.year = LATEST_YEAR
+        if re.search(r"上个月|last month", low):
+            intent.month = LATEST_MONTH
 
     doc_q = bool(
         re.search(
@@ -121,17 +174,22 @@ def parse(question: str) -> Intent:
         intent.metric = "tiv"
         intent.notes.append("metric=tiv")
     elif re.search(r"卖得|卖的好|谁最(好|猛|强)|销量|sales", low):
-        intent.hitl = True
-        intent.hitl_reason = "「销量/卖得好」在本库有两套数：TIV（批发）和上牌。请指定用哪一个。"
-        return intent
+        if guard(
+            "AMBIGUOUS_METRIC",
+            "「销量/卖得好」在本库有两套数：TIV（批发）和上牌。请指定用哪一个。",
+        ):
+            return intent
+        intent.metric = "tiv"
 
     y = re.search(r"(20\d{2})", q)
     if y:
-        intent.year = int(y.group(1))
-        if intent.year not in (2024, 2025):
-            intent.hitl = True
-            intent.hitl_reason = "库只有 2024 和 2025。"
-            return intent
+        yy = int(y.group(1))
+        if yy not in (2024, 2025):
+            if guard("YEAR_OUT_OF_RANGE", "库只有 2024 和 2025。"):
+                return intent
+            intent.year = LATEST_YEAR
+        else:
+            intent.year = yy
     m = re.search(r"(1[0-2]|[1-9])\s*月|[-/](1[0-2]|0?[1-9])\b|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec", low)
     MONTHS = {
         "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
@@ -151,9 +209,9 @@ def parse(question: str) -> Intent:
         intent.notes.append("full year")
 
     if intent.year is None:
-        intent.hitl = True
-        intent.hitl_reason = "请指定 2024 或 2025。"
-        return intent
+        if guard("MISSING_YEAR", "请指定 2024 或 2025。"):
+            return intent
+        intent.year = LATEST_YEAR
 
     for key, bid in BRANDS.items():
         if key in low:
@@ -202,9 +260,9 @@ def parse(question: str) -> Intent:
             intent.task = "brand_rank"
 
     if intent.metric is None:
-        intent.hitl = True
-        intent.hitl_reason = "请指定 TIV/批发 或 上牌/注册量。"
-        return intent
+        if guard("MISSING_METRIC", "请指定 TIV/批发 或 上牌/注册量。"):
+            return intent
+        intent.metric = "tiv"
 
     return intent
 

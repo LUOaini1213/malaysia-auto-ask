@@ -1,0 +1,234 @@
+{
+  "n_cases": 30,
+  "n_answer_cases": 22,
+  "n_stop_cases": 8,
+  "A_baseline_guard_on": {
+    "该停的停住": "8/8",
+    "该答的答对": "22/22",
+    "静默错答": 0
+  },
+  "B_ablation_guard_off": {
+    "该停的停住": "0/8",
+    "强行作答": "8/8",
+    "无提示猜测": "8/8",
+    "结论被改变": "7/8",
+    "结论被改变率": 0.875,
+    "对22题正常问答的回归": 0
+  },
+  "停问原因分布": {
+    "AMBIGUOUS_METRIC": {
+      "code_zh": "双口径歧义",
+      "说明": "「销量 / 卖得好」在本库对应 TIV 与上牌两套数",
+      "n": 1,
+      "ids": [
+        "23"
+      ]
+    },
+    "RELATIVE_TIME": {
+      "code_zh": "相对时间",
+      "说明": "「上个月 / 今年」依赖当前日期，库只到 2025-12",
+      "n": 2,
+      "ids": [
+        "24",
+        "28"
+      ]
+    },
+    "OUT_OF_SCOPE_ENTITY": {
+      "code_zh": "库外实体",
+      "说明": "问句里的市场或品牌不在本库",
+      "n": 2,
+      "ids": [
+        "25",
+        "26"
+      ]
+    },
+    "UNDEFINED_TERM": {
+      "code_zh": "无口径措辞",
+      "说明": "「豪华 / 最近怎么样」这类词没有可执行口径",
+      "n": 2,
+      "ids": [
+        "27",
+        "29"
+      ]
+    },
+    "YEAR_OUT_OF_RANGE": {
+      "code_zh": "年份越界",
+      "说明": "库只有 2024 与 2025",
+      "n": 1,
+      "ids": [
+        "30"
+      ]
+    }
+  },
+  "口径翻转对照": {
+    "year": 2025,
+    "checks": [
+      {
+        "scope": "全年整体",
+        "tiv_top": "Perodua",
+        "reg_top": "Perodua",
+        "same": true
+      }
+    ],
+    "month_rank_diff": "0/12",
+    "region_rank_diff": "0/7",
+    "full_order_diff_year": false,
+    "full_order_diff_month": "0/12",
+    "year_value_gap_pct": {
+      "min": 0.12,
+      "max": 2.12,
+      "mean": 0.78
+    },
+    "month_value_gap_pct": {
+      "by_month": [
+        17.47,
+        0.39,
+        -9.44,
+        8.59,
+        -0.69,
+        -8.19,
+        7.66,
+        0.15,
+        -8.79,
+        7.39,
+        -0.63,
+        -11.69
+      ],
+      "abs_max": 17.47
+    },
+    "结论": "本市场相邻品牌差距大（Perodua 断层领先，Honda 稳定领先 Toyota 约 2.7%），口径换成上牌不改变任何排名；但月度数值最大差 17.47%。即：猜口径的危害在数值不在排名。λ 是基于渠道周转的假设值，未按「让排名翻转」反向调参。"
+  },
+  "forced_rows": [
+    {
+      "id": "23",
+      "q": "2025谁卖得最好",
+      "hitl_code": "AMBIGUOUS_METRIC",
+      "code_zh": "双口径歧义",
+      "harm": "METRIC_GUESSED",
+      "guesses": [
+        "AMBIGUOUS_METRIC: 默认取 TIV"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": false,
+      "detail": "排名结论相同（均为 Perodua）：本市场相邻品牌差距大，排名对口径不敏感。但同样的猜测用在数值型问题上，月度最大偏差见「口径翻转对照」。"
+    },
+    {
+      "id": "24",
+      "q": "上个月TIV谁第一",
+      "hitl_code": "RELATIVE_TIME",
+      "code_zh": "相对时间",
+      "harm": "PERIOD_CHANGED",
+      "guesses": [
+        "RELATIVE_TIME: 把相对时间映射到库内最新时点"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": true,
+      "detail": "返回的表不是被问的那张表"
+    },
+    {
+      "id": "25",
+      "q": "2025年华南TIV",
+      "hitl_code": "OUT_OF_SCOPE_ENTITY",
+      "code_zh": "库外实体",
+      "harm": "SCOPE_CHANGED",
+      "guesses": [
+        "OUT_OF_SCOPE_ENTITY: 丢弃不认识的市场/品牌筛选，退回全库"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": true,
+      "detail": "返回的表不是被问的那张表"
+    },
+    {
+      "id": "26",
+      "q": "吉利在马来西亚2025年销量",
+      "hitl_code": "OUT_OF_SCOPE_ENTITY",
+      "code_zh": "库外实体",
+      "harm": "SCOPE_CHANGED",
+      "guesses": [
+        "OUT_OF_SCOPE_ENTITY: 丢弃不认识的市场/品牌筛选，退回全库",
+        "AMBIGUOUS_METRIC: 默认取 TIV"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": true,
+      "detail": "返回的表不是被问的那张表"
+    },
+    {
+      "id": "27",
+      "q": "2025豪华车TIV",
+      "hitl_code": "UNDEFINED_TERM",
+      "code_zh": "无口径措辞",
+      "harm": "SCOPE_CHANGED",
+      "guesses": [
+        "UNDEFINED_TERM: 丢弃无口径修饰词，退回全库"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": true,
+      "detail": "返回的表不是被问的那张表"
+    },
+    {
+      "id": "28",
+      "q": "今年TIV谁第一",
+      "hitl_code": "RELATIVE_TIME",
+      "code_zh": "相对时间",
+      "harm": "PERIOD_CHANGED",
+      "guesses": [
+        "RELATIVE_TIME: 把相对时间映射到库内最新时点"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": true,
+      "detail": "返回的表不是被问的那张表"
+    },
+    {
+      "id": "29",
+      "q": "帮我看看马来西亚车市",
+      "hitl_code": "UNDEFINED_TERM",
+      "code_zh": "无口径措辞",
+      "harm": "SCOPE_CHANGED",
+      "guesses": [
+        "UNDEFINED_TERM: 丢弃无口径修饰词，退回全库",
+        "MISSING_YEAR: 默认 2025",
+        "MISSING_METRIC: 默认取 TIV"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": true,
+      "detail": "返回的表不是被问的那张表"
+    },
+    {
+      "id": "30",
+      "q": "2026年协会口径TIV哪家第一",
+      "hitl_code": "YEAR_OUT_OF_RANGE",
+      "code_zh": "年份越界",
+      "harm": "PERIOD_CHANGED",
+      "guesses": [
+        "YEAR_OUT_OF_RANGE: 夹到库内最近年份 2025"
+      ],
+      "answered": true,
+      "returned_top": "Perodua",
+      "n_rows": 8,
+      "silent_guess": true,
+      "conclusion_changed": true,
+      "detail": "返回的表不是被问的那张表"
+    }
+  ]
+}

@@ -211,14 +211,13 @@ def seed(path: Path | None = None) -> Path:
     region_ids = [(r[0], r[1]) for r in REGIONS]
     r_w = [w for _, w in REGION_SHARE]
 
-    rows = []
+    # ---- TIV：按公开报道锚定的年合计往下拆，数值不动 ----
+    tiv_series: dict[tuple[int, int, int], list[int]] = {}  # (year, model_id, region_id) -> 12 个月
     for year, brand_tot in BRAND_YEAR.items():
         m_w = MONTH_W[year]
         for bid, bname, *_ in BRANDS:
-            ytot = brand_tot[bname]
-            month_units = _split(ytot, m_w)
+            month_units = _split(brand_tot[bname], m_w)
             shares = MODEL_SHARE[bname]
-            names = [n for n, _ in shares]
             mw = [w for _, w in shares]
             id_by_name = {n: i for i, n in model_by_brand[bname]}
             for month, mu in enumerate(month_units, start=1):
@@ -227,12 +226,49 @@ def seed(path: Path | None = None) -> Path:
                     mid = id_by_name[mname]
                     per_region = _split(units, r_w)
                     for (rid, _), ru in zip(region_ids, per_region):
-                        # Registration diverges: Klang Valley over-indexes TIV; East Malaysia under.
-                        bump = 1.04 if rid == 1 else 0.93 if rid in (5, 6) else 0.98
-                        if year == 2025 and month == 12:
-                            bump *= 0.96  # year-end wholesale catch-up > plates
-                        reg = max(0, int(round(ru * bump)))
-                        rows.append((year, month, mid, rid, ru, reg))
+                        tiv_series.setdefault((year, mid, rid), [0] * 12)[month - 1] = ru
+
+    # ---- 上牌：批发 -> 上牌之间有渠道库存和上牌滞后 ----
+    # reg[m] = lam[m]*tiv[m] + (1-lam[m-1])*tiv[m-1]
+    #   lam_b  当月批发中当月就上牌的比例。国产双雄周转快，进口/新势力压渠道库存。
+    #   季末（3/6/9/12）厂商压货冲量，当月上牌比例进一步下降。
+    #   区域：上牌发生在终端所在州，巴生谷高于批发口径，东马低。
+    # 各品牌渠道周转差异（越高＝当月批发当月就上牌，渠道压货越少）
+    BRAND_LAMBDA = {
+        "Perodua": 0.88,  # 国产龙头，产销紧咬
+        "Proton": 0.86,   # 同上
+        "Honda": 0.84,    # 零售强、经销商库存薄
+        "Toyota": 0.74,   # 更依赖向经销商压批发
+        "Mazda": 0.78,
+        "BYD": 0.80,      # 新进场但终端走量快
+        "Chery": 0.64,    # 铺渠道阶段，库存厚
+        "Others": 0.75,
+    }
+    QUARTER_END_HOLD = 0.90  # 季末当月上牌比例再打九折，货压在渠道
+    brand_of_model = {mid: brand_name[bid] for mid, bid, *_ in MODELS}
+
+    def lam_of(bname: str, month: int) -> float:
+        lam = BRAND_LAMBDA.get(bname, 0.78)
+        if month in (3, 6, 9, 12):
+            lam *= QUARTER_END_HOLD
+        return lam
+
+    rows = []
+    for (year, mid, rid), series in sorted(tiv_series.items()):
+        bname = brand_of_model[mid]
+        prev_year = tiv_series.get((year - 1, mid, rid))
+        region_bump = 1.05 if rid == 1 else 0.92 if rid in (5, 6) else 0.98
+        for month in range(1, 13):
+            tiv_m = series[month - 1]
+            lam_m = lam_of(bname, month)
+            if month == 1:
+                # 1 月消化的是上一年 12 月压在渠道里的货；无上一年数据时按本年 12 月做稳态近似
+                src = prev_year[11] if prev_year else series[11]
+                carry = (1 - lam_of(bname, 12)) * src
+            else:
+                carry = (1 - lam_of(bname, month - 1)) * series[month - 2]
+            reg = max(0, int(round((lam_m * tiv_m + carry) * region_bump)))
+            rows.append((year, month, mid, rid, tiv_m, reg))
 
     conn.executemany(
         "INSERT INTO fact_month(year, month, model_id, region_id, tiv_units, registration_units) VALUES (?,?,?,?,?,?)",
