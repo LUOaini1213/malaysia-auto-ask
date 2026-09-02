@@ -4,9 +4,9 @@
 
 马来西亚汽车市场 **问数演示**：自然语言 → 意图 → 白名单 SQL → 表。  
 口径问句走 **词重叠检索**（`口径.md` + `metric_dict` + 血缘节点），不是向量 RAG。  
-给 Data Agent 岗补 SQL / 分层 / 血缘 / 口径 / 评测。
+目的：把「问数」做成可评测的最小闭环——SQL 分层、指标口径、表级血缘、停问策略各占一层，每层都能单独验。
 
-**不是** MAA 官方明细，**不是** 吉利问数 / 星睿 / Eva，**不是** 企业 Atlas。
+**不是** MAA / JPJ 官方明细，**不是**任何厂商的生产问数系统或企业数据目录。
 
 品牌全年合计按公开报道锚定（2025 年 TIV 820,752；Perodua 359,904 等）。  
 月 × 区域 × 车型是固定种子拆出来的演示数。TIV 和上牌是两列，允许对不上。
@@ -14,7 +14,7 @@
 ## 怎么跑
 
 ```powershell
-cd 04_作品与代码/malaysia-auto-ask
+cd malaysia-auto-ask
 python scripts/seed.py
 python scripts/ask_cli.py "2025全年协会口径TIV哪家第一"
 python scripts/ask_cli.py "TIV和上牌有什么区别"
@@ -139,13 +139,12 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 python scripts/eval.py
 ```
 
-## 红线
+## 范围与边界
 
-- 不把本库写成 MAA/JPJ 原始数或吉利问数产品
-- 不把「填模板」写成生产 NL2SQL
-- 不把词重叠检索写成向量 RAG / 企业知识库
-- 不把 `lineage_edge` 写成企业数仓血缘平台
-- 不把 `/desk` 写成外呼、客服或吉利一线工具
-- Proton 是国产车品牌；库里没有 Geely 品牌行
+- 数据不是 MAA / JPJ 原始明细：品牌年合计按公开报道锚定，月 × 区域 × 车型为固定种子拆出的演示数
+- 「填模板」不是生产级 NL2SQL；词重叠检索不是向量 RAG，也不是企业知识库
+- `lineage_edge` 是表级血缘的最小实现，不是数仓血缘平台
+- `/desk` 是一线查数页面的演示，不是外呼 / 客服工具
+- Proton 是马来西亚国产品牌；库里没有 Geely 品牌行
 
 公开锚点来源：MAA 2025 TIV 820,752；Perodua / Proton / Honda / Toyota / Mazda 等品牌年为公开报道。其余拆分是演示。
