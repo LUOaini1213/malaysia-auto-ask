@@ -1,0 +1,27 @@
+name: ci
+
+# Standard library only. The suite reseeds the SQLite demo database, replays
+# the 30-question evaluation and the guard-on / guard-off ablation, and fails
+# if the committed eval/ablation.json no longer matches a fresh run.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Unit tests and claim checks
+        run: python -m unittest discover -s tests -v
+      - name: 30-question evaluation
+        run: python scripts/eval.py
+      - name: Ablation artifact matches a fresh run
+        run: python scripts/ablation.py --check

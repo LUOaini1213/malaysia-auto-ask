@@ -1,0 +1,393 @@
+{
+  "summary": {
+    "n": 30,
+    "success_rate": 1.0,
+    "accuracy": 1.0,
+    "hitl_rate": 0.2667,
+    "n_expect_answer": 22,
+    "n_answer_ok": 22,
+    "n_template_ok": 22,
+    "n_hitl": 8,
+    "n_hitl_expected_ok": 8,
+    "hitl_precision_on_expected": 1.0,
+    "retrieve": {
+      "n": 8,
+      "n_ok": 8,
+      "success_rate": 1.0,
+      "method": "token-overlap"
+    }
+  },
+  "rows": [
+    {
+      "id": "01",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025全年协会口径TIV哪家第一",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "02",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年12月TIV品牌排名",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "03",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025全年上牌哪家第一",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "04",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年Proton批发销量多少",
+      "template": "brand_total",
+      "n_rows": 1
+    },
+    {
+      "id": "05",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年Perodua TIV份额",
+      "template": "share",
+      "n_rows": 1
+    },
+    {
+      "id": "06",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年柔佛TIV哪家最多",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "07",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年EV TIV品牌排名",
+      "template": "brand_rank",
+      "n_rows": 2
+    },
+    {
+      "id": "08",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025全年国产车和非国产车TIV",
+      "template": "origin_split",
+      "n_rows": 2
+    },
+    {
+      "id": "09",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年Perodua各月TIV趋势",
+      "template": "month_trend",
+      "n_rows": 12
+    },
+    {
+      "id": "10",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年TIV车型排名",
+      "template": "model_rank",
+      "n_rows": 15
+    },
+    {
+      "id": "11",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年12月上牌车型排名",
+      "template": "model_rank",
+      "n_rows": 15
+    },
+    {
+      "id": "12",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2024全年协会口径TIV品牌排名",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "13",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年品牌TIV同比",
+      "template": "yoy_brand",
+      "n_rows": 8
+    },
+    {
+      "id": "14",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年巴生谷TIV哪家第一",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "15",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年BYD上牌总量",
+      "template": "brand_total",
+      "n_rows": 1
+    },
+    {
+      "id": "16",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年Honda批发销量多少",
+      "template": "brand_total",
+      "n_rows": 1
+    },
+    {
+      "id": "17",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年TIV各区域排名",
+      "template": "region_rank",
+      "n_rows": 7
+    },
+    {
+      "id": "18",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年12月协会口径谁第一",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "19",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年非国产TIV品牌排名",
+      "template": "brand_rank",
+      "n_rows": 6
+    },
+    {
+      "id": "20",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年槟城上牌哪家第一",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "21",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年Proton TIV同比",
+      "template": "yoy_brand",
+      "n_rows": 1
+    },
+    {
+      "id": "22",
+      "ok": true,
+      "tpl_ok": true,
+      "mode": "sql",
+      "q": "2025年12月柔佛上牌品牌排名",
+      "template": "brand_rank",
+      "n_rows": 8
+    },
+    {
+      "id": "23",
+      "ok": true,
+      "mode": "hitl",
+      "q": "2025谁卖得最好"
+    },
+    {
+      "id": "24",
+      "ok": true,
+      "mode": "hitl",
+      "q": "上个月TIV谁第一"
+    },
+    {
+      "id": "25",
+      "ok": true,
+      "mode": "hitl",
+      "q": "2025年华南TIV"
+    },
+    {
+      "id": "26",
+      "ok": true,
+      "mode": "hitl",
+      "q": "吉利在马来西亚2025年销量"
+    },
+    {
+      "id": "27",
+      "ok": true,
+      "mode": "hitl",
+      "q": "2025豪华车TIV"
+    },
+    {
+      "id": "28",
+      "ok": true,
+      "mode": "hitl",
+      "q": "今年TIV谁第一"
+    },
+    {
+      "id": "29",
+      "ok": true,
+      "mode": "hitl",
+      "q": "帮我看看马来西亚车市"
+    },
+    {
+      "id": "30",
+      "ok": true,
+      "mode": "hitl",
+      "q": "2026年协会口径TIV哪家第一"
+    }
+  ],
+  "retrieve_rows": [
+    {
+      "id": "R01",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "TIV和上牌有什么区别",
+      "objects": [
+        "ads.brand_year",
+        "dim.brand",
+        "dim.model",
+        "dim.region",
+        "doc.分层",
+        "doc.口径",
+        "dwd.fact_month",
+        "metric.registration",
+        "metric.tiv",
+        "ods.brand_year_anchor"
+      ]
+    },
+    {
+      "id": "R02",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "份额怎么算",
+      "objects": [
+        "ads.brand_year",
+        "dim.brand",
+        "dim.model",
+        "dim.region",
+        "doc.分层",
+        "doc.口径",
+        "dwd.fact_month",
+        "metric.registration",
+        "metric.share",
+        "metric.tiv",
+        "ods.brand_year_anchor"
+      ]
+    },
+    {
+      "id": "R03",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "国产车怎么定义",
+      "objects": [
+        "dim.brand",
+        "doc.口径",
+        "metric.national"
+      ]
+    },
+    {
+      "id": "R04",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "TIV口径是什么",
+      "objects": [
+        "ads.brand_year",
+        "dim.brand",
+        "dim.model",
+        "dim.region",
+        "doc.分层",
+        "doc.口径",
+        "dwd.fact_month",
+        "metric.tiv",
+        "ods.brand_year_anchor"
+      ]
+    },
+    {
+      "id": "R05",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "上牌数从哪张表来",
+      "objects": [
+        "ads.brand_year",
+        "dim.brand",
+        "dim.model",
+        "dim.region",
+        "doc.分层",
+        "doc.口径",
+        "dwd.fact_month",
+        "metric.registration",
+        "ods.brand_year_anchor"
+      ]
+    },
+    {
+      "id": "R06",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "数仓分哪几层",
+      "objects": [
+        "ads.brand_year",
+        "dim.brand",
+        "dim.model",
+        "dim.region",
+        "doc.分层",
+        "dwd.fact_month",
+        "ods.brand_year_anchor"
+      ]
+    },
+    {
+      "id": "R07",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "指标owner是谁",
+      "objects": [
+        "doc.口径",
+        "metric.national",
+        "metric.share"
+      ]
+    },
+    {
+      "id": "R08",
+      "ok": true,
+      "mode": "retrieve",
+      "q": "这个数怎么溯源",
+      "objects": [
+        "ads.brand_year",
+        "dim.brand",
+        "dim.model",
+        "dim.region",
+        "doc.分层",
+        "dwd.fact_month",
+        "ods.brand_year_anchor"
+      ]
+    }
+  ]
+}

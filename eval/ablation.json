@@ -13,6 +13,10 @@
     "无提示猜测": "8/8",
     "结论被改变": "7/8",
     "结论被改变率": 0.875,
+    "结论被改变的依据": {
+      "measured": 0,
+      "by_construction": 7
+    },
     "对22题正常问答的回归": 0
   },
   "停问原因分布": {
@@ -96,7 +100,88 @@
       ],
       "abs_max": 17.47
     },
-    "结论": "本市场相邻品牌差距大（Perodua 断层领先，Honda 稳定领先 Toyota 约 2.7%），口径换成上牌不改变任何排名；但月度数值最大差 17.47%。即：猜口径的危害在数值不在排名。λ 是基于渠道周转的假设值，未按「让排名翻转」反向调参。"
+    "legacy_flat_bump_model": {
+      "formula": "reg = tiv × 区域系数（巴生谷 1.04 / 东马 0.93 / 其余 0.98），2025-12 再 × 0.96",
+      "by_month": [
+        -0.32,
+        -0.32,
+        -0.3,
+        -0.32,
+        -0.31,
+        -0.31,
+        -0.31,
+        -0.31,
+        -0.33,
+        -0.32,
+        -0.32,
+        -4.3
+      ],
+      "abs_typical": 0.32,
+      "abs_max": 4.3,
+      "current_model_abs_max": 17.47
+    },
+    "结论": "本市场相邻品牌差距大（Perodua 断层领先，Honda 稳定领先 Toyota 约 2.7%），口径换成上牌不改变任何排名；但月度数值最大差 17.47%（旧的固定系数模型常态只有 0.32%，最大 4.3%）。即：猜口径的危害在数值不在排名。λ 是基于渠道周转的假设值，未按「让排名翻转」反向调参——见 lambda_sensitivity。"
+  },
+  "lambda_sensitivity": {
+    "what": "所有品牌 λ 同乘 scale 后重算上牌；scale=1.0 即现行模型",
+    "rows": [
+      {
+        "scale": 0.4,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 29.43
+      },
+      {
+        "scale": 0.5,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 27.42
+      },
+      {
+        "scale": 0.6,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 25.46
+      },
+      {
+        "scale": 0.7,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 23.45
+      },
+      {
+        "scale": 0.8,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 21.45
+      },
+      {
+        "scale": 0.9,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 19.45
+      },
+      {
+        "scale": 1.0,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 17.47
+      },
+      {
+        "scale": 1.1,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 15.49
+      },
+      {
+        "scale": 1.2,
+        "month_top1_flips": "0/12",
+        "region_top1_flips": "0/7",
+        "month_gap_abs_max": 10.38
+      }
+    ],
+    "first_scale_with_any_top1_flip": null,
+    "结论": "扫描范围内没有任何月度或区域 top1 翻转"
   },
   "forced_rows": [
     {
@@ -113,6 +198,7 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": false,
+      "basis": "measured",
       "detail": "排名结论相同（均为 Perodua）：本市场相邻品牌差距大，排名对口径不敏感。但同样的猜测用在数值型问题上，月度最大偏差见「口径翻转对照」。"
     },
     {
@@ -129,7 +215,8 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": true,
-      "detail": "返回的表不是被问的那张表"
+      "basis": "by_construction",
+      "detail": "返回的表不是被问的那张表（筛选被丢弃或时间被改写）"
     },
     {
       "id": "25",
@@ -145,7 +232,8 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": true,
-      "detail": "返回的表不是被问的那张表"
+      "basis": "by_construction",
+      "detail": "返回的表不是被问的那张表（筛选被丢弃或时间被改写）"
     },
     {
       "id": "26",
@@ -162,7 +250,8 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": true,
-      "detail": "返回的表不是被问的那张表"
+      "basis": "by_construction",
+      "detail": "返回的表不是被问的那张表（筛选被丢弃或时间被改写）"
     },
     {
       "id": "27",
@@ -178,7 +267,8 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": true,
-      "detail": "返回的表不是被问的那张表"
+      "basis": "by_construction",
+      "detail": "返回的表不是被问的那张表（筛选被丢弃或时间被改写）"
     },
     {
       "id": "28",
@@ -194,7 +284,8 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": true,
-      "detail": "返回的表不是被问的那张表"
+      "basis": "by_construction",
+      "detail": "返回的表不是被问的那张表（筛选被丢弃或时间被改写）"
     },
     {
       "id": "29",
@@ -212,7 +303,8 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": true,
-      "detail": "返回的表不是被问的那张表"
+      "basis": "by_construction",
+      "detail": "返回的表不是被问的那张表（筛选被丢弃或时间被改写）"
     },
     {
       "id": "30",
@@ -228,7 +320,8 @@
       "n_rows": 8,
       "silent_guess": true,
       "conclusion_changed": true,
-      "detail": "返回的表不是被问的那张表"
+      "basis": "by_construction",
+      "detail": "返回的表不是被问的那张表（筛选被丢弃或时间被改写）"
     }
   ]
 }

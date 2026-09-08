@@ -1,5 +1,19 @@
 # malaysia-auto-ask
 
+[![ci](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml/badge.svg)](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml)
+
+**Ask-the-data demo for the Malaysian car market, standard library only.** A question in
+natural language becomes an intent, then a whitelisted SQL template, then a table with its
+metric definition, owner and table-level lineage. The one design decision that matters:
+when the question does not say *which* number it wants — wholesale (TIV) or registrations,
+which disagree by up to 17% in a given month — the system **stops and asks** instead of
+guessing. 30 self-authored questions: 22 answered correctly, 8 stopped with a structured
+reason code; with the guard switched off, all 8 are answered silently and 7 of them answer
+a different question than the one asked. No API key, no third-party package, `python`
+3.10+, everything below reproduces in under a minute.
+
+![The /desk page: KPI cards, the question box, and a note draft that cannot be copied until the reader confirms the metric](docs/img/desk.png)
+
 仓：https://github.com/LUOaini1213/malaysia-auto-ask
 
 马来西亚汽车市场 **问数演示**：自然语言 → 意图 → 白名单 SQL → 表。  
@@ -13,20 +27,24 @@
 
 ## 怎么跑
 
-```powershell
-cd malaysia-auto-ask
+```bash
+git clone https://github.com/LUOaini1213/malaysia-auto-ask && cd malaysia-auto-ask
 python scripts/seed.py
 python scripts/ask_cli.py "2025全年协会口径TIV哪家第一"
+python scripts/ask_cli.py "2025谁卖得最好"            # 停下来问人：TIV 还是上牌？
 python scripts/ask_cli.py "TIV和上牌有什么区别"
 python scripts/ask_cli.py "上牌数从哪张表来"
-python scripts/eval.py
-python scripts/ablation.py
+python -m unittest discover -s tests -v              # 21 个测试，含把 README 里每个数字重算一遍的 test_claims.py
+python scripts/eval.py                               # 30 题评测 -> eval/last_run.json
+python scripts/ablation.py --check                   # 消融重算并与 eval/ablation.json 逐字段比对
 python scripts/serve.py
 # 浏览器 http://127.0.0.1:8766
 # 海外一线工作台 http://127.0.0.1:8766/desk
 ```
 
-无第三方包。Python 3.10+，只用标准库 sqlite3。
+无第三方包。Python 3.10+，只用标准库 sqlite3。CI（`.github/workflows/ci.yml`）在 3.10 / 3.11 / 3.12 上跑同样三条命令。
+
+![A question that names no metric is stopped with the reason code AMBIGUOUS_METRIC and the two candidate metrics spelled out](docs/img/ask_stop.png)
 
 ## 上牌怎么生成的（批发 ≠ 上牌）
 
@@ -68,9 +86,10 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 | 该停的停住 | **8/8** | 0/8 |
 | 该答的答对 | **22/22** | 22/22（无回归） |
 | 无提示猜测 | 0 | **8/8** |
-| 结论被改变 | 0 | **7/8（87.5%）** |
+| 结论被改变 | 0 | **7/8** |
 
 护栏关掉后，8 条本该停问的题**全部返回了一张看起来正常的表**，界面上没有任何提示。
+「结论被改变」的依据在 `eval/ablation.json` 每行的 `basis` 里写明：7 条是**按定义**成立——筛选被丢弃或时间被改写后，返回的表就不是被问的那张表；唯一一条双口径歧义题（第 23 题）是**实测**——两套口径都算一遍，排名结论相同，所以不计入。表里所有计数都是跑出来的，脚本里没有写死的常量；`python scripts/ablation.py --check` 会把一次新跑与提交的 JSON 逐字段比对。
 
 ### 停问原因分类（5 类 / 8 题）
 
@@ -96,12 +115,13 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 | 区域 top1 翻转 | **0 / 7** |
 | 品牌年合计口径差 | 0.12% ~ 2.12%（均值 0.78%） |
 | **月度口径差** | **最大 17.47%**（1 月 +17.5%、12 月 −11.7%、3/6/9 月 −8~−9%） |
+| 旧模型（2026-09-02 前，上牌 = 批发 × 各区固定系数）的月度口径差 | 常态 **0.32%**，仅 2025-12 因年末赶量到 4.3% |
 
 原因：Perodua 断层领先，Honda 稳定领先 Toyota 约 2.7%，相邻品牌差距远大于口径带来的扰动。
 
-**所以猜口径的危害在数值不在排名**——问"谁第一"猜错口径不致命，问"某月卖了多少"就会差到 17%。护栏该守的是后者。
+**所以猜口径的危害在数值不在排名**——问"谁第一"猜错口径不致命，问"某月卖了多少"就会差到 17%。护栏该守的是后者。旧模型下两套数几乎逐月相等（0.32%），护栏看起来多余；换成有渠道滞后的模型后差距才显出来——这也是为什么要把上牌机制做真一点。
 
-> λ（渠道周转率）是基于真实机制的假设值，**没有按「让排名翻转」反向调参**。调到翻转很容易，但那是拿数据凑结论。
+> λ（渠道周转率）是基于真实机制的假设值，**没有按「让排名翻转」反向调参**。`scripts/ablation.py` 的 `lambda_sensitivity` 把所有品牌的 λ 同乘 0.4 ~ 1.2 重算上牌：月度数值差从 29.4% 一路变到 10.4%，但**月度 top1 0/12、区域 top1 0/7 在整个范围内都不翻转**（`eval/ablation.json` → `lambda_sensitivity`）。也就是说排名不敏感这个结论不依赖某个特定的 λ，调参也调不出翻转。
 
 ## 口径（问不清就停）
 
@@ -124,7 +144,7 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 
 ## 评测
 
-问数 30 条（`eval/cases.json`）+ 口径检索 8 条（`eval/retrieve_cases.json`）。本机最近一次：
+问数 30 条（`eval/cases.json`）+ 口径检索 8 条（`eval/retrieve_cases.json`）。最近一次结果提交在 `eval/last_run.json`（`python scripts/eval.py` 重新生成；CI 每次都跑）：
 
 | 指标 | 值 | 怎么算 |
 |------|----|--------|
@@ -133,7 +153,7 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 | 人工干预率 | **26.7%**（8/30） | 系统停下来问人的比例 |
 | 口径检索 | **8/8** | 命中正确文档或血缘节点（词重叠） |
 
-8 条故意停：没指定 TIV/上牌、相对时间（上个月/今年）、华南、吉利当品牌、豪华车无定义、2026 年库没有。
+8 条故意停：没指定 TIV/上牌、相对时间（上个月/今年）、华南、吉利当品牌、豪华车无定义、2026 年库没有。题目和金标都是本人写的，这是自测，不是第三方评测；护栏的 7 个原因码（`malaysia_ask/intent.py` 的 `HITL_CODES`）在这 8 题里触发了 5 个。
 
 ```powershell
 python scripts/eval.py
@@ -141,10 +161,11 @@ python scripts/eval.py
 
 ## 范围与边界
 
-- 数据不是 MAA / JPJ 原始明细：品牌年合计按公开报道锚定，月 × 区域 × 车型为固定种子拆出的演示数
-- 「填模板」不是生产级 NL2SQL；词重叠检索不是向量 RAG，也不是企业知识库
-- `lineage_edge` 是表级血缘的最小实现，不是数仓血缘平台
-- `/desk` 是一线查数页面的演示，不是外呼 / 客服工具
-- Proton 是马来西亚国产品牌；库里没有 Geely 品牌行
+- 不把本库写成 MAA/JPJ 原始数，也不写成任何厂商的生产问数产品
+- 不把「填模板」写成生产 NL2SQL
+- 不把词重叠检索写成向量 RAG / 企业知识库
+- 不把 `lineage_edge` 写成企业数仓血缘平台
+- 不把 `/desk` 写成外呼、客服或吉利一线工具
+- Proton 是国产车品牌；库里没有 Geely 品牌行
 
 公开锚点来源：MAA 2025 TIV 820,752；Perodua / Proton / Honda / Toyota / Mazda 等品牌年为公开报道。其余拆分是演示。

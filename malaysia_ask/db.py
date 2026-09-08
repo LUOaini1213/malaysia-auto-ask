@@ -155,6 +155,59 @@ MONTH_W = {
 }
 
 
+# ---- 上牌模型（seed 与 scripts/ablation.py 共用；后者据此做旧模型对照与 λ 敏感性）----
+# reg[m] = lam[m]*tiv[m] + (1-lam[m-1])*tiv[m-1]
+#   lam_b  当月批发中当月就上牌的比例。国产双雄周转快，进口/新势力压渠道库存。
+#   季末（3/6/9/12）厂商压货冲量，当月上牌比例进一步下降。
+#   区域：上牌发生在终端所在州，巴生谷高于批发口径，东马低。
+# 各品牌渠道周转差异（越高＝当月批发当月就上牌，渠道压货越少）
+BRAND_LAMBDA = {
+    "Perodua": 0.88,  # 国产龙头，产销紧咬
+    "Proton": 0.86,   # 同上
+    "Honda": 0.84,    # 零售强、经销商库存薄
+    "Toyota": 0.74,   # 更依赖向经销商压批发
+    "Mazda": 0.78,
+    "BYD": 0.80,      # 新进场但终端走量快
+    "Chery": 0.64,    # 铺渠道阶段，库存厚
+    "Others": 0.75,
+}
+DEFAULT_LAMBDA = 0.78
+QUARTER_END_HOLD = 0.90  # 季末当月上牌比例再打九折，货压在渠道
+REGION_BUMP = {1: 1.05, 5: 0.92, 6: 0.92}  # 巴生谷 / 东马；其余见 DEFAULT_REGION_BUMP
+DEFAULT_REGION_BUMP = 0.98
+
+
+def lam_of(bname: str, month: int, scale: float = 1.0) -> float:
+    """当月批发中当月即上牌的比例。scale 只供敏感性分析用，默认 1.0。"""
+    lam = BRAND_LAMBDA.get(bname, DEFAULT_LAMBDA) * scale
+    if month in (3, 6, 9, 12):
+        lam *= QUARTER_END_HOLD
+    return min(lam, 1.0)
+
+
+def region_bump(rid: int) -> float:
+    return REGION_BUMP.get(rid, DEFAULT_REGION_BUMP)
+
+
+def registration_series(
+    series: list[int], prev_year: list[int] | None, bname: str, rid: int, scale: float = 1.0
+) -> list[int]:
+    """12 个月的上牌数：由本年 12 个月批发 `series`（及上一年 12 月）推导。"""
+    bump = region_bump(rid)
+    out = []
+    for month in range(1, 13):
+        tiv_m = series[month - 1]
+        lam_m = lam_of(bname, month, scale)
+        if month == 1:
+            # 1 月消化的是上一年 12 月压在渠道里的货；无上一年数据时按本年 12 月做稳态近似
+            src = prev_year[11] if prev_year else series[11]
+            carry = (1 - lam_of(bname, 12, scale)) * src
+        else:
+            carry = (1 - lam_of(bname, month - 1, scale)) * series[month - 2]
+        out.append(max(0, int(round((lam_m * tiv_m + carry) * bump))))
+    return out
+
+
 def connect(path: Path | None = None) -> sqlite3.Connection:
     p = path or DB_PATH
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -181,11 +234,29 @@ def _split(total: int, weights: list[float]) -> list[int]:
     return ints
 
 
+def _reset_file(p: Path) -> sqlite3.Connection:
+    """Fresh, empty database at `p`. Unlinks the file when it can; on Windows a
+    connection left open elsewhere in the same process (tests) makes unlink fail
+    with PermissionError, so fall back to dropping every table in place."""
+    if p.exists():
+        try:
+            p.unlink()
+        except PermissionError:
+            conn = connect(p)
+            conn.execute("PRAGMA foreign_keys = OFF")
+            names = [r[0] for r in conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").fetchall()]
+            for name in names:
+                conn.execute(f'DROP TABLE IF EXISTS "{name}"')
+            conn.commit()
+            conn.execute("PRAGMA foreign_keys = ON")
+            return conn
+    return connect(p)
+
+
 def seed(path: Path | None = None) -> Path:
     p = path or DB_PATH
-    if p.exists():
-        p.unlink()
-    conn = connect(p)
+    conn = _reset_file(p)
     conn.executescript(SCHEMA.read_text(encoding="utf-8"))
     conn.executemany(
         "INSERT INTO dim_brand(brand_id, brand_name, origin, notes) VALUES (?,?,?,?)",
@@ -228,47 +299,16 @@ def seed(path: Path | None = None) -> Path:
                     for (rid, _), ru in zip(region_ids, per_region):
                         tiv_series.setdefault((year, mid, rid), [0] * 12)[month - 1] = ru
 
-    # ---- 上牌：批发 -> 上牌之间有渠道库存和上牌滞后 ----
-    # reg[m] = lam[m]*tiv[m] + (1-lam[m-1])*tiv[m-1]
-    #   lam_b  当月批发中当月就上牌的比例。国产双雄周转快，进口/新势力压渠道库存。
-    #   季末（3/6/9/12）厂商压货冲量，当月上牌比例进一步下降。
-    #   区域：上牌发生在终端所在州，巴生谷高于批发口径，东马低。
-    # 各品牌渠道周转差异（越高＝当月批发当月就上牌，渠道压货越少）
-    BRAND_LAMBDA = {
-        "Perodua": 0.88,  # 国产龙头，产销紧咬
-        "Proton": 0.86,   # 同上
-        "Honda": 0.84,    # 零售强、经销商库存薄
-        "Toyota": 0.74,   # 更依赖向经销商压批发
-        "Mazda": 0.78,
-        "BYD": 0.80,      # 新进场但终端走量快
-        "Chery": 0.64,    # 铺渠道阶段，库存厚
-        "Others": 0.75,
-    }
-    QUARTER_END_HOLD = 0.90  # 季末当月上牌比例再打九折，货压在渠道
+    # ---- 上牌：批发 -> 上牌之间有渠道库存和上牌滞后（模型见模块顶部 registration_series）----
     brand_of_model = {mid: brand_name[bid] for mid, bid, *_ in MODELS}
-
-    def lam_of(bname: str, month: int) -> float:
-        lam = BRAND_LAMBDA.get(bname, 0.78)
-        if month in (3, 6, 9, 12):
-            lam *= QUARTER_END_HOLD
-        return lam
 
     rows = []
     for (year, mid, rid), series in sorted(tiv_series.items()):
         bname = brand_of_model[mid]
         prev_year = tiv_series.get((year - 1, mid, rid))
-        region_bump = 1.05 if rid == 1 else 0.92 if rid in (5, 6) else 0.98
+        regs = registration_series(series, prev_year, bname, rid)
         for month in range(1, 13):
-            tiv_m = series[month - 1]
-            lam_m = lam_of(bname, month)
-            if month == 1:
-                # 1 月消化的是上一年 12 月压在渠道里的货；无上一年数据时按本年 12 月做稳态近似
-                src = prev_year[11] if prev_year else series[11]
-                carry = (1 - lam_of(bname, 12)) * src
-            else:
-                carry = (1 - lam_of(bname, month - 1)) * series[month - 2]
-            reg = max(0, int(round((lam_m * tiv_m + carry) * region_bump)))
-            rows.append((year, month, mid, rid, tiv_m, reg))
+            rows.append((year, month, mid, rid, series[month - 1], regs[month - 1]))
 
     conn.executemany(
         "INSERT INTO fact_month(year, month, model_id, region_id, tiv_units, registration_units) VALUES (?,?,?,?,?,?)",

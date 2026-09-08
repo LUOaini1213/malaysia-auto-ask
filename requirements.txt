@@ -1,0 +1,6 @@
+# No third-party runtime dependencies: the demo, the web page, the evaluation
+# and the ablation use only the Python standard library (sqlite3, http.server,
+# json, re, unittest). Python 3.10 or newer.
+#
+# Optional, for the pytest runner instead of `python -m unittest`:
+# pytest>=7
