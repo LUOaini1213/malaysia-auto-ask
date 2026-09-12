@@ -34,7 +34,7 @@ python scripts/ask_cli.py "2025全年协会口径TIV哪家第一"
 python scripts/ask_cli.py "2025谁卖得最好"            # 停下来问人：TIV 还是上牌？
 python scripts/ask_cli.py "TIV和上牌有什么区别"
 python scripts/ask_cli.py "上牌数从哪张表来"
-python -m unittest discover -s tests -v              # 21 个测试，含把 README 里每个数字重算一遍的 test_claims.py
+python -m unittest discover -s tests -v              # 含数值主张重算与全部 SQL 模板的筛选组合回归
 python scripts/eval.py                               # 30 题评测 -> eval/last_run.json
 python scripts/ablation.py --check                   # 消融重算并与 eval/ablation.json 逐字段比对
 python scripts/serve.py
@@ -76,6 +76,16 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 | 血缘 | `lineage_node` / `lineage_edge` | 表级边，可从指标走回 ODS |
 
 全年、无区域、无能源的品牌合计走 ADS；带月 / 区域 / 能源 / 车型走 DWD。
+
+所有 8 个 DWD 模板都支持已解析的月、区域、品牌、能源和国产/非国产筛选。
+5 个 ADS 模板支持品牌和国产/非国产筛选；出现月、区域或能源条件时自动走 DWD。
+各月/各区域等分组也保留显式筛选，不会为了展开分组而丢掉条件。
+品牌份额的分母是同年、同月、同区域、同能源、同国产口径的全品牌市场，
+品牌条件只选择分子。例如「国产车 Perodua 份额」分母为 Perodua + Proton，
+不会自动变成全市场份额或 Perodua 自身的 100%。
+
+`tests/test_filter_contract.py` 用独立逐行汇总核对全部模板和筛选组合，
+并覆盖「纯电丰田总量」「纯电各月趋势」「国产纯电车型排名」等问句。
 
 ## 停问机制消融对照（`python scripts/ablation.py`）
 

@@ -10,10 +10,7 @@ FROM fact_month f
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year = :year
-  AND (:month IS NULL OR f.month = :month)
-  AND (:region_id IS NULL OR f.region_id = :region_id)
-  AND (:energy IS NULL OR m.energy = :energy)
-  AND (:origin IS NULL OR b.origin = :origin)
+{filters}
 GROUP BY b.brand_name
 ORDER BY units DESC
 """,
@@ -24,10 +21,7 @@ FROM fact_month f
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year = :year
-  AND (:month IS NULL OR f.month = :month)
-  AND (:region_id IS NULL OR f.region_id = :region_id)
-  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
-  AND (:energy IS NULL OR m.energy = :energy)
+{filters}
 GROUP BY b.brand_name, m.model_name
 ORDER BY units DESC
 LIMIT 15
@@ -39,9 +33,7 @@ FROM fact_month f
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year = :year
-  AND (:month IS NULL OR f.month = :month)
-  AND (:region_id IS NULL OR f.region_id = :region_id)
-  AND b.brand_id = :brand_id
+{filters}
 GROUP BY b.brand_name
 """,
     "region_rank": """
@@ -53,8 +45,7 @@ JOIN dim_region r ON r.region_id = f.region_id
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year = :year
-  AND (:month IS NULL OR f.month = :month)
-  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
+{filters}
 GROUP BY r.region_id
 ORDER BY units DESC
 """,
@@ -65,8 +56,7 @@ FROM fact_month f
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year = :year
-  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
-  AND (:region_id IS NULL OR f.region_id = :region_id)
+{filters}
 GROUP BY f.month
 ORDER BY f.month
 """,
@@ -78,16 +68,13 @@ SELECT b.brand_name AS name,
          JOIN dim_model m2 ON m2.model_id = f2.model_id
          JOIN dim_brand b2 ON b2.brand_id = m2.brand_id
          WHERE f2.year = :year
-           AND (:month IS NULL OR f2.month = :month)
-           AND (:region_id IS NULL OR f2.region_id = :region_id)
+{market_filters}
        ), 1) AS share_pct
 FROM fact_month f
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year = :year
-  AND (:month IS NULL OR f.month = :month)
-  AND (:region_id IS NULL OR f.region_id = :region_id)
-  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
+{filters}
 GROUP BY b.brand_name
 ORDER BY units DESC
 """,
@@ -105,9 +92,7 @@ FROM fact_month f
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year IN (:year, :year_ly)
-  AND (:month IS NULL OR f.month = :month)
-  AND (:region_id IS NULL OR f.region_id = :region_id)
-  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
+{filters}
 GROUP BY b.brand_name
 ORDER BY units DESC
 """,
@@ -118,7 +103,7 @@ FROM fact_month f
 JOIN dim_model m ON m.model_id = f.model_id
 JOIN dim_brand b ON b.brand_id = m.brand_id
 WHERE f.year = :year
-  AND (:month IS NULL OR f.month = :month)
+{filters}
 GROUP BY b.origin
 ORDER BY units DESC
 """,
@@ -132,7 +117,7 @@ SELECT b.brand_name AS name,
 FROM ads_brand_year a
 JOIN dim_brand b ON b.brand_id = a.brand_id
 WHERE a.year = :year
-  AND (:origin IS NULL OR b.origin = :origin)
+{filters}
 GROUP BY b.brand_name
 ORDER BY units DESC
 """,
@@ -142,19 +127,22 @@ SELECT b.brand_name AS name,
 FROM ads_brand_year a
 JOIN dim_brand b ON b.brand_id = a.brand_id
 WHERE a.year = :year
-  AND b.brand_id = :brand_id
+{filters}
 GROUP BY b.brand_name
 """,
     "share": """
 SELECT b.brand_name AS name,
        SUM(a.{col}) AS units,
        ROUND(100.0 * SUM(a.{col}) / (
-         SELECT SUM(a2.{col}) FROM ads_brand_year a2 WHERE a2.year = :year
+         SELECT SUM(a2.{col}) FROM ads_brand_year a2
+         JOIN dim_brand b2 ON b2.brand_id = a2.brand_id
+         WHERE a2.year = :year
+{market_filters}
        ), 1) AS share_pct
 FROM ads_brand_year a
 JOIN dim_brand b ON b.brand_id = a.brand_id
 WHERE a.year = :year
-  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
+{filters}
 GROUP BY b.brand_name
 ORDER BY units DESC
 """,
@@ -171,7 +159,7 @@ SELECT b.brand_name AS name,
 FROM ads_brand_year a
 JOIN dim_brand b ON b.brand_id = a.brand_id
 WHERE a.year IN (:year, :year_ly)
-  AND (:brand_id IS NULL OR b.brand_id = :brand_id)
+{filters}
 GROUP BY b.brand_name
 ORDER BY units DESC
 """,
@@ -181,6 +169,7 @@ SELECT b.origin AS name,
 FROM ads_brand_year a
 JOIN dim_brand b ON b.brand_id = a.brand_id
 WHERE a.year = :year
+{filters}
 GROUP BY b.origin
 ORDER BY units DESC
 """,
@@ -200,6 +189,24 @@ def scan_for(task: str, params: dict | None = None) -> str:
     return "dwd.fact_month"
 
 
+def _filters(detail: bool, market: bool = False) -> str:
+    """One dimension contract for every template; identifiers are static code.
+
+    A brand share compares selected brands against the matching market, so only
+    its denominator omits brand_id. Month, region, energy and origin stay equal.
+    ADS has only brand/year grain; scan_for routes detail filters to DWD.
+    """
+    suffix = "2" if market else ""
+    columns = {"origin": f"b{suffix}.origin"}
+    if not market:
+        columns["brand_id"] = "b.brand_id"
+    if detail:
+        columns.update({"month": f"f{suffix}.month", "region_id": f"f{suffix}.region_id",
+                        "energy": f"m{suffix}.energy"})
+    return "\n".join(f"  AND (:{key} IS NULL OR {column} = :{key})"
+                     for key, column in columns.items())
+
+
 def render(template_id: str, metric: str, scan: str = "dwd.fact_month") -> str:
     if metric not in ("tiv", "registration"):
         raise ValueError(metric)
@@ -207,7 +214,11 @@ def render(template_id: str, metric: str, scan: str = "dwd.fact_month") -> str:
     if scan == "ads.brand_year":
         if template_id not in ADS_TEMPLATES:
             raise KeyError(template_id)
-        return ADS_TEMPLATES[template_id].format(col=col)
+        return ADS_TEMPLATES[template_id].format(
+            col=col, filters=_filters(False), market_filters=_filters(False, market=True))
+    if scan != "dwd.fact_month":
+        raise ValueError(scan)
     if template_id not in TEMPLATES:
         raise KeyError(template_id)
-    return TEMPLATES[template_id].format(col=col)
+    return TEMPLATES[template_id].format(
+        col=col, filters=_filters(True), market_filters=_filters(True, market=True))
