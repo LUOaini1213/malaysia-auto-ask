@@ -10,11 +10,12 @@ that matters:
 when the question does not say *which* number it wants — wholesale (TIV) or registrations,
 which disagree by up to 17% in a given month — the system **stops and asks** instead of
 guessing. Every SQL template is crossed with the filter sets it supports — a hand-picked
-list for the detail table, the full brand × origin grid for the aggregate — giving **266**
+list for the detail table, a 3 × 3 grid of brand and origin filters for the aggregate — giving **266**
 template × metric × filter combinations, each checked against an independent row-by-row
 oracle. A self-authored 30-question suite measures the guard: 22 answered, 8 stopped with a
-structured reason code; with the guard switched off, all 8 are answered silently and
-7 of them answer a different question than the one asked. No API key, no third-party
+structured reason code; with the guard switched off, all 8 are answered silently and for
+7 of them the answer is by construction to a different question — the discarded filter or
+rewritten period means the table returned is not the table that was asked about. No API key, no third-party
 package, `python` 3.10+, everything below reproduces in under a minute.
 
 ![The /desk page: KPI cards, the question box, and a note draft that cannot be copied until the reader confirms the metric](docs/img/desk.png)

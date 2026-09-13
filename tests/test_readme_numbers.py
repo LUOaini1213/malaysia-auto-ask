@@ -30,7 +30,8 @@ from malaysia_ask.db import (  # noqa: E402
 from malaysia_ask.intent import HITL_CODES  # noqa: E402
 from malaysia_ask.templates import ADS_TEMPLATES, TEMPLATES  # noqa: E402
 from test_filter_contract import (  # noqa: E402
-    ADS_COMBINATIONS, DWD_COMBINATIONS, ORACLE_COMBINATIONS,
+    ADS_BRANDS, ADS_COMBINATIONS, ADS_ORIGINS, DWD_COMBINATIONS,
+    ORACLE_COMBINATIONS,
 )
 
 README_PATH = ROOT / "README.md"
@@ -85,7 +86,11 @@ class ReadmeNumbers(unittest.TestCase):
 
         silent = int(self.grab("with the guard switched off", r"all (\d+) are answered silently").group(1))
         self.assertEqual(f"{silent}/{stopped}", b["无提示猜测"])
-        changed = int(self.grab("of them answer a different question", r"^(\d+) of them").group(1))
+        # 首屏这句要和中文正文第 120 行的口径一致：这 7 条是**按定义**成立（筛选被丢弃或
+        # 时间被改写 => 返回的表不是被问的那张表），不是实测出来的差异。英文原先只写
+        # "7 of them answer a different question"，读起来像实测，所以措辞里明说 by construction。
+        changed = int(self.grab("the answer is by construction to a different question",
+                                r"(\d+) of them the answer is by construction").group(1))
         self.assertEqual(f"{changed}/{stopped}", b["结论被改变"])
 
     def test_the_30_22_8_7_repeated_in_the_prose_match_the_artifacts(self):
@@ -177,9 +182,15 @@ class ReadmeNumbers(unittest.TestCase):
         self.assertEqual(ads_t * ads_metrics * ads_brands * ads_origins, ADS_COMBINATIONS)
         self.assertEqual(ads_total, ADS_COMBINATIONS)
         # 四处引用 266 的地方：首屏英文段、「怎么跑」里的注释、分层小节、评测表
-        self.assertEqual(int(self.grab("the full brand × origin grid for the aggregate",
-                                       r"giving \*\*(\d+)\*\*").group(1)),
-                         ORACLE_COMBINATIONS)
+        # 首屏那句英文自己写出了聚合表那一维的形状，所以连形状一起钉住：写"3 × 3"
+        # 就必须真的是 3 个品牌筛选 × 3 个国产口径，改了 ADS_BRANDS/ADS_ORIGINS 而不改
+        # README 会红。此前那句写的是"the full brand × origin grid"，而品牌那一维只取
+        # 三个值（不筛 / brand 1 / brand 2），不是表里全部品牌——说过头了。
+        m = self.grab("a 3 × 3 grid of brand and origin filters for the aggregate",
+                      r"a (\d+) × (\d+) grid of brand and origin filters[\s\S]*?giving \*\*(\d+)\*\*")
+        self.assertEqual(int(m.group(1)), len(ADS_BRANDS))
+        self.assertEqual(int(m.group(2)), len(ADS_ORIGINS))
+        self.assertEqual(int(m.group(3)), ORACLE_COMBINATIONS)
         self.assertEqual(int(self.grab("含 README 数字重算", r"(\d+) 组模板×筛选").group(1)),
                          ORACLE_COMBINATIONS)
         self.assertEqual(int(self.grab("核对全部 **266 组**", r"全部 \*\*(\d+) 组\*\*").group(1)),
