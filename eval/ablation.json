@@ -83,6 +83,53 @@
       "max": 2.12,
       "mean": 0.78
     },
+    "adjacent_brand_gap_pct": {
+      "order": [
+        "Perodua",
+        "Proton",
+        "Others",
+        "Honda",
+        "Toyota",
+        "Chery",
+        "BYD",
+        "Mazda"
+      ],
+      "by_adjacent_pair": [
+        {
+          "pair": "Perodua / Proton",
+          "gap_pct": 137.46
+        },
+        {
+          "pair": "Proton / Others",
+          "gap_pct": 18.74
+        },
+        {
+          "pair": "Others / Honda",
+          "gap_pct": 76.55
+        },
+        {
+          "pair": "Honda / Toyota",
+          "gap_pct": 2.77
+        },
+        {
+          "pair": "Toyota / Chery",
+          "gap_pct": 359.82
+        },
+        {
+          "pair": "Chery / BYD",
+          "gap_pct": 6.2
+        },
+        {
+          "pair": "BYD / Mazda",
+          "gap_pct": 55.3
+        }
+      ],
+      "leader_over_second": 137.46,
+      "tightest_pair": "Honda / Toyota",
+      "tightest_gap_pct": 2.77,
+      "months_tightest_pair_keeps_order": "12/12",
+      "max_brand_year_metric_gap_pct": 2.12
+    },
     "month_value_gap_pct": {
       "by_month": [
         17.47,
@@ -120,7 +167,7 @@
       "abs_max": 4.3,
       "current_model_abs_max": 17.47
     },
-    "结论": "本市场相邻品牌差距大（Perodua 断层领先，Honda 稳定领先 Toyota 约 2.7%），口径换成上牌不改变任何排名；但月度数值最大差 17.47%（旧的固定系数模型常态只有 0.32%，最大 4.3%）。即：猜口径的危害在数值不在排名。λ 是基于渠道周转的假设值，未按「让排名翻转」反向调参——见 lambda_sensitivity。"
+    "结论": "本市场相邻品牌差距大（Perodua 断层领先第二名 137.46%；最挤的一对是 Honda / Toyota，全年仍差 2.77%，12 个月里有 12/12 保持这个先后），而换口径带来的品牌年合计扰动最大只有 2.12%，小于最挤的那对相邻品牌之差——所以口径换成上牌不改变任何排名。但月度数值最大差 17.47%（旧的固定系数模型常态只有 0.32%，最大 4.3%）。即：猜口径的危害在数值不在排名。λ 是基于渠道周转的假设值，未按「让排名翻转」反向调参——见 lambda_sensitivity。"
   },
   "lambda_sensitivity": {
     "what": "所有品牌 λ 同乘 scale 后重算上牌；scale=1.0 即现行模型",

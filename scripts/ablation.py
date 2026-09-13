@@ -13,10 +13,11 @@
   measured          双口径歧义题把 TIV / 上牌两种解释都算一遍，实测结论是否不同
   by_construction   丢弃筛选 / 改写时间的题，返回的表按定义就不是被问的那张表
 
-另外单独做「口径翻转」对照：本演示数据下猜口径的实际危害有多大；并把
-2026-09-02 之前的旧上牌模型（各区固定系数）与现行渠道模型对照，把
-「月度口径背离由 0.75% 提到 17.47%」这句话算出来；再对 λ 做敏感性扫描，
-把「未按让排名翻转反向调参」变成一个可查的数。
+另外单独做「口径翻转」对照：本演示数据下猜口径的实际危害有多大。这里把
+2026-09-02 之前的旧上牌模型（上牌 = 批发 × 各区固定系数）放在同一份批发数
+上重算，与现行渠道模型逐月对照——两条曲线的常态值与最大值都由本脚本算出，
+落在 legacy_flat_bump_model / month_value_gap_pct 里，脚本里不写死任何一个。
+再对 λ 做敏感性扫描，把「未按让排名翻转反向调参」变成一个可查的数。
 
     python scripts/ablation.py           # 重算并写 eval/ablation.json
     python scripts/ablation.py --check   # 重算并与已提交的 eval/ablation.json 对比，漂移则退出 1
@@ -223,6 +224,32 @@ def metric_flip(year=2025):
         "mean": round(sum(y_gaps) / len(y_gaps), 2),
     } if y_gaps else None
 
+    # ---- 相邻品牌差距：排名之所以对口径不敏感，是因为最挤的一对相邻品牌
+    #      也比「换口径」带来的品牌年合计扰动大。两个数都在这里算出来对比。
+    year_order = order("tiv_units")
+    year_units = dict(conn.execute(
+        f"SELECT b.brand_name, SUM(f.tiv_units) {JOIN} WHERE f.year=? GROUP BY b.brand_name", (year,)))
+
+    def _month_units(name, m):
+        return conn.execute(
+            f"SELECT SUM(f.tiv_units) {JOIN} WHERE f.year=? AND f.month=? AND b.brand_name=?",
+            (year, m, name)).fetchone()[0] or 0
+
+    adjacent = [{"pair": f"{hi} / {lo}", "gap_pct": round((year_units[hi] / year_units[lo] - 1) * 100, 2)}
+                for hi, lo in zip(year_order, year_order[1:])]
+    tightest = min(adjacent, key=lambda g: g["gap_pct"])
+    t_hi, t_lo = tightest["pair"].split(" / ")
+    out["adjacent_brand_gap_pct"] = {
+        "order": year_order,
+        "by_adjacent_pair": adjacent,
+        "leader_over_second": adjacent[0]["gap_pct"],
+        "tightest_pair": tightest["pair"],
+        "tightest_gap_pct": tightest["gap_pct"],
+        "months_tightest_pair_keeps_order":
+            f"{sum(1 for m in range(1, 13) if _month_units(t_hi, m) > _month_units(t_lo, m))}/12",
+        "max_brand_year_metric_gap_pct": out["year_value_gap_pct"]["max"] if y_gaps else None,
+    }
+
     month_tiv, month_reg = [0] * 12, [0] * 12
     for m, t, r in conn.execute(
             "SELECT month, SUM(tiv_units), SUM(registration_units) FROM fact_month WHERE year=? GROUP BY month",
@@ -252,9 +279,13 @@ def metric_flip(year=2025):
         "current_model_abs_max": out["month_value_gap_pct"]["abs_max"],
     }
 
+    adj = out["adjacent_brand_gap_pct"]
     out["结论"] = (
-        "本市场相邻品牌差距大（Perodua 断层领先，Honda 稳定领先 Toyota 约 2.7%），"
-        "口径换成上牌不改变任何排名；但月度数值最大差 "
+        f"本市场相邻品牌差距大（{year_order[0]} 断层领先第二名 {adj['leader_over_second']}%；"
+        f"最挤的一对是 {adj['tightest_pair']}，全年仍差 {adj['tightest_gap_pct']}%，"
+        f"12 个月里有 {adj['months_tightest_pair_keeps_order']} 保持这个先后），"
+        f"而换口径带来的品牌年合计扰动最大只有 {adj['max_brand_year_metric_gap_pct']}%，"
+        "小于最挤的那对相邻品牌之差——所以口径换成上牌不改变任何排名。但月度数值最大差 "
         f"{out['month_value_gap_pct']['abs_max']}%（旧的固定系数模型常态只有 "
         f"{out['legacy_flat_bump_model']['abs_typical']}%，最大 {out['legacy_flat_bump_model']['abs_max']}%）。"
         "即：猜口径的危害在数值不在排名。λ 是基于渠道周转的假设值，未按「让排名翻转」反向调参——"
