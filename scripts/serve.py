@@ -93,14 +93,16 @@ def render_body(r: dict) -> str:
     if r.get("mode") == "retrieve":
         return render_hits(r.get("retrieve")) + render_lineage(r.get("lineage"))
     md = r.get("metric_dict") or {}
-    scan = (r.get("trace") or {}).get("scan") or ""
+    trace = r.get("trace") or {}
+    scan = trace.get("scan") or ""
     lines = [
-        "<p><b>%s</b> · owner %s · version %s · scan %s</p>"
+        "<p><b>%s</b> · owner %s · version %s · scan %s · parser %s</p>"
         % (
             escape(md.get("display_name", "")),
             escape(md.get("owner", "")),
             escape(md.get("version", "")),
             escape(scan),
+            escape(str(trace.get("parser") or "")),
         ),
         "<p>%s</p>" % escape(md.get("definition", "")),
         "<pre>%s</pre>" % escape(r.get("sql") or ""),

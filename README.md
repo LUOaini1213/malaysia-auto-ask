@@ -3,8 +3,10 @@
 [![ci](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml/badge.svg)](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml)
 
 **Ask-the-data demo for the Malaysian car market, standard library only.** A question in
-natural language becomes an intent, then a whitelisted SQL template, then a table with its
-metric definition, owner and table-level lineage. The one design decision that matters:
+natural language becomes an intent through a deterministic rule parser (regex plus a
+hand-written lexicon, `malaysia_ask/intent.py`), then a whitelisted SQL template, then a
+table with its metric definition, owner and table-level lineage. The one design decision
+that matters:
 when the question does not say *which* number it wants — wholesale (TIV) or registrations,
 which disagree by up to 17% in a given month — the system **stops and asks** instead of
 guessing. 30 self-authored questions: 22 answered correctly, 8 stopped with a structured
@@ -16,7 +18,7 @@ a different question than the one asked. No API key, no third-party package, `py
 
 仓：https://github.com/LUOaini1213/malaysia-auto-ask
 
-马来西亚汽车市场 **问数演示**：自然语言 → 意图 → 白名单 SQL → 表。  
+马来西亚汽车市场 **问数演示**：自然语言 → 意图（**正则 + 词典的确定性规则解析**）→ 白名单 SQL → 表。  
 口径问句走 **词重叠检索**（`口径.md` + `metric_dict` + 血缘节点），不是向量 RAG。  
 目的：把「问数」做成可评测的最小闭环——SQL 分层、指标口径、表级血缘、停问策略各占一层，每层都能单独验。
 
@@ -142,7 +144,10 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 | 份额 | 分子分母同一指标、同一筛选 |
 | 国产车 | 只 Perodua + Proton，不是「马来西亚生产的都算」 |
 
-模型不许拼 SQL。只能填白名单模板。每次出数带口径定义、owner、version、SQL、表级血缘。  
+「自然语言 → 意图」这一步是确定性规则解析：`malaysia_ask/intent.py` 的正则 + 硬编码词典，
+返回体里带 `trace.parser = "rules"`，页面上也印出来。白名单模板是对**上游解析器**的约束层——
+换成大模型也一样：谁都不能拼 SQL，只能填模板。
+每次出数带口径定义、owner、version、SQL、表级血缘。  
 「口径 / 从哪来 / 哪张表」不跑 SQL，返回检索片段和血缘路径。
 
 ## 海外一线工作台（`/desk`）
