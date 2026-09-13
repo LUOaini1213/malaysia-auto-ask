@@ -9,10 +9,11 @@ table with its metric definition, owner and table-level lineage. The one design 
 that matters:
 when the question does not say *which* number it wants — wholesale (TIV) or registrations,
 which disagree by up to 17% in a given month — the system **stops and asks** instead of
-guessing. 30 self-authored questions: 22 answered correctly, 8 stopped with a structured
-reason code; with the guard switched off, all 8 are answered silently and 7 of them answer
-a different question than the one asked. No API key, no third-party package, `python`
-3.10+, everything below reproduces in under a minute.
+guessing. Every SQL template × filter combination — **266** of them — is checked against an
+independent row-by-row oracle, and a self-authored 30-question suite measures the guard:
+22 answered, 8 stopped with a structured reason code; with the guard switched off, all 8
+are answered silently and 7 of them answer a different question than the one asked. No API
+key, no third-party package, `python` 3.10+, everything below reproduces in under a minute.
 
 ![The /desk page: KPI cards, the question box, and a note draft that cannot be copied until the reader confirms the metric](docs/img/desk.png)
 
@@ -36,15 +37,18 @@ python scripts/ask_cli.py "2025全年协会口径TIV哪家第一"
 python scripts/ask_cli.py "2025谁卖得最好"            # 停下来问人：TIV 还是上牌？
 python scripts/ask_cli.py "TIV和上牌有什么区别"
 python scripts/ask_cli.py "上牌数从哪张表来"
-python -m unittest discover -s tests -v              # 含数值主张重算与全部 SQL 模板的筛选组合回归
-python scripts/eval.py                               # 30 题评测 -> eval/last_run.json
+python -m unittest discover -s tests -v              # 含 README 数字重算、266 组模板×筛选与独立 oracle 的比对
+python scripts/eval.py --check                       # 30 题评测重跑并与 eval/last_run.json 逐字段比对
 python scripts/ablation.py --check                   # 消融重算并与 eval/ablation.json 逐字段比对
+python scripts/eval.py                               # 改了用例或解析规则后，用它重新生成 eval/last_run.json
 python scripts/serve.py
 # 浏览器 http://127.0.0.1:8766
 # 海外一线工作台 http://127.0.0.1:8766/desk
 ```
 
-无第三方包。Python 3.10+，只用标准库 sqlite3。CI（`.github/workflows/ci.yml`）在 3.10 / 3.11 / 3.12 上跑同样三条命令。
+无第三方包。Python 3.10+，只用标准库 sqlite3。CI（`.github/workflows/ci.yml`）在 3.10 / 3.11 / 3.12 上跑同样三条命令：
+单元测试、`eval.py --check`、`ablation.py --check`。后两条意味着**仓里提交的两份评测产物都由 CI 逐字段比对**——
+`eval/last_run.json` 或 `eval/ablation.json` 与当前代码跑出来的结果只要差一个字段，CI 就红。
 
 ![A question that names no metric is stopped with the reason code AMBIGUOUS_METRIC and the two candidate metrics spelled out](docs/img/ask_stop.png)
 
@@ -86,8 +90,12 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 品牌条件只选择分子。例如「国产车 Perodua 份额」分母为 Perodua + Proton，
 不会自动变成全市场份额或 Perodua 自身的 100%。
 
-`tests/test_filter_contract.py` 用独立逐行汇总核对全部模板和筛选组合，
-并覆盖「纯电丰田总量」「纯电各月趋势」「国产纯电车型排名」等问句。
+`tests/test_filter_contract.py` 用一份**独立的逐行汇总 oracle**（不走模板、不走 SQL，
+直接在 Python 里按行累加）核对全部 **266 组**「模板 × 指标 × 筛选」：
+8 个 DWD 模板 × 2 指标 × 11 组筛选 = 176，5 个 ADS 模板 × 2 指标 × 3 品牌 × 3 国产口径 = 90。
+每组比对 `units` / `share_pct` / `units_ly` / `yoy_pct` 四个字段，全部相等才算过；
+测试跑完会数一遍实际比对了多少组，与组合数不符即失败。
+另外覆盖「纯电丰田总量」「纯电各月趋势」「国产纯电车型排名」等问句。
 
 ## 停问机制消融对照（`python scripts/ablation.py`）
 
@@ -162,19 +170,24 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 
 ## 评测
 
-问数 30 条（`eval/cases.json`）+ 口径检索 8 条（`eval/retrieve_cases.json`）。最近一次结果提交在 `eval/last_run.json`（`python scripts/eval.py` 重新生成；CI 每次都跑）：
+问数 30 条（`eval/cases.json`）+ 口径检索 8 条（`eval/retrieve_cases.json`）。逐题结果提交在 `eval/last_run.json`，
+CI 每次用 `python scripts/eval.py --check` 重跑并与它逐字段比对，所以这份文件不会悄悄过期（`python scripts/eval.py` 重新生成）：
 
 | 指标 | 值 | 怎么算 |
 |------|----|--------|
-| 成功率 | **100%**（22/22） | 该出数的题，模板和结果对 |
-| 准确率 | **100%**（22/22） | 模板 + 参数和金标一致 |
+| SQL 结果正确性 | **266/266** | 全部「模板 × 指标 × 筛选」组合与独立逐行 oracle 的 `units` / `share_pct` / `units_ly` / `yoy_pct` 逐字段相等（`tests/test_filter_contract.py`，见上节） |
+| 准确率 | **100%**（22/22） | 22 条出数题：模板 + 参数与金标一致 |
+| 成功率 | **100%**（22/22） | 同上，再加返回表非空；其中 id 01、03 两条另校验首行品牌名 |
 | 人工干预率 | **26.7%**（8/30） | 系统停下来问人的比例 |
 | 口径检索 | **8/8** | 命中正确文档或血缘节点（词重叠） |
+
+后四行是 30 题自测的结果（题目和金标都是本人写的）；第一行不依赖任何自出的题目，
+是把每一条 SQL 的输出和一份独立写的逐行汇总比到字段级。
 
 8 条故意停：没指定 TIV/上牌、相对时间（上个月/今年）、华南、吉利当品牌、豪华车无定义、2026 年库没有。题目和金标都是本人写的，这是自测，不是第三方评测；护栏的 7 个原因码（`malaysia_ask/intent.py` 的 `HITL_CODES`）在这 8 题里触发了 5 个。
 
 ```powershell
-python scripts/eval.py
+python scripts/eval.py --check
 ```
 
 ## 范围与边界

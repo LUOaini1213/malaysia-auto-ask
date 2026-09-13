@@ -13,6 +13,23 @@ from malaysia_ask.ask import ask
 from malaysia_ask.db import seed
 from malaysia_ask.templates import ADS_TEMPLATES, TEMPLATES, render, scan_for
 
+# 覆盖面在这里算出来，两个测试跑完各自数一遍实际比对了多少组。README 引用的
+# 266 绑在同一个常量上（见 tests/test_readme_numbers.py），模板增删时不会各说各话。
+METRICS = ("tiv", "registration")
+DWD_FILTERS = [
+    {}, {"month": 2}, {"region_id": 2}, {"brand_id": 2},
+    {"energy": "ev"}, {"energy": "hybrid"}, {"origin": "national"},
+    {"origin": "non_national"}, {"energy": "ev", "origin": "national"},
+    {"month": 1, "region_id": 2, "brand_id": 1, "energy": "ev", "origin": "national"},
+    {"brand_id": 2, "origin": "national"},
+]
+ADS_BRANDS = (None, 1, 2)
+ADS_ORIGINS = (None, "national", "non_national")
+
+DWD_COMBINATIONS = len(TEMPLATES) * len(METRICS) * len(DWD_FILTERS)
+ADS_COMBINATIONS = len(ADS_TEMPLATES) * len(METRICS) * len(ADS_BRANDS) * len(ADS_ORIGINS)
+ORACLE_COMBINATIONS = DWD_COMBINATIONS + ADS_COMBINATIONS
+
 
 class FilterContract(unittest.TestCase):
     @classmethod
@@ -93,22 +110,21 @@ class FilterContract(unittest.TestCase):
                 {field: row[field] for field in fields if field in row.keys()} for row in rows}
 
     def test_every_dwd_template_honors_each_dimension_and_combinations(self):
-        filters = [{}, {"month": 2}, {"region_id": 2}, {"brand_id": 2},
-                   {"energy": "ev"}, {"energy": "hybrid"}, {"origin": "national"},
-                   {"origin": "non_national"}, {"energy": "ev", "origin": "national"},
-                   {"month": 1, "region_id": 2, "brand_id": 1, "energy": "ev", "origin": "national"},
-                   {"brand_id": 2, "origin": "national"}]
-        for task, metric, selected in itertools.product(TEMPLATES, ("tiv", "registration"), filters):
+        checked = 0
+        for task, metric, selected in itertools.product(TEMPLATES, METRICS, DWD_FILTERS):
             params = dict(year=2025, year_ly=2024, month=None, region_id=None,
                           brand_id=None, energy=None, origin=None)
             params.update(selected)
             with self.subTest(task=task, metric=metric, filters=selected):
                 self.assertEqual(self.actual(task, metric, params, "dwd.fact_month"),
                                  self.expected(task, metric, params))
+            checked += 1
+        self.assertEqual(checked, DWD_COMBINATIONS)
 
     def test_ads_routing_and_results_preserve_all_available_filters(self):
+        checked = 0
         for task, metric, brand, origin in itertools.product(
-                ADS_TEMPLATES, ("tiv", "registration"), (None, 1, 2), (None, "national", "non_national")):
+                ADS_TEMPLATES, METRICS, ADS_BRANDS, ADS_ORIGINS):
             params = dict(year=2025, year_ly=2024, month=None, region_id=None,
                           brand_id=brand, energy=None, origin=origin)
             with self.subTest(task=task, metric=metric, brand=brand, origin=origin):
@@ -117,6 +133,8 @@ class FilterContract(unittest.TestCase):
                                  self.expected(task, metric, params))
                 for field, value in (("energy", "ev"), ("month", 1), ("region_id", 1)):
                     self.assertEqual(scan_for(task, {**params, field: value}), "dwd.fact_month")
+            checked += 1
+        self.assertEqual(checked, ADS_COMBINATIONS)
 
 
 class QuestionRegressions(unittest.TestCase):
