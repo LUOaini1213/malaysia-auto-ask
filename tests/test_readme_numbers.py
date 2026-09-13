@@ -59,6 +59,57 @@ class ReadmeNumbers(unittest.TestCase):
         self.assertIsNotNone(m, f"{pattern!r} 没能在这一行里匹配到：{line}")
         return m
 
+    # ---------------- 首屏英文段（对 eval/ablation.json 与 eval/last_run.json） ----------------
+
+    def test_the_english_opening_paragraph_matches_the_artifacts(self):
+        """首屏那段英文是第一眼读到的地方，它引用的每个数字也要能被产物推翻。
+
+        「up to 17%」是把 abs_max=17.47 向下取整的保守写法，所以既比对整数部分，
+        也断言它没有说得比产物大。
+        """
+        abs_max = ABLATION["口径翻转对照"]["month_value_gap_pct"]["abs_max"]
+        quoted = int(self.grab("disagree by up to", r"up to (\d+)% in a given month").group(1))
+        self.assertEqual(quoted, int(abs_max))
+        self.assertLessEqual(quoted, abs_max)
+
+        a, b = ABLATION["A_baseline_guard_on"], ABLATION["B_ablation_guard_off"]
+        m = self.grab("-question suite measures the guard",
+                      r"(\d+)-question suite measures the guard: (\d+) answered, (\d+) stopped")
+        n_cases, answered, stopped = (int(m.group(i)) for i in (1, 2, 3))
+        self.assertEqual(n_cases, LAST_RUN["summary"]["n"])
+        self.assertEqual(answered, LAST_RUN["summary"]["n_expect_answer"])
+        self.assertEqual(stopped, LAST_RUN["summary"]["n_hitl"])
+        self.assertEqual(f"{answered}/{answered}", a["该答的答对"])
+        self.assertEqual(f"{stopped}/{stopped}", a["该停的停住"])
+        self.assertEqual(answered + stopped, n_cases)
+
+        silent = int(self.grab("with the guard switched off", r"all (\d+) are answered silently").group(1))
+        self.assertEqual(f"{silent}/{stopped}", b["无提示猜测"])
+        changed = int(self.grab("of them answer a different question", r"^(\d+) of them").group(1))
+        self.assertEqual(f"{changed}/{stopped}", b["结论被改变"])
+
+    def test_the_30_22_8_7_repeated_in_the_prose_match_the_artifacts(self):
+        """同一批 30 / 22 / 8 / 7 在正文里复述了七八遍，每一处都单独绑一次。
+
+        表格里的那几格本来就有断言，漏网的是散在中文散文和命令注释里的复述——
+        改其中一处而不改产物，以前是不会红的。
+        """
+        summary = LAST_RUN["summary"]
+        a, b = ABLATION["A_baseline_guard_on"], ABLATION["B_ablation_guard_off"]
+        for marker, pattern, expected in (
+            ("题评测重跑", r"# (\d+) 题评测重跑", summary["n"]),
+            ("同一批", r"同一批 (\d+) 题跑两次", summary["n"]),
+            ("后四行是", r"后四行是 (\d+) 题自测", summary["n"]),
+            ("| 准确率 |", r"(\d+) 条出数题", summary["n_expect_answer"]),
+            ("护栏关掉后", r"护栏关掉后，(\d+) 条本该停问的题", summary["n_hitl"]),
+            ("条故意停", r"^(\d+) 条故意停", summary["n_hitl"]),
+            ("里写明", r"写明：(\d+) 条是\*\*按定义\*\*成立", b["结论被改变的依据"]["by_construction"]),
+        ):
+            with self.subTest(marker=marker):
+                self.assertEqual(int(self.grab(marker, pattern).group(1)), expected)
+        # 「8 条本该停问」和 A 臂的 8/8 是同一个 8
+        self.assertEqual(f"{summary['n_hitl']}/{summary['n_hitl']}", a["该停的停住"])
+
     # ---------------- λ 表与区域系数（对 malaysia_ask/db.py 的常量） ----------------
 
     def test_lambda_table_matches_the_constants(self):
@@ -125,8 +176,11 @@ class ReadmeNumbers(unittest.TestCase):
         self.assertEqual(dwd_total, DWD_COMBINATIONS)
         self.assertEqual(ads_t * ads_metrics * ads_brands * ads_origins, ADS_COMBINATIONS)
         self.assertEqual(ads_total, ADS_COMBINATIONS)
-        # 三处引用 266 的地方：首屏英文段、分层小节、评测表
-        self.assertEqual(int(self.grab("of them — is checked against an", r"\*\*(\d+)\*\* of them").group(1)),
+        # 四处引用 266 的地方：首屏英文段、「怎么跑」里的注释、分层小节、评测表
+        self.assertEqual(int(self.grab("the full brand × origin grid for the aggregate",
+                                       r"giving \*\*(\d+)\*\*").group(1)),
+                         ORACLE_COMBINATIONS)
+        self.assertEqual(int(self.grab("含 README 数字重算", r"(\d+) 组模板×筛选").group(1)),
                          ORACLE_COMBINATIONS)
         self.assertEqual(int(self.grab("核对全部 **266 组**", r"全部 \*\*(\d+) 组\*\*").group(1)),
                          ORACLE_COMBINATIONS)
@@ -201,6 +255,11 @@ class ReadmeNumbers(unittest.TestCase):
         self.assertEqual((float(m.group(1)), float(m.group(2))), (legacy["abs_typical"], legacy["abs_max"]))
         m = self.grab("**所以猜口径的危害在数值不在排名**", r"旧模型下两套数几乎逐月相等（([\d.]+)%）")
         self.assertEqual(float(m.group(1)), legacy["abs_typical"])
+        # 同一行里的「差到 17%」和首屏英文段的「up to 17%」是同一个 abs_max 向下取整
+        abs_max = ABLATION["口径翻转对照"]["month_value_gap_pct"]["abs_max"]
+        quoted = int(self.grab("**所以猜口径的危害在数值不在排名**", r"就会差到 (\d+)%").group(1))
+        self.assertEqual(quoted, int(abs_max))
+        self.assertLessEqual(quoted, abs_max)
 
     def test_adjacent_brand_gap_sentence_matches_the_artifact(self):
         adj = ABLATION["口径翻转对照"]["adjacent_brand_gap_pct"]

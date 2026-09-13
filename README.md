@@ -9,11 +9,13 @@ table with its metric definition, owner and table-level lineage. The one design 
 that matters:
 when the question does not say *which* number it wants — wholesale (TIV) or registrations,
 which disagree by up to 17% in a given month — the system **stops and asks** instead of
-guessing. Every SQL template × filter combination — **266** of them — is checked against an
-independent row-by-row oracle, and a self-authored 30-question suite measures the guard:
-22 answered, 8 stopped with a structured reason code; with the guard switched off, all 8
-are answered silently and 7 of them answer a different question than the one asked. No API
-key, no third-party package, `python` 3.10+, everything below reproduces in under a minute.
+guessing. Every SQL template is crossed with the filter sets it supports — a hand-picked
+list for the detail table, the full brand × origin grid for the aggregate — giving **266**
+template × metric × filter combinations, each checked against an independent row-by-row
+oracle. A self-authored 30-question suite measures the guard: 22 answered, 8 stopped with a
+structured reason code; with the guard switched off, all 8 are answered silently and
+7 of them answer a different question than the one asked. No API key, no third-party
+package, `python` 3.10+, everything below reproduces in under a minute.
 
 ![The /desk page: KPI cards, the question box, and a note draft that cannot be copied until the reader confirms the metric](docs/img/desk.png)
 
@@ -94,10 +96,12 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 不会自动变成全市场份额或 Perodua 自身的 100%。
 
 `tests/test_filter_contract.py` 用一份**独立的逐行汇总 oracle**（不走模板、不走 SQL，
-直接在 Python 里按行累加）核对全部 **266 组**「模板 × 指标 × 筛选」：
+直接在 Python 里按行累加）核对全部 **266 组**「模板 × 指标 × 筛选」——DWD 那一维的筛选
+是手挑的列表，不是各维度取值的全排列：
 8 个 DWD 模板 × 2 指标 × 11 组筛选 = 176，5 个 ADS 模板 × 2 指标 × 3 品牌 × 3 国产口径 = 90。
 每组比对 `units` / `share_pct` / `units_ly` / `yoy_pct` 四个字段，全部相等才算过；
-测试跑完会数一遍实际比对了多少组，与组合数不符即失败。
+两个测试跑完各自数一遍实际比对了多少组，与文件顶部独立写下的期望值比对——那两个期望值
+是字面量，不从模板表和筛选表的长度反推，所以删掉一组筛选就会红。
 另外覆盖「纯电丰田总量」「纯电各月趋势」「国产纯电车型排名」等问句。
 
 ## 停问机制消融对照（`python scripts/ablation.py`）

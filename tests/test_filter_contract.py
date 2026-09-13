@@ -13,8 +13,11 @@ from malaysia_ask.ask import ask
 from malaysia_ask.db import seed
 from malaysia_ask.templates import ADS_TEMPLATES, TEMPLATES, render, scan_for
 
-# 覆盖面在这里算出来，两个测试跑完各自数一遍实际比对了多少组。README 引用的
-# 266 绑在同一个常量上（见 tests/test_readme_numbers.py），模板增删时不会各说各话。
+# 期望覆盖面写成独立字面量，**不**从下面的模板表和筛选表反推：反推出来的期望值
+# 会随着表一起变，`checked == 期望` 就成了恒真断言——删掉一组筛选后实际只跑 160 组，
+# 断言仍然通过。写成字面量之后，三方必须同时对上才算过：登记表的规模、两个测试实际
+# 跑了多少组、以及这里声明的期望值。README 引用的 266 绑在同一对常量上
+# （见 tests/test_readme_numbers.py），模板增删时三边不会各说各话。
 METRICS = ("tiv", "registration")
 DWD_FILTERS = [
     {}, {"month": 2}, {"region_id": 2}, {"brand_id": 2},
@@ -26,8 +29,8 @@ DWD_FILTERS = [
 ADS_BRANDS = (None, 1, 2)
 ADS_ORIGINS = (None, "national", "non_national")
 
-DWD_COMBINATIONS = len(TEMPLATES) * len(METRICS) * len(DWD_FILTERS)
-ADS_COMBINATIONS = len(ADS_TEMPLATES) * len(METRICS) * len(ADS_BRANDS) * len(ADS_ORIGINS)
+DWD_COMBINATIONS = 176   # 8 个 DWD 模板 × 2 指标 × 11 组筛选
+ADS_COMBINATIONS = 90    # 5 个 ADS 模板 × 2 指标 × 3 品牌 × 3 国产口径
 ORACLE_COMBINATIONS = DWD_COMBINATIONS + ADS_COMBINATIONS
 
 
@@ -109,6 +112,17 @@ class FilterContract(unittest.TestCase):
         return {row["month" if task == "month_trend" else "name"]:
                 {field: row[field] for field in fields if field in row.keys()} for row in rows}
 
+    def test_declared_coverage_matches_the_size_of_the_registries(self):
+        """声明的 176 / 90 必须等于登记表实际能排出的组合数。
+
+        单看这一条也能被绕过（改了表就跟着改字面量），但它和两个测试末尾的
+        `checked == 常量` 是分开的两条路：改表不改字面量 → 这条红；
+        字面量和表都改了但循环没跑够 → 那两条红。
+        """
+        self.assertEqual(len(TEMPLATES) * len(METRICS) * len(DWD_FILTERS), DWD_COMBINATIONS)
+        self.assertEqual(len(ADS_TEMPLATES) * len(METRICS) * len(ADS_BRANDS) * len(ADS_ORIGINS),
+                         ADS_COMBINATIONS)
+
     def test_every_dwd_template_honors_each_dimension_and_combinations(self):
         checked = 0
         for task, metric, selected in itertools.product(TEMPLATES, METRICS, DWD_FILTERS):
@@ -119,7 +133,8 @@ class FilterContract(unittest.TestCase):
                 self.assertEqual(self.actual(task, metric, params, "dwd.fact_month"),
                                  self.expected(task, metric, params))
             checked += 1
-        self.assertEqual(checked, DWD_COMBINATIONS)
+        self.assertEqual(checked, DWD_COMBINATIONS,
+                         "实际比对的 DWD 组合数与声明的覆盖面不符")
 
     def test_ads_routing_and_results_preserve_all_available_filters(self):
         checked = 0
@@ -134,7 +149,8 @@ class FilterContract(unittest.TestCase):
                 for field, value in (("energy", "ev"), ("month", 1), ("region_id", 1)):
                     self.assertEqual(scan_for(task, {**params, field: value}), "dwd.fact_month")
             checked += 1
-        self.assertEqual(checked, ADS_COMBINATIONS)
+        self.assertEqual(checked, ADS_COMBINATIONS,
+                         "实际比对的 ADS 组合数与声明的覆盖面不符")
 
 
 class QuestionRegressions(unittest.TestCase):
