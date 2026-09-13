@@ -2,7 +2,8 @@ name: ci
 
 # Standard library only. The suite reseeds the SQLite demo database, replays
 # the 30-question evaluation and the guard-on / guard-off ablation, and fails
-# if the committed eval/ablation.json no longer matches a fresh run.
+# if either committed artifact — eval/last_run.json or eval/ablation.json —
+# no longer matches a fresh run.
 
 on:
   push:
@@ -21,7 +22,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Unit tests and claim checks
         run: python -m unittest discover -s tests -v
-      - name: 30-question evaluation
-        run: python scripts/eval.py
+      - name: Evaluation artifact matches a fresh run
+        run: python scripts/eval.py --check
       - name: Ablation artifact matches a fresh run
         run: python scripts/ablation.py --check

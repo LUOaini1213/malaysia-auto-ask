@@ -56,9 +56,11 @@ class CaseSuiteShape(unittest.TestCase):
                 self.assertTrue(r.get("rows"), "forced mode must return a table")
                 self.assertTrue(r.get("guesses"), "every forced answer rests on at least one guess")
 
-    def test_official_eval_script_passes(self):
+    def test_official_eval_script_passes_and_matches_the_committed_run(self):
         module = _load_eval_script()
-        self.assertEqual(module.main(), 0)
+        # --check 重跑全部 30 + 8 条但不写文件：既跑评测，又把仓里提交的
+        # eval/last_run.json 逐字段钉在这次新跑上。仓里那份才是网页上被读到的那份。
+        self.assertEqual(module.main(["--check"]), 0)
         summary = json.loads((ROOT / "eval" / "last_run.json").read_text(encoding="utf-8"))["summary"]
         self.assertEqual((summary["n"], summary["n_expect_answer"], summary["n_hitl"]), (30, 22, 8))
         self.assertEqual((summary["success_rate"], summary["accuracy"]), (1.0, 1.0))

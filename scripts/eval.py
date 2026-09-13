@@ -1,16 +1,32 @@
 # -*- coding: utf-8 -*-
+"""30 题问数评测 + 8 条口径检索评测。
+
+    python scripts/eval.py           # 重跑并写 eval/last_run.json
+    python scripts/eval.py --check   # 重跑但不写文件，与已提交的 eval/last_run.json
+                                     # 逐字段比对，漂移则退出 1
+
+--check 是给 CI 用的：仓里提交的 eval/last_run.json 是面试官在 GitHub 网页上
+真正会读到的那份，它必须和当前代码跑出来的结果逐字段相同。比对复用
+scripts/ablation.py 的 _compare，两份评测产物用同一套判定。
+"""
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "scripts"))
 
+from ablation import _compare  # noqa: E402  (scripts/ablation.py)
 from malaysia_ask.ask import ask  # noqa: E402
 from malaysia_ask.db import seed  # noqa: E402
 
+OUT = ROOT / "eval" / "last_run.json"
 
-def main():
+
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    check = "--check" in argv
     seed()
     cases = json.loads((ROOT / "eval" / "cases.json").read_text(encoding="utf-8"))
     rows = []
@@ -105,16 +121,24 @@ def main():
             "method": "token-overlap",
         },
     }
-    out = ROOT / "eval" / "last_run.json"
-    out.write_text(
-        json.dumps({"summary": summary, "rows": rows, "retrieve_rows": retrieve_rows}, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    payload = {"summary": summary, "rows": rows, "retrieve_rows": retrieve_rows}
+    drifted = False
+    if check:
+        committed = json.loads(OUT.read_text(encoding="utf-8"))
+        problems = _compare(payload, committed)
+        for p in problems[:20]:
+            print("DRIFT:", p)
+        print("ok: eval/last_run.json matches a fresh run" if not problems else
+              f"{len(problems)} differences between a fresh run and eval/last_run.json")
+        drifted = bool(problems)
+    else:
+        OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=2))
     bad = [x for x in rows if not x["ok"]] + [x for x in retrieve_rows if not x["ok"]]
     if bad:
         print("failed", [x["id"] for x in bad])
-    return 0 if n_ans_ok == n_expect_ans and n_hitl_ok == 8 and n_ret_ok == n_ret else 1
+    passed = n_ans_ok == n_expect_ans and n_hitl_ok == 8 and n_ret_ok == n_ret
+    return 0 if passed and not drifted else 1
 
 
 if __name__ == "__main__":
