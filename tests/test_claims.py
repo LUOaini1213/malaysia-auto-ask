@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
-"""The numbers the README and the résumé quote, asserted rather than typed.
+"""The evaluation and ablation figures, recomputed rather than stored.
 
 Everything here recomputes from the seeded database and the 30-case suite;
-nothing reads a stored result except the drift check at the end, which
-compares a fresh run with the committed eval/ablation.json.
+the only stored results it reads are the two committed artifacts, and it
+reads them to prove they still equal a fresh run — eval/last_run.json via
+scripts/eval.py --check, eval/ablation.json via ablation._compare.
+
+What this file pins is the artifacts. The numbers README.md quotes are
+pinned separately, in tests/test_readme_numbers.py, which parses the README
+text itself and compares it against those artifacts and against the
+constants in malaysia_ask/db.py. Neither file alone stops the README from
+drifting; the pair does.
 """
 import importlib.util
 import json

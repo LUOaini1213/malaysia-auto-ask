@@ -49,6 +49,9 @@ python scripts/serve.py
 无第三方包。Python 3.10+，只用标准库 sqlite3。CI（`.github/workflows/ci.yml`）在 3.10 / 3.11 / 3.12 上跑同样三条命令：
 单元测试、`eval.py --check`、`ablation.py --check`。后两条意味着**仓里提交的两份评测产物都由 CI 逐字段比对**——
 `eval/last_run.json` 或 `eval/ablation.json` 与当前代码跑出来的结果只要差一个字段，CI 就红。
+再往前一步：README 里引用产物的数字（λ 表、口径翻转对照、λ 敏感性区间、评测表各格、公开锚点）
+由 `tests/test_readme_numbers.py` 从 README 原文里抠出来，逐个与 `eval/*.json`、`malaysia_ask/db.py`
+的常量和种子库比对——**改了数不改代码、或改了代码不改数，都会红**。
 
 ![A question that names no metric is stopped with the reason code AMBIGUOUS_METRIC and the two candidate metrics spelled out](docs/img/ask_stop.png)
 
