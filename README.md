@@ -175,7 +175,7 @@ python scripts/eval.py
 - 不把「填模板」写成生产 NL2SQL
 - 不把词重叠检索写成向量 RAG / 企业知识库
 - 不把 `lineage_edge` 写成企业数仓血缘平台
-- 不把 `/desk` 写成外呼、客服或吉利一线工具
+- 不把 `/desk` 写成外呼或客服工具
 - Proton 是国产车品牌；库里没有 Geely 品牌行
 
 公开锚点来源：MAA 2025 TIV 820,752；Perodua / Proton / Honda / Toyota / Mazda 等品牌年为公开报道。其余拆分是演示。

@@ -1,4 +1,4 @@
-"""Malaysia auto-market ask-data demo. Not MAA official extracts. Not Geely."""
+"""Malaysia auto-market ask-data demo: public annual TIV anchors, seeded month/region/model splits."""
 
 from .ask import ask
 from .brief import draft_note

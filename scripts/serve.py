@@ -32,7 +32,7 @@ table{border-collapse:collapse} td,th{border:1px solid #ccc;padding:4px 8px}
 .score{color:#888;font-size:12px}
 </style>
 <h1>马来西亚汽车问数（演示）</h1>
-<p class="note">品牌全年合计锚定公开 TIV 报道；月×区×车型是种子拆分。不是 MAA 原始明细，不是吉利业务。分层 / 血缘 / 口径检索都是本机演示，不是企业 Atlas，不是向量 RAG。</p>
+<p class="note">品牌全年合计锚定公开 TIV 报道；月×区×车型是固定种子拆分的演示数据。分层 / 血缘 / 口径检索都在本机 SQLite 上跑，口径检索走词重叠。</p>
 <p class="ex">
   <a href="/desk">海外一线工作台</a>
   <a href="/?q=2025全年协会口径TIV哪家第一">全年 TIV 谁第一</a>
@@ -133,7 +133,7 @@ pre{background:#f4f4f4;padding:10px;overflow:auto;white-space:pre-wrap}
 a{margin-right:10px}
 </style>
 <h1>海外一线工作台（演示）</h1>
-<p class="note">给区域销售看年锚、问数、复制说明草稿。草稿必须勾选确认才能复制。不是外呼、不是客服、不是吉利业务。</p>
+<p class="note">给区域销售看年锚、问数、复制说明草稿。草稿必须勾选确认才能复制。</p>
 <p><a href="/">问数页</a><a href="/desk">刷新看板</a></p>
 <div class="cards">%(cards)s</div>
 <p class="path">用户路径：看板 → 问句 → 出数或停问 → 人确认 → 复制草稿。见 docs/产品PRD.md</p>
