@@ -1,0 +1,695 @@
+{
+  "status": "passed",
+  "executed_at_utc": "2026-09-18T06:42:09.506659+00:00",
+  "command": "python -m warehouse.serving.verify",
+  "mysql_version": "8.4.6",
+  "source": {
+    "dataset": "JPJ car registration transactions",
+    "version": "20260917_152407_7272aa_c2950a114e7d",
+    "data_asof": "2026-08-31",
+    "hashes": {
+      "hive_aggregates_sha256": "c2950a114e7dabcea0d760fe2031f12fd937a3e1ef3adc2d3e6f5bd9e36317b6",
+      "oracle_aggregates_sha256": "73a00db82a41ea68a54763328fbbc1972abb9e0bc73a5025ab3275d528b5c301",
+      "validation_sha256": "7e60ab0c57973074fb8f69f71afb1d0262be731fcdfeca40245f8122d6d97113",
+      "evidence_manifest_sha256": "0dc3c230ec4792f8ad756dcc62e8e6cd2463d8cf78f64df45694239404b7416d"
+    },
+    "official_url": "https://data.gov.my/data-catalogue/registration_transactions_car",
+    "license": "CC BY 4.0; source JPJ / data.gov.my",
+    "upstream_run_id": "20260917_152407_7272aa",
+    "metric_definition": "汽车登记次数，不是销量、批发TIV、进口量或库存；state为办理登记的办公室/门户，不是车主所在地。",
+    "mysql_aggregate_rows": 1536,
+    "represented_registration_rows": 1436804,
+    "available_dimensions": [
+      "fuel",
+      "maker",
+      "month",
+      "month_fuel",
+      "month_maker",
+      "state",
+      "total"
+    ],
+    "limitation": "MySQL stores frozen marginal aggregates, not registration-level records. No maker x fuel or month x office joint table."
+  },
+  "tests": {
+    "run": 30,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "exact_hive_python_mysql_groups": 1536,
+  "query_reconciliations": [
+    {
+      "query": "monthly_all",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ABARTH",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ACURA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ALFA ROMEO",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ASTON MARTIN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:AUDI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:AUSTIN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:AVELING BARFORD",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BAIC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BAW",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BEAUFORD",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BENTLEY",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BISON",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BMW",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BOON KOON",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BUFORI MALAYSIA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BUICK",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:BYD",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:CADILLAC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:CAM",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:CATERHAM",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:CHERY",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:CHEVROLET",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:CITROEN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:DAIHATSU",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:DAIMLER",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:DELOREAN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:DENZA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:DODGE",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:DODGE/COMMER",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:DONG FENG",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:EVEASY",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:FERRARI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:FIAT",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:FODAY",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:FORD",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:FOTON",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:GAC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:GAC AION",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:GAC HYPTEC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:GAC MOTOR",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:GENESIS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:GO AUTO",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:GREAT WALL",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:HIGER",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:HONDA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:HUMMER",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:HYCANN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:HYUNDAI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ICAUR",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:INEOS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ISUZU",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:JAC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:JAECOO",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:JAGUAR",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:JEEP",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:JETOUR",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:JMC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:JMS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:KIA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:KING LONG XIAMEN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:KTM",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LAMBORGHINI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LANCIA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LAND ROVER",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LEAPMOTOR",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LEPAS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LEVC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LEXUS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LINCOLN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:LOTUS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MAHINDRA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MASERATI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MAXUS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MAZDA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MCLAREN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MERCEDES BENZ",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MERCEDES-MAYBACH",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MG",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MG ROVER",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MICROLINO",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MINI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MITSUBISHI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MITSUOKA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:MORGAN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:NETA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:NISSAN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:PERODUA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:PEUGEOT",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:POLESTAR",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:PONTIAC",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:PORSCHE",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:PROTON",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:RENAULT",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ROLLS ROYCE",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:SERES",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:SHINERAY",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:SKYWORTH",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:SMART",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:STANDARD",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:SUBARU",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:SUZUKI",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:TESLA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:TOGG",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:TOYOTA",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:TQ WULING",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:VOLKSWAGEN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:VOLVO",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:WESTSTAR MAXUS",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:XIAMEN",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:XINNENG",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:XPENG",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:YANGTSE",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ZEEKR",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_maker:ZXAUTO",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:diesel",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:electric",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:greendiesel",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:hybrid_diesel",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:hybrid_petrol",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:other",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:petrol",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "monthly_fuel:petrol_ng",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "query": "all_month_fuels",
+      "rows": 115,
+      "passed": true
+    },
+    {
+      "query": "ranking:2025-01:2026-08",
+      "rows": 30,
+      "passed": true
+    },
+    {
+      "query": "brand_compare:2025-01:2026-08",
+      "rows": 2,
+      "passed": true
+    },
+    {
+      "query": "ranking:2026-01:2026-08",
+      "rows": 30,
+      "passed": true
+    },
+    {
+      "query": "brand_compare:2026-01:2026-08",
+      "rows": 2,
+      "passed": true
+    },
+    {
+      "query": "ranking:2025-06:2025-07",
+      "rows": 30,
+      "passed": true
+    },
+    {
+      "query": "brand_compare:2025-06:2025-07",
+      "rows": 2,
+      "passed": true
+    }
+  ],
+  "query_reconciliation_count": 130,
+  "explain_cases": 5,
+  "scope": "Frozen aggregate serving; MySQL does not store the 1436804 registration detail rows."
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<configuration>
+  <property><name>javax.jdo.option.ConnectionURL</name><value>jdbc:derby:;databaseName=/runtime/hive/metastore_db;create=true</value></property>
+  <property><name>javax.jdo.option.ConnectionDriverName</name><value>org.apache.derby.jdbc.EmbeddedDriver</value></property>
+  <property><name>hive.metastore.warehouse.dir</name><value>hdfs://localhost:9000/warehouse/managed</value></property>
+  <property><name>hive.metastore.warehouse.external.dir</name><value>hdfs://localhost:9000/warehouse/external</value></property>
+  <property><name>hive.metastore.schema.verification</name><value>true</value></property>
+  <property><name>hive.server2.thrift.bind.host</name><value>0.0.0.0</value></property>
+  <property><name>hive.server2.thrift.port</name><value>10000</value></property>
+  <property><name>hive.server2.authentication</name><value>NONE</value></property>
+  <property><name>hive.server2.enable.doAs</name><value>false</value></property>
+  <property><name>hive.server2.webui.host</name><value>0.0.0.0</value></property>
+  <property><name>hive.server2.webui.port</name><value>10002</value></property>
+  <property><name>hive.execution.engine</name><value>tez</value></property>
+  <property><name>hive.exec.mode.local.auto</name><value>false</value></property>
+  <property><name>hive.fetch.task.conversion</name><value>none</value></property>
+  <property><name>hive.tez.container.size</name><value>768</value></property>
+  <property><name>hive.tez.java.opts</name><value>-Xmx512m</value></property>
+  <property><name>hive.server2.tez.initialize.default.sessions</name><value>false</value></property>
+  <property><name>hive.server2.tez.sessions.per.default.queue</name><value>1</value></property>
+  <property><name>hive.tez.session.events.print.summary</name><value>true</value></property>
+  <property><name>hive.exec.scratchdir</name><value>/tmp/hive</value></property>
+  <property><name>hive.exec.local.scratchdir</name><value>/runtime/hive/scratch</value></property>
+  <property><name>hive.querylog.location</name><value>/runtime/hive/querylog</value></property>
+</configuration>

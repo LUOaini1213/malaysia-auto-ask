@@ -233,6 +233,15 @@ class H(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    if "--demo" not in sys.argv:
+        # The default website now serves the verified JPJ -> MySQL snapshot.
+        # Legacy deterministic simulation remains explicit at /demo or --demo.
+        from warehouse.serving.service import main
+        if len(sys.argv) > 1 and sys.argv[1].isdigit():
+            sys.argv = [sys.argv[0], "--port", sys.argv[1]]
+        main()
+        raise SystemExit(0)
+    sys.argv.remove("--demo")
     seed()
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8766
     print("http://127.0.0.1:%s" % port)

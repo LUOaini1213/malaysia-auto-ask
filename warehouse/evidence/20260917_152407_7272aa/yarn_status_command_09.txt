@@ -1,0 +1,37 @@
+COMMAND ["wsl.exe", "-d", "Ubuntu-24.04", "--", "docker", "exec", "-u", "hive", "malaysia-warehouse-cluster", "yarn", "application", "-status", "application_1789657920441_0006"]
+STDOUT
+Application Report : 
+	Application-Id : application_1789657920441_0006
+	Application-Name : HIVE-a51078ad-130d-47c2-a394-e97a0ab89a34
+	Application-Type : TEZ
+	User : hive
+	Queue : default
+	Application Priority : 0
+	Start-Time : 1789658670697
+	Finish-Time : 1789658752650
+	Progress : 100%
+	State : FINISHED
+	Final-State : SUCCEEDED
+	Tracking-URL : N/A
+	RPC Port : 41823
+	AM Host : malaysia-warehouse-cluster
+	Aggregate Resource Allocation : 225804 MB-seconds, 288 vcore-seconds
+	Aggregate Resource Preempted : 0 MB-seconds, 0 vcore-seconds
+	Log Aggregation Status : SUCCEEDED
+	Diagnostics : Session stats:submittedDAGs=4, successfulDAGs=4, failedDAGs=0, killedDAGs=0
+
+	Unmanaged Application : false
+	Application Node Label Expression : <Not set>
+	AM container Node Label Expression : <DEFAULT_PARTITION>
+	TimeoutType : LIFETIME	ExpiryTime : UNLIMITED	RemainingTime : -1seconds
+
+
+STDERR
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/tez/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Reload4jLoggerFactory]
+2026-09-17 15:26:01,356 INFO  client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at localhost/127.0.0.1:8032
+2026-09-17 15:26:01,965 INFO  conf.Configuration: resource-types.xml not found
+2026-09-17 15:26:01,966 INFO  resource.ResourceUtils: Unable to find 'resource-types.xml'.

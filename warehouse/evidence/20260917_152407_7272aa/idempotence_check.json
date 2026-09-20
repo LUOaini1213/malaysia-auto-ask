@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-09-17T15:13:40.325577+00:00",
+  "years": {
+    "2025": "skipped",
+    "2026": "skipped"
+  },
+  "partition_files": 20,
+  "curated_mtime_unchanged": true,
+  "download_statuses": {
+    "2025": "cached",
+    "2026": "cached"
+  },
+  "scope": "Second build and cached download verified; partition mtimes observed unchanged by the preceding verification command"
+}

@@ -1,0 +1,129 @@
+{
+  "metric": "JPJ car registration transactions (not sales)",
+  "analysis_method": "matched-month totals; case-normalized maker labels v1",
+  "maker_normalization": "trim and uppercase for analysis only; preserve original labels in ODS/DWD/ADS and reconciliation",
+  "maker_case_variants": {
+    "BMW": [
+      "BMW",
+      "Bmw"
+    ],
+    "MCLAREN": [
+      "McLaren",
+      "Mclaren"
+    ]
+  },
+  "observed_year_months": [
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+  ],
+  "comparison_years": [
+    2025,
+    2026
+  ],
+  "common_months": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "comparable_registrations": {
+    "2025": 551365,
+    "2026": 566616
+  },
+  "comparable_yoy_pct": 2.766,
+  "electric_registrations": {
+    "2025": 23396,
+    "2026": 47508
+  },
+  "electric_share_pct": {
+    "2025": 4.2433,
+    "2026": 8.3845
+  },
+  "top_makers_current_comparable_period": [
+    {
+      "maker": "PERODUA",
+      "registrations": 219559,
+      "share_pct": 38.7492,
+      "previous_registrations": 231700
+    },
+    {
+      "maker": "PROTON",
+      "registrations": 135169,
+      "share_pct": 23.8555,
+      "previous_registrations": 97578
+    },
+    {
+      "maker": "TOYOTA",
+      "registrations": 72942,
+      "share_pct": 12.8733,
+      "previous_registrations": 80479
+    },
+    {
+      "maker": "HONDA",
+      "registrations": 37194,
+      "share_pct": 6.5642,
+      "previous_registrations": 46674
+    },
+    {
+      "maker": "CHERY",
+      "registrations": 21206,
+      "share_pct": 3.7426,
+      "previous_registrations": 20445
+    },
+    {
+      "maker": "MITSUBISHI",
+      "registrations": 8824,
+      "share_pct": 1.5573,
+      "previous_registrations": 9207
+    },
+    {
+      "maker": "MAZDA",
+      "registrations": 7852,
+      "share_pct": 1.3858,
+      "previous_registrations": 5582
+    },
+    {
+      "maker": "JETOUR",
+      "registrations": 7503,
+      "share_pct": 1.3242,
+      "previous_registrations": 1175
+    },
+    {
+      "maker": "BYD",
+      "registrations": 7472,
+      "share_pct": 1.3187,
+      "previous_registrations": 7389
+    },
+    {
+      "maker": "MERCEDES BENZ",
+      "registrations": 4979,
+      "share_pct": 0.8787,
+      "previous_registrations": 6291
+    }
+  ],
+  "geography_caveat": "state is the JPJ office or partner portal; Rakan Niaga is not a state or residence",
+  "analysis_generated_at_utc": "2026-09-17T15:31:43.921969+00:00",
+  "derived_from_run": "20260917_152407_7272aa"
+}

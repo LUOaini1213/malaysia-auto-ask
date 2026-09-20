@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-09-17T15:13:40.310378+00:00",
+  "status": "passed",
+  "rows": 1436804,
+  "groups_checked": 13567,
+  "years": {
+    "2025": {
+      "rows": 870188,
+      "unique_source_row_identities": 870188,
+      "files": 12
+    },
+    "2026": {
+      "rows": 566616,
+      "unique_source_row_identities": 566616,
+      "files": 8
+    }
+  },
+  "checks": [
+    "exact partition file set",
+    "source/output SHA256",
+    "partition row counts",
+    "partition/date agreement",
+    "source row identities complete and unique",
+    "raw Python oracle reconciliation"
+  ]
+}

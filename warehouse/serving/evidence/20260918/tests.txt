@@ -1,0 +1,35 @@
+test_bad_count_refused (test_contract.Contracts.test_bad_count_refused) ... ok
+test_case_normalization_is_explicit (test_contract.Contracts.test_case_normalization_is_explicit) ... ok
+test_duplicate_aggregate_refused (test_contract.Contracts.test_duplicate_aggregate_refused) ... ok
+test_duplicate_normalized_makers_refused (test_contract.Contracts.test_duplicate_normalized_makers_refused) ... ok
+test_family_total_mismatch_refused (test_contract.Contracts.test_family_total_mismatch_refused) ... ok
+test_known_question_routes_without_llm (test_contract.Contracts.test_known_question_routes_without_llm) ... ok
+test_limit_bool_not_integer (test_contract.Contracts.test_limit_bool_not_integer) ... ok
+test_maker_fuel_joint_filter_refused (test_contract.Contracts.test_maker_fuel_joint_filter_refused) ... ok
+test_missing_period_refused (test_contract.Contracts.test_missing_period_refused) ... ok
+test_partial_year_cannot_be_answered_as_full_year (test_contract.Contracts.test_partial_year_cannot_be_answered_as_full_year) ... ok
+test_question_full_match_rejects_unseen_conditions (test_contract.Contracts.test_question_full_match_rejects_unseen_conditions) ... ok
+test_question_sales_guard (test_contract.Contracts.test_question_sales_guard) ... ok
+test_real_snapshot_exact_three_way_contract (test_contract.Contracts.test_real_snapshot_exact_three_way_contract) ... ok
+test_sales_not_answered_as_registrations (test_contract.Contracts.test_sales_not_answered_as_registrations) ... ok
+test_sql_injection_brand_is_not_catalog_value (test_contract.Contracts.test_sql_injection_brand_is_not_catalog_value) ... ok
+test_unknown_query_and_invalid_type (test_contract.Contracts.test_unknown_query_and_invalid_type) ... ok
+test_unsupported_filter_never_dropped (test_contract.Contracts.test_unsupported_filter_never_dropped) ... ok
+test_all_month_queries_reconcile_to_oracle (test_mysql_integration.RealMySQL.test_all_month_queries_reconcile_to_oracle) ... ok
+test_case_variants_are_preserved_then_aggregated (test_mysql_integration.RealMySQL.test_case_variants_are_preserved_then_aggregated) ... ok
+test_http_cross_origin_is_refused (test_mysql_integration.RealMySQL.test_http_cross_origin_is_refused) ... ok
+test_http_nonfinite_json_is_refused (test_mysql_integration.RealMySQL.test_http_nonfinite_json_is_refused) ... ok
+test_http_unsupported_filter_returns_structured_error (test_mysql_integration.RealMySQL.test_http_unsupported_filter_returns_structured_error) ... ok
+test_known_brand_results_and_explicit_source (test_mysql_integration.RealMySQL.test_known_brand_results_and_explicit_source) ... ok
+test_mid_import_failure_rolls_back_all_rows_and_active_pointer (test_mysql_integration.RealMySQL.test_mid_import_failure_rolls_back_all_rows_and_active_pointer) ... ok
+test_mysql_every_frozen_group_matches_hive_and_python (test_mysql_integration.RealMySQL.test_mysql_every_frozen_group_matches_hive_and_python) ... ok
+test_read_only_transaction_also_denies_writer_update (test_mysql_integration.RealMySQL.test_read_only_transaction_also_denies_writer_update) ... ok
+test_reader_real_update_privilege_is_denied (test_mysql_integration.RealMySQL.test_reader_real_update_privilege_is_denied) ... ok
+test_real_http_catalog_and_demo_are_distinct (test_mysql_integration.RealMySQL.test_real_http_catalog_and_demo_are_distinct) ... ok
+test_repeat_import_is_idempotent (test_mysql_integration.RealMySQL.test_repeat_import_is_idempotent) ... ok
+test_tampered_input_refused_without_replacing_active (test_mysql_integration.RealMySQL.test_tampered_input_refused_without_replacing_active) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.729s
+
+OK

@@ -1,0 +1,2 @@
+# Use an isolated environment if this dependency is not already available.
+pyarrow>=11,<24

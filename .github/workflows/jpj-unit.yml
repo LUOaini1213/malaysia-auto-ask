@@ -1,0 +1,32 @@
+name: JPJ pipeline unit tests
+
+on:
+  push:
+    paths:
+      - 'warehouse/**'
+      - '.github/workflows/jpj-unit.yml'
+  pull_request:
+    paths:
+      - 'warehouse/**'
+      - '.github/workflows/jpj-unit.yml'
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r warehouse/jpj/requirements.txt
+      - run: python -m pip install -r warehouse/serving/requirements.txt
+      - name: Small synthetic fixtures for failed batches and idempotency
+        run: python -m unittest discover -s warehouse/jpj/tests -v
+      - name: Hive result validator and same-period analysis
+        run: python -m unittest discover -s warehouse/jpj/hive -p 'test_*.py' -v
+      - name: Reject invalid or local-only cluster execution evidence
+        run: python -m unittest discover -s warehouse/cluster/tests -v
+      - name: MySQL serving input and query contract tests
+        run: python -m unittest discover -s warehouse/serving/tests -p 'test_contract.py' -v
+      # Full HDFS/Hive/YARN integration is run separately against official data.
+      # A green unit job alone is not evidence of distributed execution.

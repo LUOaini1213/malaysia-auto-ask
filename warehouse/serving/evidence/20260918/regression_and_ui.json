@@ -1,0 +1,20 @@
+{
+  "executed_on": "2026-09-18",
+  "commands": [
+    {
+      "command": "python -m unittest discover -s tests -v",
+      "tests": 42,
+      "result": "passed"
+    },
+    {
+      "command": "python scripts/eval.py --check",
+      "result": "passed"
+    },
+    {
+      "command": "python scripts/ablation.py --check",
+      "result": "passed"
+    }
+  ],
+  "record_kind": "summary of observed command results; raw legacy stdout not archived",
+  "browser_acceptance": "Parent agent verified real BYD/TESLA result; after unsupported sales question, old results cleared and error visible next to question and result area."
+}

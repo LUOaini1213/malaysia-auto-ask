@@ -1,0 +1,23 @@
+{
+  "dataset_id": "registration_transactions_car",
+  "catalogue_url": "https://data.gov.my/data-catalogue/registration_transactions_car",
+  "publisher": "Road Transport Department (JPJ), Ministry of Transport Malaysia",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "catalogue_checked_on": "2026-09-17",
+  "data_asof": "2026-08-31",
+  "catalogue_last_updated": "2026-09-10T18:00:00+08:00",
+  "files": {
+    "2025": "https://storage.data.gov.my/transportation/cars_2025.parquet",
+    "2026": "https://storage.data.gov.my/transportation/cars_2026.parquet"
+  },
+  "source_columns": ["date_reg", "type", "maker", "model", "colour", "fuel", "state"],
+  "row_grain": "One registration transaction, without a published unique transaction ID",
+  "caveats": [
+    "Registration is not a sale, import, wholesale, inventory or shipment event.",
+    "Identical public rows may be distinct legitimate transactions and must not be deduplicated.",
+    "State identifies the registration office or Rakan Niaga partner portal, not vehicle residence or number plate geography.",
+    "The official publication excludes personal identifiable data. Unexpected additional columns are rejected by this pipeline.",
+    "The 2026 file is partial year data. The as-of date is a recorded catalogue snapshot, not the download date."
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "year": 2026,
+  "source_sha256": "6a1a1e8d50126b807429997e31df1102a1e367a3983f089a49a1da9aed66f647",
+  "source_url": "https://storage.data.gov.my/transportation/cars_2026.parquet",
+  "license": "CC BY 4.0",
+  "data_asof": "2026-08-31",
+  "rows": 566616,
+  "min_date": "2026-01-01",
+  "max_date": "2026-08-31",
+  "columns": [
+    "source_sha256",
+    "source_row",
+    "date_reg",
+    "vehicle_type",
+    "maker",
+    "model",
+    "colour",
+    "fuel",
+    "state"
+  ],
+  "partitions": [
+    "registration_year",
+    "registration_month"
+  ],
+  "null_marker": "\\N",
+  "files": [
+    {
+      "path": "registration_year=2026/registration_month=01/part-00000.tsv",
+      "rows": 67989,
+      "bytes": 8727691,
+      "sha256": "6a20c28dbaf57fc71fbaa2b100e54e4d92a84b33b7729d0a90315770bc813d7d"
+    },
+    {
+      "path": "registration_year=2026/registration_month=02/part-00000.tsv",
+      "rows": 56683,
+      "bytes": 7329369,
+      "sha256": "703e12c1d0269a110635efa5ba36b4b1435008d13b22a4fd2b2ee63c78ce6932"
+    },
+    {
+      "path": "registration_year=2026/registration_month=03/part-00000.tsv",
+      "rows": 67823,
+      "bytes": 8776716,
+      "sha256": "6d20c9b18e37292f59fae99f3e15de7cdd15426e597ea9ed0935e5ce510ae045"
+    },
+    {
+      "path": "registration_year=2026/registration_month=04/part-00000.tsv",
+      "rows": 77819,
+      "bytes": 10086861,
+      "sha256": "0fb73ccaf1e2ba90449bf91602a57cf31b4a2186edf6f18be6c70978f51b54cc"
+    },
+    {
+      "path": "registration_year=2026/registration_month=05/part-00000.tsv",
+      "rows": 66053,
+      "bytes": 8557947,
+      "sha256": "1fdb4eb0346aad0ccf2a56eb15cf8a4d7457da51ed35ae332761fb64bd7692e4"
+    },
+    {
+      "path": "registration_year=2026/registration_month=06/part-00000.tsv",
+      "rows": 72943,
+      "bytes": 9460767,
+      "sha256": "65a67c723c3a896a2a76eae95e7ae7c6fd1efc0ff5aaa9e27a1ea7fadda4db6f"
+    },
+    {
+      "path": "registration_year=2026/registration_month=07/part-00000.tsv",
+      "rows": 80030,
+      "bytes": 10394347,
+      "sha256": "9271f9b87baf27da3644a136b8d8828aefd4bdd515fae3ac1c6271aeae16f753"
+    },
+    {
+      "path": "registration_year=2026/registration_month=08/part-00000.tsv",
+      "rows": 77276,
+      "bytes": 10028750,
+      "sha256": "948f9405a58e0389892732936187b787a317f0d216906787bd72e77076e6f346"
+    }
+  ],
+  "built_at": "2026-09-17T15:10:06.993332+00:00"
+}

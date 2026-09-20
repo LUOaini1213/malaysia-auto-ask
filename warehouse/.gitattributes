@@ -1,0 +1,10 @@
+# WSL entrypoints must stay executable as shell text after a Windows checkout.
+*.sh text eol=lf
+*.py text eol=lf
+*.sql text eol=lf
+*.xml text eol=lf
+*.tsv text eol=lf
+# Frozen evidence is hashed byte-for-byte; preserve the original line endings.
+/evidence/** -text
+/serving/evidence/** -text
+/serving/inputs/** -text

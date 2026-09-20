@@ -1,0 +1,760 @@
+{
+  "mysql_version": "8.4.6",
+  "schema": "CREATE TABLE `aggregates` (\n  `version` varchar(96) COLLATE utf8mb4_bin NOT NULL,\n  `dimension` varchar(24) COLLATE utf8mb4_bin NOT NULL,\n  `key1` varchar(128) COLLATE utf8mb4_bin NOT NULL,\n  `key2` varchar(128) COLLATE utf8mb4_bin NOT NULL,\n  `registrations` bigint unsigned NOT NULL,\n  `year_month` char(7) COLLATE utf8mb4_bin DEFAULT NULL,\n  `maker_norm` varchar(128) COLLATE utf8mb4_bin DEFAULT NULL,\n  `fuel` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL,\n  PRIMARY KEY (`version`,`dimension`,`key1`,`key2`),\n  KEY `ix_month` (`version`,`dimension`,`year_month`),\n  KEY `ix_maker_month` (`version`,`dimension`,`maker_norm`,`year_month`),\n  KEY `ix_fuel_month` (`version`,`dimension`,`fuel`,`year_month`),\n  CONSTRAINT `fk_aggregate_version` FOREIGN KEY (`version`) REFERENCES `dataset_versions` (`version`),\n  CONSTRAINT `ck_registration_positive` CHECK ((`registrations` > 0))\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin",
+  "indexes": [
+    {
+      "Table": "aggregates",
+      "Non_unique": 0,
+      "Key_name": "PRIMARY",
+      "Seq_in_index": 1,
+      "Column_name": "version",
+      "Collation": "A",
+      "Cardinality": 1,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 0,
+      "Key_name": "PRIMARY",
+      "Seq_in_index": 2,
+      "Column_name": "dimension",
+      "Collation": "A",
+      "Cardinality": 7,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 0,
+      "Key_name": "PRIMARY",
+      "Seq_in_index": 3,
+      "Column_name": "key1",
+      "Collation": "A",
+      "Cardinality": 182,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 0,
+      "Key_name": "PRIMARY",
+      "Seq_in_index": 4,
+      "Column_name": "key2",
+      "Collation": "A",
+      "Cardinality": 1536,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_month",
+      "Seq_in_index": 1,
+      "Column_name": "version",
+      "Collation": "A",
+      "Cardinality": 1,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_month",
+      "Seq_in_index": 2,
+      "Column_name": "dimension",
+      "Collation": "A",
+      "Cardinality": 7,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_month",
+      "Seq_in_index": 3,
+      "Column_name": "year_month",
+      "Collation": "A",
+      "Cardinality": 64,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "YES",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_maker_month",
+      "Seq_in_index": 1,
+      "Column_name": "version",
+      "Collation": "A",
+      "Cardinality": 1,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_maker_month",
+      "Seq_in_index": 2,
+      "Column_name": "dimension",
+      "Collation": "A",
+      "Cardinality": 7,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_maker_month",
+      "Seq_in_index": 3,
+      "Column_name": "maker_norm",
+      "Collation": "A",
+      "Cardinality": 233,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "YES",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_maker_month",
+      "Seq_in_index": 4,
+      "Column_name": "year_month",
+      "Collation": "A",
+      "Cardinality": 1415,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "YES",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_fuel_month",
+      "Seq_in_index": 1,
+      "Column_name": "version",
+      "Collation": "A",
+      "Cardinality": 1,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_fuel_month",
+      "Seq_in_index": 2,
+      "Column_name": "dimension",
+      "Collation": "A",
+      "Cardinality": 7,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_fuel_month",
+      "Seq_in_index": 3,
+      "Column_name": "fuel",
+      "Collation": "A",
+      "Cardinality": 21,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "YES",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    },
+    {
+      "Table": "aggregates",
+      "Non_unique": 1,
+      "Key_name": "ix_fuel_month",
+      "Seq_in_index": 4,
+      "Column_name": "year_month",
+      "Collation": "A",
+      "Cardinality": 166,
+      "Sub_part": null,
+      "Packed": null,
+      "Null": "YES",
+      "Index_type": "BTREE",
+      "Comment": "",
+      "Index_comment": "",
+      "Visible": "YES",
+      "Expression": null
+    }
+  ],
+  "reader_grants": [
+    {
+      "Grants for jpj_reader@%": "GRANT USAGE ON *.* TO `jpj_reader`@`%`"
+    },
+    {
+      "Grants for jpj_reader@%": "GRANT SELECT ON `jpj_serving`.* TO `jpj_reader`@`%`"
+    }
+  ],
+  "plans": [
+    {
+      "query_id": "monthly_registrations",
+      "parameters": {
+        "start_month": "2026-01",
+        "end_month": "2026-08",
+        "metric": "registrations"
+      },
+      "sql": "SELECT `year_month`, registrations FROM aggregates WHERE version=%s AND dimension='month' AND `year_month` BETWEEN %s AND %s ORDER BY `year_month`",
+      "sql_bindings": [
+        "20260917_152407_7272aa_c2950a114e7d",
+        "2026-01",
+        "2026-08"
+      ],
+      "explain_json": {
+        "query_block": {
+          "select_id": 1,
+          "cost_info": {
+            "query_cost": "2.26"
+          },
+          "ordering_operation": {
+            "using_filesort": false,
+            "table": {
+              "table_name": "aggregates",
+              "access_type": "range",
+              "possible_keys": [
+                "PRIMARY",
+                "ix_month",
+                "ix_maker_month",
+                "ix_fuel_month"
+              ],
+              "key": "ix_month",
+              "used_key_parts": [
+                "version",
+                "dimension",
+                "year_month"
+              ],
+              "key_length": "513",
+              "rows_examined_per_scan": 8,
+              "rows_produced_per_join": 2,
+              "filtered": "100.00",
+              "index_condition": "((`jpj_serving`.`aggregates`.`dimension` = 'month') and (`jpj_serving`.`aggregates`.`version` = '20260917_152407_7272aa_c2950a114e7d') and (`jpj_serving`.`aggregates`.`year_month` between '2026-01' and '2026-08'))",
+              "cost_info": {
+                "read_cost": "0.26",
+                "eval_cost": "0.22",
+                "prefix_cost": "2.26",
+                "data_read_per_join": "5K"
+              },
+              "used_columns": [
+                "version",
+                "dimension",
+                "key1",
+                "key2",
+                "registrations",
+                "year_month"
+              ]
+            }
+          }
+        }
+      },
+      "explain_analyze": "-> Index range scan on aggregates using ix_month over (version = '20260917_152407_7272aa_c2950a114e7d' AND dimension = 'month' AND '2026-01' <= year_month <= '2026-08'), with index condition: ((aggregates.dimension = 'month') and (aggregates.version = '20260917_152407_7272aa_c2950a114e7d') and (aggregates.`year_month` between '2026-01' and '2026-08'))  (cost=3.8 rows=8) (actual time=0.0701..0.179 rows=8 loops=1)\n"
+    },
+    {
+      "query_id": "monthly_registrations",
+      "parameters": {
+        "start_month": "2026-01",
+        "end_month": "2026-08",
+        "maker": "BMW",
+        "metric": "registrations"
+      },
+      "sql": "SELECT m.`year_month`, COALESCE(SUM(a.registrations),0) AS registrations FROM aggregates m LEFT JOIN aggregates a ON a.version=m.version AND a.dimension='month_maker' AND a.`year_month`=m.`year_month` AND a.maker_norm=%s WHERE m.version=%s AND m.dimension='month' AND m.`year_month` BETWEEN %s AND %s GROUP BY m.`year_month` ORDER BY m.`year_month`",
+      "sql_bindings": [
+        "BMW",
+        "20260917_152407_7272aa_c2950a114e7d",
+        "2026-01",
+        "2026-08"
+      ],
+      "explain_json": {
+        "query_block": {
+          "select_id": 1,
+          "cost_info": {
+            "query_cost": "5.26"
+          },
+          "ordering_operation": {
+            "using_filesort": false,
+            "grouping_operation": {
+              "using_filesort": false,
+              "nested_loop": [
+                {
+                  "table": {
+                    "table_name": "m",
+                    "access_type": "range",
+                    "possible_keys": [
+                      "PRIMARY",
+                      "ix_month",
+                      "ix_maker_month",
+                      "ix_fuel_month"
+                    ],
+                    "key": "ix_month",
+                    "used_key_parts": [
+                      "version",
+                      "dimension",
+                      "year_month"
+                    ],
+                    "key_length": "513",
+                    "rows_examined_per_scan": 8,
+                    "rows_produced_per_join": 8,
+                    "filtered": "100.00",
+                    "using_index": true,
+                    "cost_info": {
+                      "read_cost": "1.41",
+                      "eval_cost": "0.80",
+                      "prefix_cost": "2.21",
+                      "data_read_per_join": "18K"
+                    },
+                    "used_columns": [
+                      "version",
+                      "dimension",
+                      "key1",
+                      "key2",
+                      "year_month"
+                    ],
+                    "attached_condition": "((`jpj_serving`.`m`.`dimension` = 'month') and (`jpj_serving`.`m`.`version` = '20260917_152407_7272aa_c2950a114e7d') and (`jpj_serving`.`m`.`year_month` between '2026-01' and '2026-08'))"
+                  }
+                },
+                {
+                  "table": {
+                    "table_name": "a",
+                    "access_type": "ref",
+                    "possible_keys": [
+                      "PRIMARY",
+                      "ix_month",
+                      "ix_maker_month",
+                      "ix_fuel_month"
+                    ],
+                    "key": "ix_maker_month",
+                    "used_key_parts": [
+                      "version",
+                      "dimension",
+                      "maker_norm",
+                      "year_month"
+                    ],
+                    "key_length": "1028",
+                    "ref": [
+                      "const",
+                      "const",
+                      "const",
+                      "jpj_serving.m.year_month"
+                    ],
+                    "rows_examined_per_scan": 1,
+                    "rows_produced_per_join": 8,
+                    "filtered": "100.00",
+                    "cost_info": {
+                      "read_cost": "2.18",
+                      "eval_cost": "0.87",
+                      "prefix_cost": "5.27",
+                      "data_read_per_join": "19K"
+                    },
+                    "used_columns": [
+                      "version",
+                      "dimension",
+                      "key1",
+                      "key2",
+                      "registrations",
+                      "year_month",
+                      "maker_norm"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "explain_analyze": "-> Group aggregate: sum(a.registrations)  (cost=6.14 rows=2.95) (actual time=0.0813..0.119 rows=8 loops=1)\n    -> Nested loop left join  (cost=5.27 rows=8.73) (actual time=0.0687..0.112 rows=9 loops=1)\n        -> Filter: ((m.dimension = 'month') and (m.version = '20260917_152407_7272aa_c2950a114e7d') and (m.`year_month` between '2026-01' and '2026-08'))  (cost=2.21 rows=8) (actual time=0.0155..0.0222 rows=8 loops=1)\n            -> Covering index range scan on m using ix_month over (version = '20260917_152407_7272aa_c2950a114e7d' AND dimension = 'month' AND '2026-01' <= year_month <= '2026-08')  (cost=2.21 rows=8) (actual time=0.0138..0.0187 rows=8 loops=1)\n        -> Index lookup on a using ix_maker_month (version='20260917_152407_7272aa_c2950a114e7d', dimension='month_maker', maker_norm='BMW', year_month=m.`year_month`)  (cost=0.286 rows=1.09) (actual time=0.00535..0.00591 rows=1.12 loops=8)\n"
+    },
+    {
+      "query_id": "brand_compare",
+      "parameters": {
+        "start_month": "2026-01",
+        "end_month": "2026-08",
+        "makers": [
+          "BYD",
+          "TESLA"
+        ],
+        "metric": "registrations"
+      },
+      "sql": "SELECT choices.maker, COALESCE(SUM(a.registrations),0) AS registrations FROM (SELECT %s AS maker UNION ALL SELECT %s AS maker) choices LEFT JOIN aggregates a ON a.version=%s AND a.dimension='month_maker' AND a.maker_norm=choices.maker AND a.`year_month` BETWEEN %s AND %s GROUP BY choices.maker ORDER BY registrations DESC, choices.maker",
+      "sql_bindings": [
+        "BYD",
+        "TESLA",
+        "20260917_152407_7272aa_c2950a114e7d",
+        "2026-01",
+        "2026-08"
+      ],
+      "explain_json": {
+        "query_block": {
+          "select_id": 1,
+          "cost_info": {
+            "query_cost": "7.36"
+          },
+          "ordering_operation": {
+            "using_filesort": true,
+            "grouping_operation": {
+              "using_temporary_table": true,
+              "using_filesort": false,
+              "nested_loop": [
+                {
+                  "table": {
+                    "table_name": "choices",
+                    "access_type": "ALL",
+                    "rows_examined_per_scan": 2,
+                    "rows_produced_per_join": 2,
+                    "filtered": "100.00",
+                    "cost_info": {
+                      "read_cost": "2.52",
+                      "eval_cost": "0.20",
+                      "prefix_cost": "2.73",
+                      "data_read_per_join": "64"
+                    },
+                    "used_columns": [
+                      "maker"
+                    ],
+                    "materialized_from_subquery": {
+                      "using_temporary_table": true,
+                      "dependent": false,
+                      "cacheable": true,
+                      "query_block": {
+                        "union_result": {
+                          "using_temporary_table": false,
+                          "query_specifications": [
+                            {
+                              "dependent": false,
+                              "cacheable": true,
+                              "query_block": {
+                                "select_id": 2,
+                                "message": "No tables used"
+                              }
+                            },
+                            {
+                              "dependent": false,
+                              "cacheable": true,
+                              "query_block": {
+                                "select_id": 3,
+                                "message": "No tables used"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "table": {
+                    "table_name": "a",
+                    "access_type": "ref",
+                    "possible_keys": [
+                      "PRIMARY",
+                      "ix_month",
+                      "ix_maker_month",
+                      "ix_fuel_month"
+                    ],
+                    "key": "ix_maker_month",
+                    "used_key_parts": [
+                      "version",
+                      "dimension",
+                      "maker_norm"
+                    ],
+                    "key_length": "999",
+                    "ref": [
+                      "const",
+                      "const",
+                      "choices.maker"
+                    ],
+                    "rows_examined_per_scan": 6,
+                    "rows_produced_per_join": 13,
+                    "filtered": "100.00",
+                    "index_condition": "<if>(is_not_null_compl(a), ((`jpj_serving`.`a`.`maker_norm` = `choices`.`maker`) and (`jpj_serving`.`a`.`year_month` between '2026-01' and '2026-08')), true)",
+                    "cost_info": {
+                      "read_cost": "3.31",
+                      "eval_cost": "1.33",
+                      "prefix_cost": "7.36",
+                      "data_read_per_join": "30K"
+                    },
+                    "used_columns": [
+                      "version",
+                      "dimension",
+                      "key1",
+                      "key2",
+                      "registrations",
+                      "year_month",
+                      "maker_norm"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "explain_analyze": "-> Sort: registrations DESC, choices.maker  (actual time=0.112..0.112 rows=2 loops=1)\n    -> Table scan on <temporary>  (actual time=0.102..0.103 rows=2 loops=1)\n        -> Aggregate using temporary table  (actual time=0.102..0.102 rows=2 loops=1)\n            -> Nested loop left join  (cost=7.36 rows=13.3) (actual time=0.0334..0.0797 rows=16 loops=1)\n                -> Table scan on choices  (cost=1.46..2.73 rows=2) (actual time=0.00727..0.0076 rows=2 loops=1)\n                    -> Union all materialize  (cost=0.2..0.2 rows=2) (actual time=0.00616..0.00616 rows=2 loops=1)\n                        -> Rows fetched before execution  (cost=0..0 rows=1) (actual time=44e-6..80e-6 rows=1 loops=1)\n                        -> Rows fetched before execution  (cost=0..0 rows=1) (actual time=34e-6..56e-6 rows=1 loops=1)\n                -> Index lookup on a using ix_maker_month (version='20260917_152407_7272aa_c2950a114e7d', dimension='month_maker', maker_norm=choices.maker), with index condition: <if>(is_not_null_compl(a), ((a.maker_norm = choices.maker) and (a.`year_month` between '2026-01' and '2026-08')), true)  (cost=1.99 rows=6.63) (actual time=0.0182..0.0348 rows=8 loops=2)\n"
+    },
+    {
+      "query_id": "maker_ranking",
+      "parameters": {
+        "start_month": "2026-01",
+        "end_month": "2026-08",
+        "limit": 10,
+        "metric": "registrations"
+      },
+      "sql": "SELECT maker_norm AS maker, SUM(registrations) AS registrations FROM aggregates WHERE version=%s AND dimension='month_maker' AND `year_month` BETWEEN %s AND %s GROUP BY maker_norm ORDER BY registrations DESC, maker_norm LIMIT %s",
+      "sql_bindings": [
+        "20260917_152407_7272aa_c2950a114e7d",
+        "2026-01",
+        "2026-08",
+        10
+      ],
+      "explain_json": {
+        "query_block": {
+          "select_id": 1,
+          "cost_info": {
+            "query_cost": "86.95"
+          },
+          "ordering_operation": {
+            "using_temporary_table": true,
+            "using_filesort": true,
+            "grouping_operation": {
+              "using_filesort": false,
+              "table": {
+                "table_name": "aggregates",
+                "access_type": "ref",
+                "possible_keys": [
+                  "PRIMARY",
+                  "ix_month",
+                  "ix_maker_month",
+                  "ix_fuel_month"
+                ],
+                "key": "ix_maker_month",
+                "used_key_parts": [
+                  "version",
+                  "dimension"
+                ],
+                "key_length": "484",
+                "ref": [
+                  "const",
+                  "const"
+                ],
+                "rows_examined_per_scan": 772,
+                "rows_produced_per_join": 85,
+                "filtered": "11.11",
+                "index_condition": "(`jpj_serving`.`aggregates`.`year_month` between '2026-01' and '2026-08')",
+                "cost_info": {
+                  "read_cost": "9.75",
+                  "eval_cost": "8.58",
+                  "prefix_cost": "86.95",
+                  "data_read_per_join": "194K"
+                },
+                "used_columns": [
+                  "version",
+                  "dimension",
+                  "key1",
+                  "key2",
+                  "registrations",
+                  "year_month",
+                  "maker_norm"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "explain_analyze": "-> Limit: 10 row(s)  (actual time=1.38..1.38 rows=10 loops=1)\n    -> Sort: registrations DESC, aggregates.maker_norm, limit input to 10 row(s) per chunk  (actual time=1.38..1.38 rows=10 loops=1)\n        -> Stream results  (cost=95.5 rows=39.3) (actual time=0.185..1.34 rows=89 loops=1)\n            -> Group aggregate: sum(aggregates.registrations)  (cost=95.5 rows=39.3) (actual time=0.183..1.33 rows=89 loops=1)\n                -> Index lookup on aggregates using ix_maker_month (version='20260917_152407_7272aa_c2950a114e7d', dimension='month_maker'), with index condition: (aggregates.`year_month` between '2026-01' and '2026-08')  (cost=18.3 rows=772) (actual time=0.18..1.28 rows=496 loops=1)\n"
+    },
+    {
+      "query_id": "fuel_monthly",
+      "parameters": {
+        "start_month": "2026-01",
+        "end_month": "2026-08",
+        "fuel": "electric",
+        "metric": "registrations"
+      },
+      "sql": "SELECT m.`year_month`,%s AS fuel,COALESCE(SUM(a.registrations),0) AS registrations FROM aggregates m LEFT JOIN aggregates a ON a.version=m.version AND a.dimension='month_fuel' AND a.`year_month`=m.`year_month` AND a.fuel=%s WHERE m.version=%s AND m.dimension='month' AND m.`year_month` BETWEEN %s AND %s GROUP BY m.`year_month` ORDER BY m.`year_month`",
+      "sql_bindings": [
+        "electric",
+        "electric",
+        "20260917_152407_7272aa_c2950a114e7d",
+        "2026-01",
+        "2026-08"
+      ],
+      "explain_json": {
+        "query_block": {
+          "select_id": 1,
+          "cost_info": {
+            "query_cost": "28.25"
+          },
+          "ordering_operation": {
+            "using_filesort": false,
+            "grouping_operation": {
+              "using_filesort": false,
+              "nested_loop": [
+                {
+                  "table": {
+                    "table_name": "m",
+                    "access_type": "range",
+                    "possible_keys": [
+                      "PRIMARY",
+                      "ix_month",
+                      "ix_maker_month",
+                      "ix_fuel_month"
+                    ],
+                    "key": "ix_month",
+                    "used_key_parts": [
+                      "version",
+                      "dimension",
+                      "year_month"
+                    ],
+                    "key_length": "513",
+                    "rows_examined_per_scan": 8,
+                    "rows_produced_per_join": 8,
+                    "filtered": "100.00",
+                    "using_index": true,
+                    "cost_info": {
+                      "read_cost": "1.41",
+                      "eval_cost": "0.80",
+                      "prefix_cost": "2.21",
+                      "data_read_per_join": "18K"
+                    },
+                    "used_columns": [
+                      "version",
+                      "dimension",
+                      "key1",
+                      "key2",
+                      "year_month"
+                    ],
+                    "attached_condition": "((`jpj_serving`.`m`.`dimension` = 'month') and (`jpj_serving`.`m`.`version` = '20260917_152407_7272aa_c2950a114e7d') and (`jpj_serving`.`m`.`year_month` between '2026-01' and '2026-08'))"
+                  }
+                },
+                {
+                  "table": {
+                    "table_name": "a",
+                    "access_type": "ref",
+                    "possible_keys": [
+                      "PRIMARY",
+                      "ix_month",
+                      "ix_maker_month",
+                      "ix_fuel_month"
+                    ],
+                    "key": "ix_fuel_month",
+                    "used_key_parts": [
+                      "version",
+                      "dimension",
+                      "fuel",
+                      "year_month"
+                    ],
+                    "key_length": "772",
+                    "ref": [
+                      "const",
+                      "const",
+                      "const",
+                      "jpj_serving.m.year_month"
+                    ],
+                    "rows_examined_per_scan": 9,
+                    "rows_produced_per_join": 74,
+                    "filtered": "100.00",
+                    "cost_info": {
+                      "read_cost": "18.60",
+                      "eval_cost": "7.44",
+                      "prefix_cost": "28.25",
+                      "data_read_per_join": "169K"
+                    },
+                    "used_columns": [
+                      "version",
+                      "dimension",
+                      "key1",
+                      "key2",
+                      "registrations",
+                      "year_month",
+                      "fuel"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "explain_analyze": "-> Group aggregate: sum(a.registrations)  (cost=35.7 rows=39.3) (actual time=0.0345..0.0682 rows=8 loops=1)\n    -> Nested loop left join  (cost=28.3 rows=74.4) (actual time=0.0241..0.0618 rows=8 loops=1)\n        -> Filter: ((m.dimension = 'month') and (m.version = '20260917_152407_7272aa_c2950a114e7d') and (m.`year_month` between '2026-01' and '2026-08'))  (cost=2.21 rows=8) (actual time=0.014..0.0196 rows=8 loops=1)\n            -> Covering index range scan on m using ix_month over (version = '20260917_152407_7272aa_c2950a114e7d' AND dimension = 'month' AND '2026-01' <= year_month <= '2026-08')  (cost=2.21 rows=8) (actual time=0.0121..0.0162 rows=8 loops=1)\n        -> Index lookup on a using ix_fuel_month (version='20260917_152407_7272aa_c2950a114e7d', dimension='month_fuel', fuel='electric', year_month=m.`year_month`)  (cost=2.44 rows=9.3) (actual time=0.00447..0.005 rows=1 loops=8)\n"
+    }
+  ],
+  "interpretation": "Actual plans for 1536 aggregate rows. These are inspection evidence, not a benchmark or an index speedup claim."
+}

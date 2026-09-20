@@ -1,0 +1,101 @@
+{
+  "year": 2025,
+  "source_sha256": "bde5d31a7ed5121dcac2ec9920ae587e936cb579f71c79a1222ce62d6cae13d1",
+  "source_url": "https://storage.data.gov.my/transportation/cars_2025.parquet",
+  "license": "CC BY 4.0",
+  "data_asof": "2026-08-31",
+  "rows": 870188,
+  "min_date": "2025-01-01",
+  "max_date": "2025-12-31",
+  "columns": [
+    "source_sha256",
+    "source_row",
+    "date_reg",
+    "vehicle_type",
+    "maker",
+    "model",
+    "colour",
+    "fuel",
+    "state"
+  ],
+  "partitions": [
+    "registration_year",
+    "registration_month"
+  ],
+  "null_marker": "\\N",
+  "files": [
+    {
+      "path": "registration_year=2025/registration_month=01/part-00000.tsv",
+      "rows": 53926,
+      "bytes": 6956998,
+      "sha256": "d43de806667cb2ff5fbf3d447586465506a4951442ab06e1f58390a82b8d9e90"
+    },
+    {
+      "path": "registration_year=2025/registration_month=02/part-00000.tsv",
+      "rows": 67320,
+      "bytes": 8688984,
+      "sha256": "0bf3dcb84ac917dde87cfc9d9afbb8a52e49426b32396e1e97de9776ccc244b3"
+    },
+    {
+      "path": "registration_year=2025/registration_month=03/part-00000.tsv",
+      "rows": 77103,
+      "bytes": 10004170,
+      "sha256": "d60eda8412beff99c6b69ec9255fc62df488c2fea5acba161cb32d393670c902"
+    },
+    {
+      "path": "registration_year=2025/registration_month=04/part-00000.tsv",
+      "rows": 65190,
+      "bytes": 8467372,
+      "sha256": "45348525fed3a6a847c6cc1542c48c5be400de1fd4217ccef613894e35fb4e20"
+    },
+    {
+      "path": "registration_year=2025/registration_month=05/part-00000.tsv",
+      "rows": 74381,
+      "bytes": 9669809,
+      "sha256": "837b867729b9010859aee8967040e257aaf08dd3f71a8b7c4fb8afe621fc7b1a"
+    },
+    {
+      "path": "registration_year=2025/registration_month=06/part-00000.tsv",
+      "rows": 58840,
+      "bytes": 7639653,
+      "sha256": "343e16cd4f84442e4e36957bee51966fb599ec27df32f984ed0eb48801987e4c"
+    },
+    {
+      "path": "registration_year=2025/registration_month=07/part-00000.tsv",
+      "rows": 75635,
+      "bytes": 9835963,
+      "sha256": "524a7c904fc8c5ad5a8443d64888ee2586c23567bd6853519b61922e7148fe38"
+    },
+    {
+      "path": "registration_year=2025/registration_month=08/part-00000.tsv",
+      "rows": 78970,
+      "bytes": 10248446,
+      "sha256": "56c076e4276ee8b0e8a21fbe375e8472925dc99bff8dacdd903b93b1168cce31"
+    },
+    {
+      "path": "registration_year=2025/registration_month=09/part-00000.tsv",
+      "rows": 62587,
+      "bytes": 8119127,
+      "sha256": "fd2ef8dafb4d1637b3b99ad4107cb8501b30c97dd28f69500a4cf45d56b20799"
+    },
+    {
+      "path": "registration_year=2025/registration_month=10/part-00000.tsv",
+      "rows": 81404,
+      "bytes": 10566966,
+      "sha256": "85a90eaeaccc728395505ab1502084b3acc1abf0ed46c10b2869009fd96ff63c"
+    },
+    {
+      "path": "registration_year=2025/registration_month=11/part-00000.tsv",
+      "rows": 77865,
+      "bytes": 10087636,
+      "sha256": "fc5cc579fd64275932ebc3705c111e9ebfa5c822065abba632fd5d99e3735de3"
+    },
+    {
+      "path": "registration_year=2025/registration_month=12/part-00000.tsv",
+      "rows": 96967,
+      "bytes": 12484982,
+      "sha256": "b3f1c58155efe338209a75dfcaca9824b8d2981dc5e9b110824c5fb1c007d4ab"
+    }
+  ],
+  "built_at": "2026-09-17T15:09:58.597906+00:00"
+}

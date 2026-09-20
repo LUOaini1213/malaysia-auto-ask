@@ -2,6 +2,23 @@
 
 [![ci](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml/badge.svg)](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml)
 
+## JPJ registration analytics: Python, SQL and MySQL
+
+The current project processes **1,436,804 official JPJ registration records** covering January 2025 to August 2026. Python validation and a single-node HDFS / Hive / YARN pipeline produce **1,536 aggregate rows**, served through MySQL 8.4.6, a read-only SQL API and a local web interface. Results include metric definitions, source versions, hashes and parameterized SQL. The original synthetic-data demo remains separately labelled under `/demo`.
+
+- [Pipeline, source attribution and reproducible commands](warehouse/README.md)
+- [MySQL setup, API contract and validation](warehouse/serving/README.md)
+- [Full pipeline verification and comparable-period analysis](warehouse/evidence/20260917_152407_7272aa/result.md)
+- [MySQL acceptance: 30 tests, 1,536 reconciled aggregates and 130 query checks](warehouse/serving/evidence/20260918/acceptance.json)
+
+Source code, frozen aggregate inputs and verification evidence are included here. The web service runs locally; this repository is not a hosted database service. MySQL stores aggregates, not the original registration-level records. Development was AI-assisted; the evidence distinguishes deterministic tests from model performance.
+
+**默认网页现已接入真实 JPJ 登记数据。** Python / Hive / YARN 的已验收汇总通过版本化事务导入 MySQL 8.4.6，再由固定 SQL API 和网页查询。每次结果展示登记口径、月份、SQL、来源版本和文件哈希。旧 SQLite 模拟演示保留在显式 `/demo` 入口，不混入真实结果。两套解析均为规则实现，不调用大模型。
+
+真实数据网页：`http://127.0.0.1:8777/`。首次启动 MySQL 与导入步骤见 [真实查询层说明](warehouse/serving/README.md)。已完成 30 项测试、1,536 项三方汇总对账和 130 项查询结果核对；[验收证据](warehouse/serving/evidence/20260918/acceptance.json) 含实际运行口径。代码与冻结汇总可在本仓库查看，网页按说明在本机启动。
+
+## 旧模拟演示技术说明
+
 **Ask-the-data demo for the Malaysian car market, standard library only.** A question in
 natural language becomes an intent through a deterministic rule parser (regex plus a
 hand-written lexicon, `malaysia_ask/intent.py`), then a whitelisted SQL template, then a
@@ -15,8 +32,10 @@ template × metric × filter combinations, each checked against an independent r
 oracle. A self-authored 30-question suite measures the guard: 22 answered, 8 stopped with a
 structured reason code; with the guard switched off, all 8 are answered silently and for
 7 of them the answer is by construction to a different question — the discarded filter or
-rewritten period means the table returned is not the table that was asked about. No API key, no third-party
-package, `python` 3.10+, everything below reproduces in under a minute.
+rewritten period means the table returned is not the table that was asked about. The original SQLite demo
+uses no API key or third-party package and reproduces in under a minute with Python 3.10+.
+The [public-data warehouse](warehouse/README.md) adds a verified JPJ registration pipeline
+using Python, HDFS, Hive and YARN/Tez; its MySQL serving layer is now the default website.
 
 ![The /desk page: KPI cards, the question box, and a note draft that cannot be copied until the reader confirms the metric](docs/img/desk.png)
 
@@ -26,12 +45,20 @@ package, `python` 3.10+, everything below reproduces in under a minute.
 口径问句走 **词重叠检索**（`口径.md` + `metric_dict` + 血缘节点），不是向量 RAG。  
 目的：把「问数」做成可评测的最小闭环——SQL 分层、指标口径、表级血缘、停问策略各占一层，每层都能单独验。
 
-**不是** MAA / JPJ 官方明细，**不是**任何厂商的生产问数系统或企业数据目录。
+下方原有 SQLite 问数演示使用模拟月度明细；新增的真实 JPJ 数据仓库见下一节。项目用于个人开发与测试。
 
 品牌全年合计按公开报道锚定（2025 年 TIV 820,752；Perodua 359,904 等）。  
 月 × 区域 × 车型是固定种子拆出来的演示数。TIV 和上牌是两列，允许对不上。
 
-## 怎么跑
+## 真实公开数据仓库（2026-09）
+
+新增 [JPJ 汽车登记数据管道与数仓](warehouse/README.md)：接入官方 2025 年和 2026 年截至 8 月的 **1,436,804 条登记记录**，用 Python 校验、按年月分区后写入 HDFS，执行 Hive / YARN / Tez 作业生成 ORC 明细及月度汇总。单节点全量运行中，**20 个分区、1,536 项跨引擎汇总核对全部通过**。
+
+这条链路保留合法重复登记，支持年度快照重建、未变化批次跳过、失败后恢复及来源追踪。运行前后核对输入指纹，并确认 YARN 应用终态与实际输出。开发使用 AI 辅助；完整证据和同月份同比分析见 [本次验收报告](warehouse/evidence/20260917_152407_7272aa/result.md)。
+
+新数仓的指标是登记量。默认 `/` 与 `/desk` 已查询真实 MySQL 汇总；原模拟页移至 `/demo` 与 `/demo/desk`，也可使用 `--demo` 单独启动。MySQL 保存 **1,536 项冻结汇总**，不是重新导入 143 万条明细。下面的“无第三方包”只适用于旧模拟演示；真实链路的启动命令见 [查询层说明](warehouse/serving/README.md)。
+
+## 怎么跑旧模拟演示
 
 ```bash
 git clone https://github.com/LUOaini1213/malaysia-auto-ask && cd malaysia-auto-ask
@@ -44,7 +71,7 @@ python -m unittest discover -s tests -v              # 含 README 数字重算�
 python scripts/eval.py --check                       # 30 题评测重跑并与 eval/last_run.json 逐字段比对
 python scripts/ablation.py --check                   # 消融重算并与 eval/ablation.json 逐字段比对
 python scripts/eval.py                               # 改了用例或解析规则后，用它重新生成 eval/last_run.json
-python scripts/serve.py
+python scripts/serve.py --demo
 # 浏览器 http://127.0.0.1:8766
 # 海外一线工作台 http://127.0.0.1:8766/desk
 ```
@@ -169,7 +196,7 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 每次出数带口径定义、owner、version、SQL、表级血缘。  
 「口径 / 从哪来 / 哪张表」不跑 SQL，返回检索片段和血缘路径。
 
-## 海外一线工作台（`/desk`）
+## 旧海外一线工作台（真实入口下的 `/demo/desk`）
 
 看板卡片 + 问数 + 「给海外同事的说明草稿」。草稿默认不能复制，勾选确认后才能复制。  
 产品说明：`docs/产品PRD.md`、`docs/区域产品定义.md`。
@@ -200,11 +227,11 @@ python scripts/eval.py --check
 
 ## 范围与边界
 
-- 不把本库写成 MAA/JPJ 原始数，也不写成任何厂商的生产问数产品
+- 旧 SQLite 模拟库不写成 MAA/JPJ 原始数；新增 JPJ 管道才使用官方公开登记记录。两者均不是厂商生产问数产品
 - 不把「填模板」写成生产 NL2SQL
 - 不把词重叠检索写成向量 RAG / 企业知识库
 - 不把 `lineage_edge` 写成企业数仓血缘平台
-- 不把 `/desk` 写成外呼或客服工具
+- 不把工作台写成外呼或客服工具
 - Proton 是国产车品牌；库里没有 Geely 品牌行
 
 公开锚点来源：MAA 2025 TIV 820,752；Perodua / Proton / Honda / Toyota / Mazda 等品牌年为公开报道。其余拆分是演示。

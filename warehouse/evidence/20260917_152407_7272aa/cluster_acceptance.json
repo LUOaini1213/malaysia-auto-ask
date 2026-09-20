@@ -1,0 +1,309 @@
+{
+  "status": "PASS",
+  "verified_utc": "2026-09-17T15:29:25.130384+00:00",
+  "run_id": "acceptance_20260917T152742Z",
+  "scope": "Single-node pseudo-distributed HDFS + YARN + Hive/Tez acceptance, synthetic smoke input only",
+  "image": "apache/hive:4.0.1@sha256:5194161ef50b80875f937dff04936df047cbe894e9727ab8f0606349345b1bd3",
+  "versions": {
+    "hive": "4.0.1",
+    "hadoop": "3.3.6",
+    "tez": "0.10.4",
+    "java": "8u342"
+  },
+  "hdfs_roundtrip": "byte_equal",
+  "input_sha256": {
+    "words.txt": "af97a708cdae0542d565ec64bc0c5e6acf7dc60b7d549f1c7a015255070d4391",
+    "values.tsv": "7bed89f6e027deb890b06c4d0f26a1c6c3bec18a7e6d6956b88aa50b58fda249"
+  },
+  "expected_mapreduce": {
+    "hdfs": 1,
+    "hive": 2,
+    "yarn": 3
+  },
+  "expected_hive": {
+    "alpha": 15,
+    "beta": 20
+  },
+  "applications": {
+    "mapreduce": {
+      "id": "application_1789658875221_0001",
+      "user": "hive",
+      "name": "word count",
+      "queue": "default",
+      "state": "FINISHED",
+      "finalStatus": "SUCCEEDED",
+      "progress": 100.0,
+      "trackingUI": "History",
+      "trackingUrl": "http://malaysia-warehouse-cluster:8088/proxy/application_1789658875221_0001/",
+      "diagnostics": "",
+      "clusterId": 1789658875221,
+      "applicationType": "MAPREDUCE",
+      "applicationTags": "",
+      "priority": 0,
+      "startedTime": 1789658904083,
+      "launchTime": 1789658905942,
+      "finishedTime": 1789658927043,
+      "elapsedTime": 22960,
+      "amContainerLogs": "http://localhost:8042/node/containerlogs/container_1789658875221_0001_01_000001/hive",
+      "amHostHttpAddress": "localhost:8042",
+      "amRPCAddress": "localhost:38797",
+      "masterNodeId": "localhost:45171",
+      "allocatedMB": -1,
+      "allocatedVCores": -1,
+      "reservedMB": -1,
+      "reservedVCores": -1,
+      "runningContainers": -1,
+      "memorySeconds": 18418,
+      "vcoreSeconds": 34,
+      "queueUsagePercentage": 0.0,
+      "clusterUsagePercentage": 0.0,
+      "resourceSecondsMap": {
+        "entry": {
+          "key": "vcores",
+          "value": "34"
+        }
+      },
+      "preemptedResourceMB": 0,
+      "preemptedResourceVCores": 0,
+      "numNonAMContainerPreempted": 0,
+      "numAMContainerPreempted": 0,
+      "preemptedMemorySeconds": 0,
+      "preemptedVcoreSeconds": 0,
+      "preemptedResourceSecondsMap": {},
+      "logAggregationStatus": "SUCCEEDED",
+      "unmanagedApplication": false,
+      "amNodeLabelExpression": "",
+      "timeouts": {
+        "timeout": [
+          {
+            "type": "LIFETIME",
+            "expiryTime": "UNLIMITED",
+            "remainingTimeInSeconds": -1
+          }
+        ]
+      }
+    },
+    "tez": {
+      "id": "application_1789658875221_0002",
+      "user": "hive",
+      "name": "HIVE-2112cf26-e795-41fb-bd94-9d406b0ed8eb",
+      "queue": "default",
+      "state": "FINISHED",
+      "finalStatus": "SUCCEEDED",
+      "progress": 100.0,
+      "trackingUI": "History",
+      "trackingUrl": "http://malaysia-warehouse-cluster:8088/proxy/application_1789658875221_0002/",
+      "diagnostics": "Session stats:submittedDAGs=1, successfulDAGs=1, failedDAGs=0, killedDAGs=0\n",
+      "clusterId": 1789658875221,
+      "applicationType": "TEZ",
+      "applicationTags": "hive_20260917152903_995b10ff-b443-4483-bad2-c9ededb5895d,userid=hive",
+      "priority": 0,
+      "startedTime": 1789658947637,
+      "launchTime": 1789658948552,
+      "finishedTime": 1789658964805,
+      "elapsedTime": 17168,
+      "amContainerLogs": "http://localhost:8042/node/containerlogs/container_1789658875221_0002_01_000001/hive",
+      "amHostHttpAddress": "localhost:8042",
+      "amRPCAddress": "malaysia-warehouse-cluster:37387",
+      "masterNodeId": "localhost:45171",
+      "allocatedMB": 768,
+      "allocatedVCores": 1,
+      "reservedMB": 0,
+      "reservedVCores": 0,
+      "runningContainers": 1,
+      "memorySeconds": 19559,
+      "vcoreSeconds": 25,
+      "queueUsagePercentage": 25.0,
+      "clusterUsagePercentage": 25.0,
+      "resourceSecondsMap": {
+        "entry": {
+          "key": "vcores",
+          "value": "25"
+        }
+      },
+      "preemptedResourceMB": 0,
+      "preemptedResourceVCores": 0,
+      "numNonAMContainerPreempted": 0,
+      "numAMContainerPreempted": 0,
+      "preemptedMemorySeconds": 0,
+      "preemptedVcoreSeconds": 0,
+      "preemptedResourceSecondsMap": {},
+      "logAggregationStatus": "NOT_START",
+      "unmanagedApplication": false,
+      "amNodeLabelExpression": "",
+      "resourceInfo": {
+        "resourceUsagesByPartition": [
+          {
+            "partitionName": "",
+            "used": {
+              "memory": 768,
+              "vCores": 1,
+              "resourceInformations": {
+                "resourceInformation": [
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "memory-mb",
+                    "resourceType": "COUNTABLE",
+                    "units": "Mi",
+                    "value": 768
+                  },
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "vcores",
+                    "resourceType": "COUNTABLE",
+                    "units": "",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "reserved": {
+              "memory": 0,
+              "vCores": 0,
+              "resourceInformations": {
+                "resourceInformation": [
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "memory-mb",
+                    "resourceType": "COUNTABLE",
+                    "units": "Mi",
+                    "value": 0
+                  },
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "vcores",
+                    "resourceType": "COUNTABLE",
+                    "units": "",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "pending": {
+              "memory": 0,
+              "vCores": 0,
+              "resourceInformations": {
+                "resourceInformation": [
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "memory-mb",
+                    "resourceType": "COUNTABLE",
+                    "units": "Mi",
+                    "value": 0
+                  },
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "vcores",
+                    "resourceType": "COUNTABLE",
+                    "units": "",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "amUsed": {
+              "memory": 768,
+              "vCores": 1,
+              "resourceInformations": {
+                "resourceInformation": [
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "memory-mb",
+                    "resourceType": "COUNTABLE",
+                    "units": "Mi",
+                    "value": 768
+                  },
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "vcores",
+                    "resourceType": "COUNTABLE",
+                    "units": "",
+                    "value": 1
+                  }
+                ]
+              }
+            },
+            "amLimit": {
+              "memory": 0,
+              "vCores": 0,
+              "resourceInformations": {
+                "resourceInformation": [
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "memory-mb",
+                    "resourceType": "COUNTABLE",
+                    "units": "Mi",
+                    "value": 0
+                  },
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "vcores",
+                    "resourceType": "COUNTABLE",
+                    "units": "",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "userAmLimit": {
+              "memory": 0,
+              "vCores": 0,
+              "resourceInformations": {
+                "resourceInformation": [
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "memory-mb",
+                    "resourceType": "COUNTABLE",
+                    "units": "Mi",
+                    "value": 0
+                  },
+                  {
+                    "attributes": {},
+                    "maximumAllocation": 9223372036854775807,
+                    "minimumAllocation": 0,
+                    "name": "vcores",
+                    "resourceType": "COUNTABLE",
+                    "units": "",
+                    "value": 0
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "timeouts": {
+        "timeout": [
+          {
+            "type": "LIFETIME",
+            "expiryTime": "UNLIMITED",
+            "remainingTimeInSeconds": -1
+          }
+        ]
+      }
+    }
+  },
+  "limits": "Not production, distributed HA, Kerberos, Kafka, HBase, or business-data validation"
+}

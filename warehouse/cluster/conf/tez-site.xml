@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<configuration>
+  <property><name>tez.lib.uris</name><value>hdfs://localhost:9000/apps/tez/tez.tar.gz</value></property>
+  <property><name>tez.use.cluster.hadoop-libs</name><value>true</value></property>
+  <property><name>tez.am.resource.memory.mb</name><value>768</value></property>
+  <property><name>tez.task.resource.memory.mb</name><value>768</value></property>
+  <property><name>tez.am.launch.cmd-opts</name><value>-Xmx512m</value></property>
+  <property><name>tez.am.container.reuse.enabled</name><value>true</value></property>
+  <property><name>tez.session.am.dag.submit.timeout.secs</name><value>60</value></property>
+</configuration>

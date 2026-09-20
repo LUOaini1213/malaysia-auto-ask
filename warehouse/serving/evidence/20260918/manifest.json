@@ -1,0 +1,35 @@
+{
+  "scope": "Sanitized local verification evidence. No credentials or raw registration records. Not a production or throughput benchmark.",
+  "files": [
+    {
+      "path": "acceptance.json",
+      "sha256": "d9b6d7f44237c139174e7d26f5627320bedabaf3172dfe8b206b90245873b54e",
+      "bytes": 14429
+    },
+    {
+      "path": "tests.txt",
+      "sha256": "6c5c196e13482716de9d9627bdc3a451582eefbcc7fbd9fe7039f74791891f98",
+      "bytes": 3717
+    },
+    {
+      "path": "schema_and_explain.json",
+      "sha256": "45d89667e6dd82e4f457560dd3b505810d2ce437e514e0a2acd50ecb720d5395",
+      "bytes": 29509
+    },
+    {
+      "path": "mysql_runtime.json",
+      "sha256": "07210cec32e9254800e39f7eb75d22ab376c92d96b7f8d6231cb4988cc5a6d54",
+      "bytes": 872
+    },
+    {
+      "path": "import_result.json",
+      "sha256": "9fcff5684559d374f92b6d33de3be2e28c430484e19d5ddadba3ae83c6d039e1",
+      "bytes": 1595
+    },
+    {
+      "path": "regression_and_ui.json",
+      "sha256": "7723afb215524af00ce34f728d122d5c3bb209a42133c4e02c85f78fbb0e11e8",
+      "bytes": 637
+    }
+  ]
+}

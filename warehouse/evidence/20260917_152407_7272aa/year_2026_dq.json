@@ -1,0 +1,17 @@
+{
+  "year": 2026,
+  "source_sha256": "6a1a1e8d50126b807429997e31df1102a1e367a3983f089a49a1da9aed66f647",
+  "input_rows": 566616,
+  "accepted_rows": 566616,
+  "rejected_rows": 0,
+  "reasons": {},
+  "rejected_samples": [],
+  "duplicate_policy": "Preserve all source rows; no visible-field deduplication",
+  "source_identity": [
+    "source_sha256",
+    "source_row"
+  ],
+  "min_date": "2026-01-01",
+  "max_date": "2026-08-31",
+  "checked_at": "2026-09-17T15:10:06.860813+00:00"
+}

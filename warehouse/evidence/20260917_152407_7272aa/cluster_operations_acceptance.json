@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "verified_utc": "2026-09-17T15:31:24.5403227Z",
+  "acceptance_run": "acceptance_20260917T152742Z",
+  "restart_preserves_hdfs": true,
+  "hdfs_path": "/warehouse/jpj/runs/20260917_152407_7272aa",
+  "directory_count": 86,
+  "file_count": 72,
+  "content_bytes": 187990698,
+  "restart_preserves_metastore": true,
+  "database": "jpj_20260917_152407_7272aa",
+  "idempotent_start_reuses_helper": true,
+  "foreground_free_idle_seconds": 30,
+  "container_restarted_during_idle": false,
+  "container_stopped": true,
+  "helper_exited": true,
+  "helper_pid": 16752,
+  "volume_retained": "malaysia-warehouse-state",
+  "scope": "Dedicated project container only; business SQL was not rerun for persistence validation"
+}

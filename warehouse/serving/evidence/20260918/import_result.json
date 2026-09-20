@@ -1,0 +1,35 @@
+{
+  "status": "imported",
+  "version": "20260917_152407_7272aa_c2950a114e7d",
+  "mysql_aggregate_rows": 1536,
+  "represented_registration_rows": 1436804,
+  "reconciled_hive_python_mysql_groups": 1536,
+  "source": {
+    "dataset": "JPJ car registration transactions",
+    "version": "20260917_152407_7272aa_c2950a114e7d",
+    "data_asof": "2026-08-31",
+    "hashes": {
+      "hive_aggregates_sha256": "c2950a114e7dabcea0d760fe2031f12fd937a3e1ef3adc2d3e6f5bd9e36317b6",
+      "oracle_aggregates_sha256": "73a00db82a41ea68a54763328fbbc1972abb9e0bc73a5025ab3275d528b5c301",
+      "validation_sha256": "7e60ab0c57973074fb8f69f71afb1d0262be731fcdfeca40245f8122d6d97113",
+      "evidence_manifest_sha256": "0dc3c230ec4792f8ad756dcc62e8e6cd2463d8cf78f64df45694239404b7416d"
+    },
+    "official_url": "https://data.gov.my/data-catalogue/registration_transactions_car",
+    "license": "CC BY 4.0; source JPJ / data.gov.my",
+    "upstream_run_id": "20260917_152407_7272aa",
+    "metric_definition": "汽车登记次数，不是销量、批发TIV、进口量或库存；state为办理登记的办公室/门户，不是车主所在地。",
+    "mysql_aggregate_rows": 1536,
+    "represented_registration_rows": 1436804,
+    "available_dimensions": [
+      "fuel",
+      "maker",
+      "month",
+      "month_fuel",
+      "month_maker",
+      "state",
+      "total"
+    ],
+    "limitation": "MySQL stores frozen marginal aggregates, not registration-level records. No maker x fuel or month x office joint table."
+  },
+  "executed_at_utc": "2026-09-18T06:32:16.049703+00:00"
+}

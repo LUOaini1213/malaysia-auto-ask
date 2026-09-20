@@ -1,0 +1,6 @@
+# Downloaded public data and generated runtime state are reproducible, not source.
+data/
+artifacts/
+runtime/
+.venv/
+*.log

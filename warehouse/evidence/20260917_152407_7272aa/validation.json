@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "run_id": "20260917_152407_7272aa",
+  "started_at_utc": "2026-09-17T15:24:07.639902+00:00",
+  "execution_scope": "single-node Docker HDFS + YARN + Hive/Tez lab",
+  "database": "jpj_20260917_152407_7272aa",
+  "hdfs_prefix": "/warehouse/jpj/runs/20260917_152407_7272aa",
+  "expected_total": 1436804,
+  "partition_files": 20,
+  "oracle_sha256": "02bbb334e24a6ec2b1805f92bdd6d4996e391536dea504f65e3a00c31fd08c35",
+  "aggregate_comparison": {
+    "passed": true,
+    "compared_groups": 1536,
+    "dimensions": {
+      "fuel": 8,
+      "maker": 116,
+      "month": 20,
+      "month_fuel": 115,
+      "month_maker": 1261,
+      "state": 15,
+      "total": 1
+    },
+    "missing": [],
+    "extra": [],
+    "mismatches": []
+  },
+  "quality_checks": {
+    "passed": true,
+    "actual": {
+      "ods_count": 1436804,
+      "dwd_count": 1436804,
+      "distinct_lineage_count": 1436804,
+      "invalid_lineage_count": 0,
+      "invalid_partition_count": 0
+    },
+    "expected": {
+      "ods_count": 1436804,
+      "dwd_count": 1436804,
+      "distinct_lineage_count": 1436804,
+      "invalid_partition_count": 0,
+      "invalid_lineage_count": 0
+    }
+  },
+  "yarn_applications": [
+    {
+      "id": "application_1789657920441_0006",
+      "succeeded": true
+    }
+  ],
+  "input_files_unchanged_during_run": true,
+  "finished_at_utc": "2026-09-17T15:26:02.251385+00:00"
+}

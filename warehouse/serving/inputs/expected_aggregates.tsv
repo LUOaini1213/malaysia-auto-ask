@@ -1,0 +1,1536 @@
+fuel	diesel	ALL	6667
+fuel	electric	ALL	92321
+fuel	greendiesel	ALL	69108
+fuel	hybrid_diesel	ALL	22
+fuel	hybrid_petrol	ALL	65901
+fuel	other	ALL	2
+fuel	petrol	ALL	1202782
+fuel	petrol_ng	ALL	1
+maker	Abarth	ALL	1
+maker	Acura	ALL	1
+maker	Alfa Romeo	ALL	30
+maker	Aston Martin	ALL	51
+maker	Audi	ALL	647
+maker	Austin	ALL	1
+maker	Aveling Barford	ALL	1
+maker	BAIC	ALL	8
+maker	BAW	ALL	1
+maker	BMW	ALL	11862
+maker	BYD	ALL	21879
+maker	Beauford	ALL	1
+maker	Bentley	ALL	91
+maker	Bison	ALL	8
+maker	Bmw	ALL	1
+maker	Boon Koon	ALL	80
+maker	Bufori Malaysia	ALL	3
+maker	Buick	ALL	1
+maker	Cadillac	ALL	3
+maker	Cam	ALL	1224
+maker	Caterham	ALL	1
+maker	Chery	ALL	52872
+maker	Chevrolet	ALL	20
+maker	Citroen	ALL	3
+maker	Daihatsu	ALL	239
+maker	Daimler	ALL	84
+maker	Delorean	ALL	1
+maker	Denza	ALL	1559
+maker	Dodge	ALL	5
+maker	Dodge/Commer	ALL	2
+maker	Dong Feng	ALL	592
+maker	EVEasy	ALL	1
+maker	Ferrari	ALL	361
+maker	Fiat	ALL	17
+maker	Foday	ALL	6
+maker	Ford	ALL	6398
+maker	Foton	ALL	857
+maker	GAC	ALL	2387
+maker	GAC Aion	ALL	118
+maker	GAC Hyptec	ALL	2
+maker	GAC Motor	ALL	1
+maker	Genesis	ALL	2
+maker	Go Auto	ALL	46
+maker	Great Wall	ALL	10484
+maker	Higer	ALL	1
+maker	Honda	ALL	112680
+maker	Hummer	ALL	1
+maker	Hycann	ALL	2
+maker	Hyundai	ALL	1313
+maker	Ineos	ALL	1
+maker	Isuzu	ALL	9994
+maker	JAC	ALL	98
+maker	JMC	ALL	4
+maker	JMS	ALL	21
+maker	Jaecoo	ALL	3
+maker	Jaguar	ALL	32
+maker	Jeep	ALL	121
+maker	Jetour	ALL	10246
+maker	KTM	ALL	1
+maker	Kia	ALL	1351
+maker	King Long Xiamen	ALL	4
+maker	LEVC	ALL	4
+maker	Lamborghini	ALL	325
+maker	Lancia	ALL	1
+maker	Land Rover	ALL	1438
+maker	Leapmotor	ALL	2028
+maker	Lepas	ALL	5
+maker	Lexus	ALL	10346
+maker	Lincoln	ALL	1
+maker	Lotus	ALL	131
+maker	MG	ALL	3804
+maker	MG Rover	ALL	1
+maker	Mahindra	ALL	1
+maker	Maserati	ALL	83
+maker	Maxus	ALL	275
+maker	Mazda	ALL	17440
+maker	McLaren	ALL	32
+maker	Mclaren	ALL	8
+maker	Mercedes Benz	ALL	13954
+maker	Mercedes-Maybach	ALL	7
+maker	Microlino	ALL	2
+maker	Mini	ALL	3516
+maker	Mitsubishi	ALL	22680
+maker	Mitsuoka	ALL	5
+maker	Morgan	ALL	1
+maker	Neta	ALL	280
+maker	Nissan	ALL	9080
+maker	Perodua	ALL	579463
+maker	Peugeot	ALL	1234
+maker	Polestar	ALL	1
+maker	Pontiac	ALL	1
+maker	Porsche	ALL	3952
+maker	Proton	ALL	286730
+maker	Renault	ALL	13
+maker	Rolls Royce	ALL	122
+maker	Seres	ALL	1
+maker	Shineray	ALL	11
+maker	Skyworth	ALL	1
+maker	Smart	ALL	608
+maker	Standard	ALL	1
+maker	Subaru	ALL	1643
+maker	Suzuki	ALL	2812
+maker	TQ Wuling	ALL	640
+maker	Tesla	ALL	11015
+maker	Togg	ALL	1
+maker	Toyota	ALL	202013
+maker	Volkswagen	ALL	2603
+maker	Volvo	ALL	2368
+maker	Weststar Maxus	ALL	313
+maker	Xiamen	ALL	1
+maker	Xinneng	ALL	3
+maker	Xpeng	ALL	2456
+maker	Yangtse	ALL	1
+maker	ZXAuto	ALL	6
+maker	Zeekr	ALL	5517
+maker	iCaur	ALL	1
+month	2025	01	53926
+month	2025	02	67320
+month	2025	03	77103
+month	2025	04	65190
+month	2025	05	74381
+month	2025	06	58840
+month	2025	07	75635
+month	2025	08	78970
+month	2025	09	62587
+month	2025	10	81404
+month	2025	11	77865
+month	2025	12	96967
+month	2026	01	67989
+month	2026	02	56683
+month	2026	03	67823
+month	2026	04	77819
+month	2026	05	66053
+month	2026	06	72943
+month	2026	07	80030
+month	2026	08	77276
+month_fuel	2025-01	diesel	372
+month_fuel	2025-01	electric	1691
+month_fuel	2025-01	greendiesel	2525
+month_fuel	2025-01	hybrid_petrol	2249
+month_fuel	2025-01	petrol	47089
+month_fuel	2025-02	diesel	1268
+month_fuel	2025-02	electric	2160
+month_fuel	2025-02	greendiesel	1919
+month_fuel	2025-02	hybrid_petrol	2112
+month_fuel	2025-02	petrol	59861
+month_fuel	2025-03	diesel	1108
+month_fuel	2025-03	electric	2976
+month_fuel	2025-03	greendiesel	2685
+month_fuel	2025-03	hybrid_diesel	3
+month_fuel	2025-03	hybrid_petrol	2769
+month_fuel	2025-03	petrol	67562
+month_fuel	2025-04	diesel	560
+month_fuel	2025-04	electric	2892
+month_fuel	2025-04	greendiesel	3275
+month_fuel	2025-04	hybrid_diesel	1
+month_fuel	2025-04	hybrid_petrol	2268
+month_fuel	2025-04	petrol	56194
+month_fuel	2025-05	diesel	363
+month_fuel	2025-05	electric	4152
+month_fuel	2025-05	greendiesel	3820
+month_fuel	2025-05	hybrid_petrol	2695
+month_fuel	2025-05	petrol	63351
+month_fuel	2025-06	diesel	257
+month_fuel	2025-06	electric	3272
+month_fuel	2025-06	greendiesel	3767
+month_fuel	2025-06	hybrid_diesel	1
+month_fuel	2025-06	hybrid_petrol	2069
+month_fuel	2025-06	petrol	49473
+month_fuel	2025-06	petrol_ng	1
+month_fuel	2025-07	diesel	256
+month_fuel	2025-07	electric	2792
+month_fuel	2025-07	greendiesel	4241
+month_fuel	2025-07	hybrid_diesel	2
+month_fuel	2025-07	hybrid_petrol	2474
+month_fuel	2025-07	other	1
+month_fuel	2025-07	petrol	65869
+month_fuel	2025-08	diesel	277
+month_fuel	2025-08	electric	3461
+month_fuel	2025-08	greendiesel	4440
+month_fuel	2025-08	hybrid_diesel	1
+month_fuel	2025-08	hybrid_petrol	2901
+month_fuel	2025-08	other	1
+month_fuel	2025-08	petrol	67889
+month_fuel	2025-09	diesel	261
+month_fuel	2025-09	electric	3532
+month_fuel	2025-09	greendiesel	4097
+month_fuel	2025-09	hybrid_diesel	1
+month_fuel	2025-09	hybrid_petrol	2398
+month_fuel	2025-09	petrol	52298
+month_fuel	2025-10	diesel	259
+month_fuel	2025-10	electric	4345
+month_fuel	2025-10	greendiesel	4542
+month_fuel	2025-10	hybrid_petrol	2804
+month_fuel	2025-10	petrol	69454
+month_fuel	2025-11	diesel	225
+month_fuel	2025-11	electric	5417
+month_fuel	2025-11	greendiesel	3996
+month_fuel	2025-11	hybrid_diesel	3
+month_fuel	2025-11	hybrid_petrol	2547
+month_fuel	2025-11	petrol	65677
+month_fuel	2025-12	diesel	224
+month_fuel	2025-12	electric	8123
+month_fuel	2025-12	greendiesel	6115
+month_fuel	2025-12	hybrid_diesel	2
+month_fuel	2025-12	hybrid_petrol	3890
+month_fuel	2025-12	petrol	78613
+month_fuel	2026-01	diesel	180
+month_fuel	2026-01	electric	6239
+month_fuel	2026-01	greendiesel	2558
+month_fuel	2026-01	hybrid_diesel	2
+month_fuel	2026-01	hybrid_petrol	2153
+month_fuel	2026-01	petrol	56857
+month_fuel	2026-02	diesel	213
+month_fuel	2026-02	electric	3635
+month_fuel	2026-02	greendiesel	2859
+month_fuel	2026-02	hybrid_petrol	2208
+month_fuel	2026-02	petrol	47768
+month_fuel	2026-03	diesel	193
+month_fuel	2026-03	electric	4717
+month_fuel	2026-03	greendiesel	2883
+month_fuel	2026-03	hybrid_petrol	4093
+month_fuel	2026-03	petrol	55937
+month_fuel	2026-04	diesel	191
+month_fuel	2026-04	electric	5894
+month_fuel	2026-04	greendiesel	3021
+month_fuel	2026-04	hybrid_diesel	4
+month_fuel	2026-04	hybrid_petrol	4938
+month_fuel	2026-04	petrol	63771
+month_fuel	2026-05	diesel	102
+month_fuel	2026-05	electric	5038
+month_fuel	2026-05	greendiesel	2768
+month_fuel	2026-05	hybrid_petrol	5103
+month_fuel	2026-05	petrol	53042
+month_fuel	2026-06	diesel	92
+month_fuel	2026-06	electric	6215
+month_fuel	2026-06	greendiesel	2824
+month_fuel	2026-06	hybrid_petrol	5646
+month_fuel	2026-06	petrol	58166
+month_fuel	2026-07	diesel	140
+month_fuel	2026-07	electric	6937
+month_fuel	2026-07	greendiesel	3577
+month_fuel	2026-07	hybrid_diesel	1
+month_fuel	2026-07	hybrid_petrol	5621
+month_fuel	2026-07	petrol	63754
+month_fuel	2026-08	diesel	126
+month_fuel	2026-08	electric	8833
+month_fuel	2026-08	greendiesel	3196
+month_fuel	2026-08	hybrid_diesel	1
+month_fuel	2026-08	hybrid_petrol	4963
+month_fuel	2026-08	petrol	60157
+month_maker	2025-01	Aston Martin	3
+month_maker	2025-01	Audi	24
+month_maker	2025-01	BAW	1
+month_maker	2025-01	BMW	601
+month_maker	2025-01	BYD	505
+month_maker	2025-01	Bentley	7
+month_maker	2025-01	Boon Koon	7
+month_maker	2025-01	Cam	109
+month_maker	2025-01	Chery	1678
+month_maker	2025-01	Daihatsu	9
+month_maker	2025-01	Daimler	2
+month_maker	2025-01	Dodge	1
+month_maker	2025-01	Dong Feng	9
+month_maker	2025-01	Ferrari	21
+month_maker	2025-01	Fiat	1
+month_maker	2025-01	Ford	473
+month_maker	2025-01	Foton	45
+month_maker	2025-01	GAC	75
+month_maker	2025-01	GAC Aion	4
+month_maker	2025-01	Go Auto	2
+month_maker	2025-01	Great Wall	404
+month_maker	2025-01	Higer	1
+month_maker	2025-01	Honda	3635
+month_maker	2025-01	Hyundai	53
+month_maker	2025-01	Ineos	1
+month_maker	2025-01	Isuzu	501
+month_maker	2025-01	JMS	1
+month_maker	2025-01	Jaguar	4
+month_maker	2025-01	Jeep	5
+month_maker	2025-01	Jetour	1
+month_maker	2025-01	Kia	73
+month_maker	2025-01	King Long Xiamen	1
+month_maker	2025-01	Lamborghini	22
+month_maker	2025-01	Land Rover	105
+month_maker	2025-01	Leapmotor	30
+month_maker	2025-01	Lexus	344
+month_maker	2025-01	Lotus	4
+month_maker	2025-01	MG	216
+month_maker	2025-01	Maserati	2
+month_maker	2025-01	Mazda	707
+month_maker	2025-01	McLaren	2
+month_maker	2025-01	Mclaren	2
+month_maker	2025-01	Mercedes Benz	752
+month_maker	2025-01	Mini	121
+month_maker	2025-01	Mitsubishi	1227
+month_maker	2025-01	Mitsuoka	3
+month_maker	2025-01	Neta	9
+month_maker	2025-01	Nissan	578
+month_maker	2025-01	Perodua	23245
+month_maker	2025-01	Peugeot	82
+month_maker	2025-01	Porsche	285
+month_maker	2025-01	Proton	9688
+month_maker	2025-01	Renault	1
+month_maker	2025-01	Rolls Royce	10
+month_maker	2025-01	Smart	26
+month_maker	2025-01	Subaru	112
+month_maker	2025-01	Suzuki	117
+month_maker	2025-01	Tesla	13
+month_maker	2025-01	Toyota	7570
+month_maker	2025-01	Volkswagen	109
+month_maker	2025-01	Volvo	91
+month_maker	2025-01	Weststar Maxus	14
+month_maker	2025-01	Xpeng	81
+month_maker	2025-01	Zeekr	101
+month_maker	2025-02	Acura	1
+month_maker	2025-02	Aston Martin	1
+month_maker	2025-02	Audi	18
+month_maker	2025-02	BMW	583
+month_maker	2025-02	BYD	634
+month_maker	2025-02	Bentley	2
+month_maker	2025-02	Boon Koon	8
+month_maker	2025-02	Cam	82
+month_maker	2025-02	Chery	2435
+month_maker	2025-02	Chevrolet	2
+month_maker	2025-02	Daihatsu	7
+month_maker	2025-02	Daimler	1
+month_maker	2025-02	Denza	34
+month_maker	2025-02	Dong Feng	9
+month_maker	2025-02	Ferrari	8
+month_maker	2025-02	Ford	324
+month_maker	2025-02	Foton	47
+month_maker	2025-02	GAC	37
+month_maker	2025-02	GAC Aion	4
+month_maker	2025-02	GAC Hyptec	2
+month_maker	2025-02	Go Auto	2
+month_maker	2025-02	Great Wall	256
+month_maker	2025-02	Honda	7221
+month_maker	2025-02	Hyundai	76
+month_maker	2025-02	Isuzu	488
+month_maker	2025-02	JMC	1
+month_maker	2025-02	JMS	2
+month_maker	2025-02	Jaguar	2
+month_maker	2025-02	Jeep	10
+month_maker	2025-02	Kia	61
+month_maker	2025-02	Lamborghini	11
+month_maker	2025-02	Land Rover	45
+month_maker	2025-02	Leapmotor	13
+month_maker	2025-02	Lexus	233
+month_maker	2025-02	Lotus	3
+month_maker	2025-02	MG	135
+month_maker	2025-02	Mazda	645
+month_maker	2025-02	McLaren	1
+month_maker	2025-02	Mercedes Benz	546
+month_maker	2025-02	Mini	167
+month_maker	2025-02	Mitsubishi	1167
+month_maker	2025-02	Neta	7
+month_maker	2025-02	Nissan	511
+month_maker	2025-02	Perodua	31382
+month_maker	2025-02	Peugeot	83
+month_maker	2025-02	Porsche	157
+month_maker	2025-02	Proton	11068
+month_maker	2025-02	Renault	1
+month_maker	2025-02	Shineray	1
+month_maker	2025-02	Smart	30
+month_maker	2025-02	Subaru	98
+month_maker	2025-02	Suzuki	81
+month_maker	2025-02	Tesla	443
+month_maker	2025-02	Toyota	7837
+month_maker	2025-02	Volkswagen	124
+month_maker	2025-02	Volvo	72
+month_maker	2025-02	Weststar Maxus	13
+month_maker	2025-02	Xinneng	3
+month_maker	2025-02	Xpeng	74
+month_maker	2025-02	Zeekr	11
+month_maker	2025-03	Alfa Romeo	1
+month_maker	2025-03	Aston Martin	2
+month_maker	2025-03	Audi	20
+month_maker	2025-03	BMW	678
+month_maker	2025-03	BYD	1020
+month_maker	2025-03	Bentley	7
+month_maker	2025-03	Boon Koon	3
+month_maker	2025-03	Cam	140
+month_maker	2025-03	Chery	2713
+month_maker	2025-03	Daihatsu	15
+month_maker	2025-03	Daimler	5
+month_maker	2025-03	Denza	204
+month_maker	2025-03	Dong Feng	3
+month_maker	2025-03	Ferrari	16
+month_maker	2025-03	Fiat	1
+month_maker	2025-03	Foday	2
+month_maker	2025-03	Ford	428
+month_maker	2025-03	Foton	41
+month_maker	2025-03	GAC	33
+month_maker	2025-03	GAC Aion	2
+month_maker	2025-03	Go Auto	2
+month_maker	2025-03	Great Wall	398
+month_maker	2025-03	Honda	9589
+month_maker	2025-03	Hyundai	100
+month_maker	2025-03	Isuzu	585
+month_maker	2025-03	JMC	1
+month_maker	2025-03	JMS	2
+month_maker	2025-03	Jaguar	8
+month_maker	2025-03	Jeep	6
+month_maker	2025-03	Jetour	1
+month_maker	2025-03	Kia	117
+month_maker	2025-03	Lamborghini	9
+month_maker	2025-03	Land Rover	88
+month_maker	2025-03	Leapmotor	18
+month_maker	2025-03	Lexus	474
+month_maker	2025-03	Lotus	2
+month_maker	2025-03	MG	233
+month_maker	2025-03	Maserati	5
+month_maker	2025-03	Mazda	837
+month_maker	2025-03	McLaren	1
+month_maker	2025-03	Mercedes Benz	923
+month_maker	2025-03	Mini	206
+month_maker	2025-03	Mitsubishi	1331
+month_maker	2025-03	Neta	17
+month_maker	2025-03	Nissan	667
+month_maker	2025-03	Perodua	30464
+month_maker	2025-03	Peugeot	141
+month_maker	2025-03	Porsche	281
+month_maker	2025-03	Proton	13471
+month_maker	2025-03	Renault	1
+month_maker	2025-03	Rolls Royce	4
+month_maker	2025-03	Shineray	2
+month_maker	2025-03	Smart	28
+month_maker	2025-03	Subaru	87
+month_maker	2025-03	Suzuki	155
+month_maker	2025-03	Tesla	171
+month_maker	2025-03	Toyota	10767
+month_maker	2025-03	Volkswagen	151
+month_maker	2025-03	Volvo	175
+month_maker	2025-03	Weststar Maxus	22
+month_maker	2025-03	Xpeng	72
+month_maker	2025-03	Zeekr	157
+month_maker	2025-04	Alfa Romeo	1
+month_maker	2025-04	Aston Martin	2
+month_maker	2025-04	Audi	24
+month_maker	2025-04	BMW	556
+month_maker	2025-04	BYD	1048
+month_maker	2025-04	Bentley	3
+month_maker	2025-04	Bison	1
+month_maker	2025-04	Boon Koon	3
+month_maker	2025-04	Cam	154
+month_maker	2025-04	Chery	2285
+month_maker	2025-04	Daihatsu	15
+month_maker	2025-04	Daimler	8
+month_maker	2025-04	Denza	157
+month_maker	2025-04	Dodge	1
+month_maker	2025-04	Dodge/Commer	1
+month_maker	2025-04	Dong Feng	24
+month_maker	2025-04	Ferrari	22
+month_maker	2025-04	Fiat	1
+month_maker	2025-04	Ford	359
+month_maker	2025-04	Foton	44
+month_maker	2025-04	GAC	40
+month_maker	2025-04	GAC Aion	5
+month_maker	2025-04	Go Auto	1
+month_maker	2025-04	Great Wall	372
+month_maker	2025-04	Honda	4433
+month_maker	2025-04	Hyundai	186
+month_maker	2025-04	Isuzu	465
+month_maker	2025-04	JAC	8
+month_maker	2025-04	JMS	2
+month_maker	2025-04	Jaguar	4
+month_maker	2025-04	Jeep	4
+month_maker	2025-04	Jetour	56
+month_maker	2025-04	Kia	66
+month_maker	2025-04	Lamborghini	13
+month_maker	2025-04	Land Rover	76
+month_maker	2025-04	Leapmotor	8
+month_maker	2025-04	Lexus	619
+month_maker	2025-04	Lotus	12
+month_maker	2025-04	MG	255
+month_maker	2025-04	Maserati	4
+month_maker	2025-04	Maxus	2
+month_maker	2025-04	Mazda	682
+month_maker	2025-04	Mclaren	1
+month_maker	2025-04	Mercedes Benz	684
+month_maker	2025-04	Mercedes-Maybach	1
+month_maker	2025-04	Mini	152
+month_maker	2025-04	Mitsubishi	1000
+month_maker	2025-04	Neta	17
+month_maker	2025-04	Nissan	634
+month_maker	2025-04	Perodua	27371
+month_maker	2025-04	Peugeot	61
+month_maker	2025-04	Porsche	171
+month_maker	2025-04	Proton	12155
+month_maker	2025-04	Rolls Royce	5
+month_maker	2025-04	Shineray	2
+month_maker	2025-04	Smart	17
+month_maker	2025-04	Subaru	97
+month_maker	2025-04	Suzuki	151
+month_maker	2025-04	Tesla	108
+month_maker	2025-04	Toyota	10064
+month_maker	2025-04	Volkswagen	112
+month_maker	2025-04	Volvo	112
+month_maker	2025-04	Weststar Maxus	8
+month_maker	2025-04	Xpeng	153
+month_maker	2025-04	ZXAuto	1
+month_maker	2025-04	Zeekr	91
+month_maker	2025-05	Alfa Romeo	1
+month_maker	2025-05	Aston Martin	1
+month_maker	2025-05	Audi	36
+month_maker	2025-05	BAIC	1
+month_maker	2025-05	BMW	635
+month_maker	2025-05	BYD	1148
+month_maker	2025-05	Bentley	5
+month_maker	2025-05	Boon Koon	3
+month_maker	2025-05	Cadillac	1
+month_maker	2025-05	Cam	47
+month_maker	2025-05	Chery	2562
+month_maker	2025-05	Daihatsu	17
+month_maker	2025-05	Daimler	3
+month_maker	2025-05	Denza	129
+month_maker	2025-05	Dong Feng	16
+month_maker	2025-05	Ferrari	19
+month_maker	2025-05	Fiat	2
+month_maker	2025-05	Ford	429
+month_maker	2025-05	Foton	54
+month_maker	2025-05	GAC	107
+month_maker	2025-05	GAC Aion	8
+month_maker	2025-05	Go Auto	6
+month_maker	2025-05	Great Wall	412
+month_maker	2025-05	Honda	6054
+month_maker	2025-05	Hyundai	5
+month_maker	2025-05	Isuzu	493
+month_maker	2025-05	JAC	15
+month_maker	2025-05	JMS	2
+month_maker	2025-05	Jaguar	3
+month_maker	2025-05	Jeep	9
+month_maker	2025-05	Jetour	71
+month_maker	2025-05	Kia	95
+month_maker	2025-05	King Long Xiamen	1
+month_maker	2025-05	Lamborghini	15
+month_maker	2025-05	Lancia	1
+month_maker	2025-05	Land Rover	76
+month_maker	2025-05	Leapmotor	13
+month_maker	2025-05	Lexus	593
+month_maker	2025-05	Lotus	4
+month_maker	2025-05	MG	151
+month_maker	2025-05	Maserati	5
+month_maker	2025-05	Mazda	683
+month_maker	2025-05	Mercedes Benz	976
+month_maker	2025-05	Mini	212
+month_maker	2025-05	Mitsubishi	1111
+month_maker	2025-05	Neta	10
+month_maker	2025-05	Nissan	574
+month_maker	2025-05	Perodua	31398
+month_maker	2025-05	Peugeot	109
+month_maker	2025-05	Porsche	183
+month_maker	2025-05	Proton	12751
+month_maker	2025-05	Renault	1
+month_maker	2025-05	Rolls Royce	6
+month_maker	2025-05	Smart	16
+month_maker	2025-05	Subaru	94
+month_maker	2025-05	Suzuki	225
+month_maker	2025-05	Tesla	1075
+month_maker	2025-05	Toyota	11183
+month_maker	2025-05	Volkswagen	142
+month_maker	2025-05	Volvo	147
+month_maker	2025-05	Weststar Maxus	7
+month_maker	2025-05	Xpeng	125
+month_maker	2025-05	Zeekr	105
+month_maker	2025-06	Alfa Romeo	6
+month_maker	2025-06	Aston Martin	2
+month_maker	2025-06	Audi	41
+month_maker	2025-06	BMW	619
+month_maker	2025-06	BYD	1045
+month_maker	2025-06	Bentley	6
+month_maker	2025-06	Bison	2
+month_maker	2025-06	Boon Koon	1
+month_maker	2025-06	Cam	45
+month_maker	2025-06	Chery	2493
+month_maker	2025-06	Chevrolet	2
+month_maker	2025-06	Daihatsu	10
+month_maker	2025-06	Daimler	6
+month_maker	2025-06	Denza	91
+month_maker	2025-06	Dong Feng	15
+month_maker	2025-06	Ferrari	12
+month_maker	2025-06	Fiat	1
+month_maker	2025-06	Ford	421
+month_maker	2025-06	Foton	48
+month_maker	2025-06	GAC	99
+month_maker	2025-06	GAC Aion	4
+month_maker	2025-06	Go Auto	2
+month_maker	2025-06	Great Wall	382
+month_maker	2025-06	Honda	4484
+month_maker	2025-06	Hyundai	7
+month_maker	2025-06	Isuzu	550
+month_maker	2025-06	JAC	5
+month_maker	2025-06	JMS	2
+month_maker	2025-06	Jaguar	4
+month_maker	2025-06	Jeep	4
+month_maker	2025-06	Jetour	270
+month_maker	2025-06	Kia	61
+month_maker	2025-06	Lamborghini	13
+month_maker	2025-06	Land Rover	75
+month_maker	2025-06	Leapmotor	5
+month_maker	2025-06	Lexus	512
+month_maker	2025-06	Lotus	7
+month_maker	2025-06	MG	156
+month_maker	2025-06	Maserati	10
+month_maker	2025-06	Maxus	24
+month_maker	2025-06	Mazda	573
+month_maker	2025-06	McLaren	2
+month_maker	2025-06	Mercedes Benz	733
+month_maker	2025-06	Mini	201
+month_maker	2025-06	Mitsubishi	888
+month_maker	2025-06	Neta	15
+month_maker	2025-06	Nissan	323
+month_maker	2025-06	Perodua	22328
+month_maker	2025-06	Peugeot	81
+month_maker	2025-06	Porsche	207
+month_maker	2025-06	Proton	10638
+month_maker	2025-06	Rolls Royce	9
+month_maker	2025-06	Smart	17
+month_maker	2025-06	Subaru	80
+month_maker	2025-06	Suzuki	174
+month_maker	2025-06	Tesla	587
+month_maker	2025-06	Togg	1
+month_maker	2025-06	Toyota	9942
+month_maker	2025-06	Volkswagen	154
+month_maker	2025-06	Volvo	141
+month_maker	2025-06	Weststar Maxus	7
+month_maker	2025-06	Xpeng	132
+month_maker	2025-06	Zeekr	65
+month_maker	2025-07	Aston Martin	3
+month_maker	2025-07	Audi	40
+month_maker	2025-07	BAIC	3
+month_maker	2025-07	BMW	699
+month_maker	2025-07	BYD	870
+month_maker	2025-07	Bentley	5
+month_maker	2025-07	Boon Koon	5
+month_maker	2025-07	Cam	64
+month_maker	2025-07	Chery	2643
+month_maker	2025-07	Daihatsu	21
+month_maker	2025-07	Daimler	1
+month_maker	2025-07	Denza	103
+month_maker	2025-07	Dong Feng	5
+month_maker	2025-07	Ferrari	18
+month_maker	2025-07	Fiat	1
+month_maker	2025-07	Ford	475
+month_maker	2025-07	Foton	61
+month_maker	2025-07	GAC	203
+month_maker	2025-07	GAC Aion	6
+month_maker	2025-07	Go Auto	7
+month_maker	2025-07	Great Wall	511
+month_maker	2025-07	Honda	5096
+month_maker	2025-07	Hyundai	9
+month_maker	2025-07	Isuzu	603
+month_maker	2025-07	JAC	9
+month_maker	2025-07	JMS	2
+month_maker	2025-07	Jaguar	2
+month_maker	2025-07	Jeep	7
+month_maker	2025-07	Jetour	402
+month_maker	2025-07	Kia	59
+month_maker	2025-07	King Long Xiamen	1
+month_maker	2025-07	Lamborghini	33
+month_maker	2025-07	Land Rover	89
+month_maker	2025-07	Leapmotor	66
+month_maker	2025-07	Lexus	622
+month_maker	2025-07	Lotus	5
+month_maker	2025-07	MG	206
+month_maker	2025-07	Maserati	3
+month_maker	2025-07	Maxus	28
+month_maker	2025-07	Mazda	633
+month_maker	2025-07	Mclaren	1
+month_maker	2025-07	Mercedes Benz	715
+month_maker	2025-07	Mercedes-Maybach	2
+month_maker	2025-07	Mini	201
+month_maker	2025-07	Mitsubishi	1166
+month_maker	2025-07	Mitsuoka	2
+month_maker	2025-07	Neta	17
+month_maker	2025-07	Nissan	541
+month_maker	2025-07	Perodua	33486
+month_maker	2025-07	Peugeot	68
+month_maker	2025-07	Porsche	221
+month_maker	2025-07	Proton	13182
+month_maker	2025-07	Renault	1
+month_maker	2025-07	Rolls Royce	5
+month_maker	2025-07	Smart	28
+month_maker	2025-07	Standard	1
+month_maker	2025-07	Subaru	80
+month_maker	2025-07	Suzuki	161
+month_maker	2025-07	Tesla	256
+month_maker	2025-07	Toyota	11410
+month_maker	2025-07	Volkswagen	150
+month_maker	2025-07	Volvo	142
+month_maker	2025-07	Weststar Maxus	8
+month_maker	2025-07	Xpeng	109
+month_maker	2025-07	ZXAuto	2
+month_maker	2025-07	Zeekr	61
+month_maker	2025-08	Alfa Romeo	3
+month_maker	2025-08	Aston Martin	6
+month_maker	2025-08	Audi	48
+month_maker	2025-08	BMW	713
+month_maker	2025-08	BYD	1119
+month_maker	2025-08	Bentley	2
+month_maker	2025-08	Bison	1
+month_maker	2025-08	Boon Koon	7
+month_maker	2025-08	Cadillac	1
+month_maker	2025-08	Cam	59
+month_maker	2025-08	Chery	3636
+month_maker	2025-08	Chevrolet	1
+month_maker	2025-08	Daihatsu	11
+month_maker	2025-08	Daimler	6
+month_maker	2025-08	Denza	69
+month_maker	2025-08	Dong Feng	5
+month_maker	2025-08	Ferrari	15
+month_maker	2025-08	Foday	3
+month_maker	2025-08	Ford	473
+month_maker	2025-08	Foton	53
+month_maker	2025-08	GAC	193
+month_maker	2025-08	GAC Aion	8
+month_maker	2025-08	Go Auto	4
+month_maker	2025-08	Great Wall	600
+month_maker	2025-08	Honda	6162
+month_maker	2025-08	Hyundai	111
+month_maker	2025-08	Isuzu	517
+month_maker	2025-08	JAC	7
+month_maker	2025-08	Jeep	4
+month_maker	2025-08	Jetour	374
+month_maker	2025-08	Kia	51
+month_maker	2025-08	Lamborghini	19
+month_maker	2025-08	Land Rover	62
+month_maker	2025-08	Leapmotor	72
+month_maker	2025-08	Lexus	597
+month_maker	2025-08	Lotus	4
+month_maker	2025-08	MG	128
+month_maker	2025-08	Maserati	2
+month_maker	2025-08	Maxus	50
+month_maker	2025-08	Mazda	822
+month_maker	2025-08	McLaren	1
+month_maker	2025-08	Mercedes Benz	962
+month_maker	2025-08	Mini	205
+month_maker	2025-08	Mitsubishi	1317
+month_maker	2025-08	Morgan	1
+month_maker	2025-08	Neta	23
+month_maker	2025-08	Nissan	512
+month_maker	2025-08	Perodua	32026
+month_maker	2025-08	Peugeot	55
+month_maker	2025-08	Pontiac	1
+month_maker	2025-08	Porsche	221
+month_maker	2025-08	Proton	14625
+month_maker	2025-08	Rolls Royce	8
+month_maker	2025-08	Shineray	1
+month_maker	2025-08	Smart	17
+month_maker	2025-08	Subaru	79
+month_maker	2025-08	Suzuki	173
+month_maker	2025-08	Tesla	509
+month_maker	2025-08	Toyota	11706
+month_maker	2025-08	Volkswagen	189
+month_maker	2025-08	Volvo	134
+month_maker	2025-08	Weststar Maxus	3
+month_maker	2025-08	Xpeng	96
+month_maker	2025-08	Zeekr	88
+month_maker	2025-09	Alfa Romeo	1
+month_maker	2025-09	Aston Martin	3
+month_maker	2025-09	Audi	19
+month_maker	2025-09	BMW	566
+month_maker	2025-09	BYD	1028
+month_maker	2025-09	Bentley	4
+month_maker	2025-09	Bison	2
+month_maker	2025-09	Boon Koon	4
+month_maker	2025-09	Cam	49
+month_maker	2025-09	Chery	2219
+month_maker	2025-09	Daihatsu	14
+month_maker	2025-09	Denza	63
+month_maker	2025-09	Dong Feng	14
+month_maker	2025-09	Ferrari	20
+month_maker	2025-09	Fiat	2
+month_maker	2025-09	Ford	316
+month_maker	2025-09	Foton	37
+month_maker	2025-09	GAC	139
+month_maker	2025-09	GAC Aion	3
+month_maker	2025-09	Go Auto	2
+month_maker	2025-09	Great Wall	551
+month_maker	2025-09	Honda	4554
+month_maker	2025-09	Hyundai	50
+month_maker	2025-09	Isuzu	579
+month_maker	2025-09	JAC	8
+month_maker	2025-09	Jeep	4
+month_maker	2025-09	Jetour	322
+month_maker	2025-09	Kia	46
+month_maker	2025-09	Lamborghini	14
+month_maker	2025-09	Land Rover	58
+month_maker	2025-09	Leapmotor	53
+month_maker	2025-09	Lexus	479
+month_maker	2025-09	Lotus	4
+month_maker	2025-09	MG	115
+month_maker	2025-09	Mahindra	1
+month_maker	2025-09	Maserati	3
+month_maker	2025-09	Maxus	2
+month_maker	2025-09	Mazda	678
+month_maker	2025-09	McLaren	1
+month_maker	2025-09	Mercedes Benz	574
+month_maker	2025-09	Microlino	2
+month_maker	2025-09	Mini	160
+month_maker	2025-09	Mitsubishi	1073
+month_maker	2025-09	Neta	5
+month_maker	2025-09	Nissan	498
+month_maker	2025-09	Perodua	23394
+month_maker	2025-09	Peugeot	47
+month_maker	2025-09	Polestar	1
+month_maker	2025-09	Porsche	251
+month_maker	2025-09	Proton	12572
+month_maker	2025-09	Rolls Royce	4
+month_maker	2025-09	Seres	1
+month_maker	2025-09	Smart	7
+month_maker	2025-09	Subaru	88
+month_maker	2025-09	Suzuki	113
+month_maker	2025-09	Tesla	685
+month_maker	2025-09	Toyota	10380
+month_maker	2025-09	Volkswagen	136
+month_maker	2025-09	Volvo	130
+month_maker	2025-09	Weststar Maxus	9
+month_maker	2025-09	Xpeng	137
+month_maker	2025-09	Zeekr	293
+month_maker	2025-10	Aston Martin	1
+month_maker	2025-10	Audi	49
+month_maker	2025-10	BMW	655
+month_maker	2025-10	BYD	1748
+month_maker	2025-10	Bentley	6
+month_maker	2025-10	Boon Koon	3
+month_maker	2025-10	Cam	51
+month_maker	2025-10	Chery	2967
+month_maker	2025-10	Daihatsu	5
+month_maker	2025-10	Daimler	1
+month_maker	2025-10	Denza	82
+month_maker	2025-10	Dong Feng	22
+month_maker	2025-10	Ferrari	28
+month_maker	2025-10	Fiat	3
+month_maker	2025-10	Ford	339
+month_maker	2025-10	Foton	52
+month_maker	2025-10	GAC	217
+month_maker	2025-10	GAC Aion	4
+month_maker	2025-10	Genesis	2
+month_maker	2025-10	Go Auto	7
+month_maker	2025-10	Great Wall	588
+month_maker	2025-10	Honda	6798
+month_maker	2025-10	Hyundai	94
+month_maker	2025-10	Isuzu	605
+month_maker	2025-10	JAC	6
+month_maker	2025-10	Jeep	14
+month_maker	2025-10	Jetour	321
+month_maker	2025-10	Kia	45
+month_maker	2025-10	Lamborghini	21
+month_maker	2025-10	Land Rover	77
+month_maker	2025-10	Leapmotor	73
+month_maker	2025-10	Lexus	554
+month_maker	2025-10	Lotus	6
+month_maker	2025-10	MG	138
+month_maker	2025-10	Maserati	4
+month_maker	2025-10	Maxus	150
+month_maker	2025-10	Mazda	849
+month_maker	2025-10	Mclaren	1
+month_maker	2025-10	Mercedes Benz	778
+month_maker	2025-10	Mercedes-Maybach	1
+month_maker	2025-10	Mini	188
+month_maker	2025-10	Mitsubishi	1210
+month_maker	2025-10	Neta	19
+month_maker	2025-10	Nissan	370
+month_maker	2025-10	Perodua	34116
+month_maker	2025-10	Peugeot	38
+month_maker	2025-10	Porsche	192
+month_maker	2025-10	Proton	14970
+month_maker	2025-10	Renault	1
+month_maker	2025-10	Rolls Royce	5
+month_maker	2025-10	Shineray	2
+month_maker	2025-10	Smart	10
+month_maker	2025-10	Subaru	76
+month_maker	2025-10	Suzuki	144
+month_maker	2025-10	Tesla	320
+month_maker	2025-10	Toyota	11537
+month_maker	2025-10	Volkswagen	108
+month_maker	2025-10	Volvo	129
+month_maker	2025-10	Weststar Maxus	51
+month_maker	2025-10	Xiamen	1
+month_maker	2025-10	Xpeng	162
+month_maker	2025-10	Zeekr	390
+month_maker	2025-11	Alfa Romeo	1
+month_maker	2025-11	Aston Martin	5
+month_maker	2025-11	Audi	39
+month_maker	2025-11	Aveling Barford	1
+month_maker	2025-11	BAIC	2
+month_maker	2025-11	BMW	619
+month_maker	2025-11	BYD	1705
+month_maker	2025-11	Bentley	6
+month_maker	2025-11	Boon Koon	9
+month_maker	2025-11	Cam	59
+month_maker	2025-11	Chery	2379
+month_maker	2025-11	Daihatsu	7
+month_maker	2025-11	Daimler	12
+month_maker	2025-11	Denza	70
+month_maker	2025-11	Dodge	1
+month_maker	2025-11	Dong Feng	35
+month_maker	2025-11	Ferrari	17
+month_maker	2025-11	Foday	1
+month_maker	2025-11	Ford	246
+month_maker	2025-11	Foton	44
+month_maker	2025-11	GAC	156
+month_maker	2025-11	GAC Aion	1
+month_maker	2025-11	Go Auto	4
+month_maker	2025-11	Great Wall	642
+month_maker	2025-11	Honda	6593
+month_maker	2025-11	Hyundai	86
+month_maker	2025-11	Isuzu	590
+month_maker	2025-11	JAC	6
+month_maker	2025-11	Jaguar	1
+month_maker	2025-11	Jeep	7
+month_maker	2025-11	Jetour	327
+month_maker	2025-11	Kia	22
+month_maker	2025-11	King Long Xiamen	1
+month_maker	2025-11	Lamborghini	18
+month_maker	2025-11	Land Rover	67
+month_maker	2025-11	Leapmotor	86
+month_maker	2025-11	Lexus	471
+month_maker	2025-11	Lotus	17
+month_maker	2025-11	MG	150
+month_maker	2025-11	MG Rover	1
+month_maker	2025-11	Maserati	5
+month_maker	2025-11	Maxus	4
+month_maker	2025-11	Mazda	1398
+month_maker	2025-11	Mclaren	1
+month_maker	2025-11	Mercedes Benz	551
+month_maker	2025-11	Mercedes-Maybach	1
+month_maker	2025-11	Mini	166
+month_maker	2025-11	Mitsubishi	1067
+month_maker	2025-11	Neta	17
+month_maker	2025-11	Nissan	400
+month_maker	2025-11	Perodua	33657
+month_maker	2025-11	Peugeot	40
+month_maker	2025-11	Porsche	144
+month_maker	2025-11	Proton	12950
+month_maker	2025-11	Rolls Royce	8
+month_maker	2025-11	Shineray	1
+month_maker	2025-11	Smart	40
+month_maker	2025-11	Subaru	59
+month_maker	2025-11	Suzuki	116
+month_maker	2025-11	Tesla	1301
+month_maker	2025-11	Toyota	10493
+month_maker	2025-11	Volkswagen	168
+month_maker	2025-11	Volvo	141
+month_maker	2025-11	Weststar Maxus	81
+month_maker	2025-11	Xpeng	193
+month_maker	2025-11	Yangtse	1
+month_maker	2025-11	ZXAuto	2
+month_maker	2025-11	Zeekr	356
+month_maker	2025-12	Alfa Romeo	1
+month_maker	2025-12	Aston Martin	13
+month_maker	2025-12	Audi	39
+month_maker	2025-12	Austin	1
+month_maker	2025-12	BAIC	1
+month_maker	2025-12	BMW	950
+month_maker	2025-12	BYD	2537
+month_maker	2025-12	Bentley	15
+month_maker	2025-12	Boon Koon	7
+month_maker	2025-12	Cam	58
+month_maker	2025-12	Chery	3656
+month_maker	2025-12	Daihatsu	13
+month_maker	2025-12	Daimler	14
+month_maker	2025-12	Denza	198
+month_maker	2025-12	Dodge	1
+month_maker	2025-12	Dong Feng	56
+month_maker	2025-12	Ferrari	46
+month_maker	2025-12	Fiat	1
+month_maker	2025-12	Ford	324
+month_maker	2025-12	Foton	87
+month_maker	2025-12	GAC	211
+month_maker	2025-12	GAC Aion	8
+month_maker	2025-12	Great Wall	760
+month_maker	2025-12	Honda	10867
+month_maker	2025-12	Hyundai	72
+month_maker	2025-12	Isuzu	772
+month_maker	2025-12	JAC	4
+month_maker	2025-12	JMC	1
+month_maker	2025-12	Jaguar	1
+month_maker	2025-12	Jeep	4
+month_maker	2025-12	Jetour	598
+month_maker	2025-12	Kia	13
+month_maker	2025-12	Lamborghini	24
+month_maker	2025-12	Land Rover	67
+month_maker	2025-12	Leapmotor	79
+month_maker	2025-12	Lexus	533
+month_maker	2025-12	Lotus	32
+month_maker	2025-12	MG	225
+month_maker	2025-12	Maserati	9
+month_maker	2025-12	Maxus	1
+month_maker	2025-12	Mazda	1081
+month_maker	2025-12	McLaren	19
+month_maker	2025-12	Mercedes Benz	781
+month_maker	2025-12	Mercedes-Maybach	1
+month_maker	2025-12	Mini	245
+month_maker	2025-12	Mitsubishi	1299
+month_maker	2025-12	Neta	15
+month_maker	2025-12	Nissan	491
+month_maker	2025-12	Perodua	37037
+month_maker	2025-12	Peugeot	54
+month_maker	2025-12	Porsche	242
+month_maker	2025-12	Proton	13491
+month_maker	2025-12	Rolls Royce	14
+month_maker	2025-12	Smart	178
+month_maker	2025-12	Subaru	90
+month_maker	2025-12	Suzuki	162
+month_maker	2025-12	TQ Wuling	6
+month_maker	2025-12	Tesla	1814
+month_maker	2025-12	Toyota	16182
+month_maker	2025-12	Volkswagen	229
+month_maker	2025-12	Volvo	142
+month_maker	2025-12	Weststar Maxus	50
+month_maker	2025-12	Xpeng	202
+month_maker	2025-12	ZXAuto	1
+month_maker	2025-12	Zeekr	842
+month_maker	2026-01	Alfa Romeo	2
+month_maker	2026-01	Audi	17
+month_maker	2026-01	BAIC	1
+month_maker	2026-01	BMW	545
+month_maker	2026-01	BYD	913
+month_maker	2026-01	Bentley	3
+month_maker	2026-01	Boon Koon	3
+month_maker	2026-01	Cam	46
+month_maker	2026-01	Chery	2968
+month_maker	2026-01	Chevrolet	1
+month_maker	2026-01	Daihatsu	5
+month_maker	2026-01	Daimler	2
+month_maker	2026-01	Denza	55
+month_maker	2026-01	Dong Feng	43
+month_maker	2026-01	Ferrari	11
+month_maker	2026-01	Ford	341
+month_maker	2026-01	Foton	45
+month_maker	2026-01	GAC	208
+month_maker	2026-01	GAC Aion	1
+month_maker	2026-01	Go Auto	4
+month_maker	2026-01	Great Wall	425
+month_maker	2026-01	Honda	3171
+month_maker	2026-01	Hummer	1
+month_maker	2026-01	Hyundai	59
+month_maker	2026-01	Isuzu	261
+month_maker	2026-01	JAC	2
+month_maker	2026-01	Jeep	2
+month_maker	2026-01	Jetour	593
+month_maker	2026-01	Kia	80
+month_maker	2026-01	LEVC	3
+month_maker	2026-01	Lamborghini	12
+month_maker	2026-01	Land Rover	67
+month_maker	2026-01	Leapmotor	171
+month_maker	2026-01	Lexus	407
+month_maker	2026-01	Lotus	3
+month_maker	2026-01	MG	308
+month_maker	2026-01	Maserati	6
+month_maker	2026-01	Maxus	1
+month_maker	2026-01	Mazda	841
+month_maker	2026-01	McLaren	2
+month_maker	2026-01	Mercedes Benz	677
+month_maker	2026-01	Mini	120
+month_maker	2026-01	Mitsubishi	1191
+month_maker	2026-01	Neta	24
+month_maker	2026-01	Nissan	336
+month_maker	2026-01	Perodua	26128
+month_maker	2026-01	Peugeot	83
+month_maker	2026-01	Porsche	176
+month_maker	2026-01	Proton	19750
+month_maker	2026-01	Renault	3
+month_maker	2026-01	Rolls Royce	7
+month_maker	2026-01	Smart	38
+month_maker	2026-01	Subaru	69
+month_maker	2026-01	Suzuki	134
+month_maker	2026-01	TQ Wuling	35
+month_maker	2026-01	Tesla	176
+month_maker	2026-01	Toyota	6598
+month_maker	2026-01	Volkswagen	129
+month_maker	2026-01	Volvo	96
+month_maker	2026-01	Weststar Maxus	4
+month_maker	2026-01	Xpeng	97
+month_maker	2026-01	Zeekr	489
+month_maker	2026-02	Alfa Romeo	1
+month_maker	2026-02	Aston Martin	1
+month_maker	2026-02	Audi	26
+month_maker	2026-02	BMW	449
+month_maker	2026-02	BYD	469
+month_maker	2026-02	Bentley	2
+month_maker	2026-02	Boon Koon	4
+month_maker	2026-02	Buick	1
+month_maker	2026-02	Cam	38
+month_maker	2026-02	Chery	2133
+month_maker	2026-02	Daihatsu	10
+month_maker	2026-02	Denza	17
+month_maker	2026-02	Dong Feng	26
+month_maker	2026-02	Ferrari	16
+month_maker	2026-02	Ford	256
+month_maker	2026-02	Foton	21
+month_maker	2026-02	GAC	116
+month_maker	2026-02	Go Auto	1
+month_maker	2026-02	Great Wall	347
+month_maker	2026-02	Honda	3373
+month_maker	2026-02	Hyundai	47
+month_maker	2026-02	Isuzu	527
+month_maker	2026-02	JAC	3
+month_maker	2026-02	Jeep	4
+month_maker	2026-02	Jetour	297
+month_maker	2026-02	Kia	158
+month_maker	2026-02	Lamborghini	7
+month_maker	2026-02	Land Rover	63
+month_maker	2026-02	Leapmotor	90
+month_maker	2026-02	Lexus	437
+month_maker	2026-02	Lincoln	1
+month_maker	2026-02	Lotus	3
+month_maker	2026-02	MG	279
+month_maker	2026-02	Maserati	3
+month_maker	2026-02	Mazda	444
+month_maker	2026-02	Mercedes Benz	659
+month_maker	2026-02	Mercedes-Maybach	1
+month_maker	2026-02	Mini	123
+month_maker	2026-02	Mitsubishi	889
+month_maker	2026-02	Neta	9
+month_maker	2026-02	Nissan	239
+month_maker	2026-02	Perodua	23575
+month_maker	2026-02	Peugeot	63
+month_maker	2026-02	Porsche	141
+month_maker	2026-02	Proton	13447
+month_maker	2026-02	Renault	1
+month_maker	2026-02	Rolls Royce	7
+month_maker	2026-02	Smart	25
+month_maker	2026-02	Subaru	60
+month_maker	2026-02	Suzuki	102
+month_maker	2026-02	TQ Wuling	66
+month_maker	2026-02	Tesla	144
+month_maker	2026-02	Toyota	6993
+month_maker	2026-02	Volkswagen	113
+month_maker	2026-02	Volvo	88
+month_maker	2026-02	Weststar Maxus	2
+month_maker	2026-02	Xpeng	75
+month_maker	2026-02	Zeekr	191
+month_maker	2026-03	Alfa Romeo	1
+month_maker	2026-03	Aston Martin	1
+month_maker	2026-03	Audi	34
+month_maker	2026-03	BMW	672
+month_maker	2026-03	BYD	879
+month_maker	2026-03	Beauford	1
+month_maker	2026-03	Bentley	2
+month_maker	2026-03	Boon Koon	1
+month_maker	2026-03	Bufori Malaysia	1
+month_maker	2026-03	Cam	32
+month_maker	2026-03	Chery	2643
+month_maker	2026-03	Chevrolet	4
+month_maker	2026-03	Citroen	2
+month_maker	2026-03	Daihatsu	17
+month_maker	2026-03	Daimler	5
+month_maker	2026-03	Denza	27
+month_maker	2026-03	Dong Feng	23
+month_maker	2026-03	Ferrari	10
+month_maker	2026-03	Ford	276
+month_maker	2026-03	Foton	25
+month_maker	2026-03	GAC	128
+month_maker	2026-03	GAC Aion	4
+month_maker	2026-03	Go Auto	1
+month_maker	2026-03	Great Wall	522
+month_maker	2026-03	Honda	7053
+month_maker	2026-03	Hyundai	76
+month_maker	2026-03	Isuzu	272
+month_maker	2026-03	JAC	3
+month_maker	2026-03	JMC	1
+month_maker	2026-03	JMS	2
+month_maker	2026-03	Jeep	5
+month_maker	2026-03	Jetour	790
+month_maker	2026-03	KTM	1
+month_maker	2026-03	Kia	108
+month_maker	2026-03	Lamborghini	16
+month_maker	2026-03	Land Rover	71
+month_maker	2026-03	Leapmotor	60
+month_maker	2026-03	Lexus	498
+month_maker	2026-03	Lotus	2
+month_maker	2026-03	MG	220
+month_maker	2026-03	Maserati	1
+month_maker	2026-03	Mazda	1054
+month_maker	2026-03	Mercedes Benz	725
+month_maker	2026-03	Mini	157
+month_maker	2026-03	Mitsubishi	981
+month_maker	2026-03	Neta	13
+month_maker	2026-03	Nissan	585
+month_maker	2026-03	Perodua	24530
+month_maker	2026-03	Peugeot	69
+month_maker	2026-03	Porsche	189
+month_maker	2026-03	Proton	15243
+month_maker	2026-03	Rolls Royce	4
+month_maker	2026-03	Shineray	1
+month_maker	2026-03	Smart	18
+month_maker	2026-03	Subaru	78
+month_maker	2026-03	Suzuki	141
+month_maker	2026-03	TQ Wuling	49
+month_maker	2026-03	Tesla	338
+month_maker	2026-03	Toyota	8608
+month_maker	2026-03	Volkswagen	121
+month_maker	2026-03	Volvo	175
+month_maker	2026-03	Weststar Maxus	5
+month_maker	2026-03	Xpeng	72
+month_maker	2026-03	Zeekr	177
+month_maker	2026-04	Abarth	1
+month_maker	2026-04	Alfa Romeo	4
+month_maker	2026-04	Aston Martin	1
+month_maker	2026-04	Audi	33
+month_maker	2026-04	BMW	516
+month_maker	2026-04	BYD	1413
+month_maker	2026-04	Bentley	3
+month_maker	2026-04	Boon Koon	2
+month_maker	2026-04	Cam	74
+month_maker	2026-04	Chery	2956
+month_maker	2026-04	Chevrolet	2
+month_maker	2026-04	Daihatsu	16
+month_maker	2026-04	Daimler	1
+month_maker	2026-04	Delorean	1
+month_maker	2026-04	Denza	45
+month_maker	2026-04	Dong Feng	31
+month_maker	2026-04	EVEasy	1
+month_maker	2026-04	Ferrari	17
+month_maker	2026-04	Fiat	2
+month_maker	2026-04	Ford	189
+month_maker	2026-04	Foton	37
+month_maker	2026-04	GAC	115
+month_maker	2026-04	GAC Aion	10
+month_maker	2026-04	Great Wall	562
+month_maker	2026-04	Honda	3969
+month_maker	2026-04	Hyundai	44
+month_maker	2026-04	Isuzu	510
+month_maker	2026-04	JAC	4
+month_maker	2026-04	JMS	1
+month_maker	2026-04	Jaguar	1
+month_maker	2026-04	Jeep	9
+month_maker	2026-04	Jetour	1197
+month_maker	2026-04	Kia	51
+month_maker	2026-04	LEVC	1
+month_maker	2026-04	Lamborghini	16
+month_maker	2026-04	Land Rover	78
+month_maker	2026-04	Leapmotor	108
+month_maker	2026-04	Lexus	586
+month_maker	2026-04	Lotus	3
+month_maker	2026-04	MG	178
+month_maker	2026-04	Maserati	7
+month_maker	2026-04	Mazda	1428
+month_maker	2026-04	Mclaren	1
+month_maker	2026-04	Mercedes Benz	891
+month_maker	2026-04	Mini	206
+month_maker	2026-04	Mitsubishi	1576
+month_maker	2026-04	Neta	18
+month_maker	2026-04	Nissan	388
+month_maker	2026-04	Perodua	32065
+month_maker	2026-04	Peugeot	50
+month_maker	2026-04	Porsche	166
+month_maker	2026-04	Proton	17980
+month_maker	2026-04	Renault	1
+month_maker	2026-04	Rolls Royce	4
+month_maker	2026-04	Smart	26
+month_maker	2026-04	Subaru	55
+month_maker	2026-04	Suzuki	137
+month_maker	2026-04	TQ Wuling	91
+month_maker	2026-04	Tesla	172
+month_maker	2026-04	Toyota	9055
+month_maker	2026-04	Volkswagen	103
+month_maker	2026-04	Volvo	91
+month_maker	2026-04	Weststar Maxus	13
+month_maker	2026-04	Xpeng	150
+month_maker	2026-04	Zeekr	357
+month_maker	2026-05	Aston Martin	1
+month_maker	2026-05	Audi	24
+month_maker	2026-05	BMW	367
+month_maker	2026-05	BYD	925
+month_maker	2026-05	Bentley	1
+month_maker	2026-05	Cam	19
+month_maker	2026-05	Chery	2576
+month_maker	2026-05	Daihatsu	11
+month_maker	2026-05	Daimler	3
+month_maker	2026-05	Denza	35
+month_maker	2026-05	Dodge	1
+month_maker	2026-05	Dong Feng	61
+month_maker	2026-05	Ferrari	14
+month_maker	2026-05	Ford	146
+month_maker	2026-05	Foton	33
+month_maker	2026-05	GAC	77
+month_maker	2026-05	GAC Aion	37
+month_maker	2026-05	GAC Motor	1
+month_maker	2026-05	Great Wall	572
+month_maker	2026-05	Honda	3686
+month_maker	2026-05	Hycann	2
+month_maker	2026-05	Hyundai	37
+month_maker	2026-05	Isuzu	420
+month_maker	2026-05	JAC	2
+month_maker	2026-05	JMS	2
+month_maker	2026-05	Jeep	4
+month_maker	2026-05	Jetour	968
+month_maker	2026-05	Kia	42
+month_maker	2026-05	Lamborghini	10
+month_maker	2026-05	Land Rover	63
+month_maker	2026-05	Leapmotor	237
+month_maker	2026-05	Lepas	2
+month_maker	2026-05	Lexus	546
+month_maker	2026-05	Lotus	9
+month_maker	2026-05	MG	206
+month_maker	2026-05	Maserati	3
+month_maker	2026-05	Mazda	1026
+month_maker	2026-05	Mercedes Benz	470
+month_maker	2026-05	Mini	182
+month_maker	2026-05	Mitsubishi	1182
+month_maker	2026-05	Neta	16
+month_maker	2026-05	Nissan	331
+month_maker	2026-05	Perodua	24480
+month_maker	2026-05	Peugeot	25
+month_maker	2026-05	Porsche	143
+month_maker	2026-05	Proton	16140
+month_maker	2026-05	Rolls Royce	4
+month_maker	2026-05	Shineray	1
+month_maker	2026-05	Smart	12
+month_maker	2026-05	Subaru	77
+month_maker	2026-05	Suzuki	147
+month_maker	2026-05	TQ Wuling	100
+month_maker	2026-05	Tesla	197
+month_maker	2026-05	Toyota	9632
+month_maker	2026-05	Volkswagen	80
+month_maker	2026-05	Volvo	69
+month_maker	2026-05	Weststar Maxus	4
+month_maker	2026-05	Xpeng	179
+month_maker	2026-05	Zeekr	413
+month_maker	2026-06	Alfa Romeo	3
+month_maker	2026-06	Audi	42
+month_maker	2026-06	BMW	442
+month_maker	2026-06	BYD	1076
+month_maker	2026-06	Bentley	5
+month_maker	2026-06	Boon Koon	2
+month_maker	2026-06	Bufori Malaysia	1
+month_maker	2026-06	Cadillac	1
+month_maker	2026-06	Cam	31
+month_maker	2026-06	Chery	2698
+month_maker	2026-06	Chevrolet	2
+month_maker	2026-06	Daihatsu	12
+month_maker	2026-06	Daimler	3
+month_maker	2026-06	Denza	50
+month_maker	2026-06	Dong Feng	73
+month_maker	2026-06	Ferrari	20
+month_maker	2026-06	Ford	158
+month_maker	2026-06	Foton	18
+month_maker	2026-06	GAC	95
+month_maker	2026-06	GAC Aion	8
+month_maker	2026-06	Great Wall	738
+month_maker	2026-06	Honda	6297
+month_maker	2026-06	Hyundai	57
+month_maker	2026-06	Isuzu	396
+month_maker	2026-06	JAC	1
+month_maker	2026-06	Jeep	4
+month_maker	2026-06	Jetour	1203
+month_maker	2026-06	Kia	65
+month_maker	2026-06	Lamborghini	11
+month_maker	2026-06	Land Rover	68
+month_maker	2026-06	Leapmotor	290
+month_maker	2026-06	Lexus	601
+month_maker	2026-06	Lotus	3
+month_maker	2026-06	MG	192
+month_maker	2026-06	Maserati	2
+month_maker	2026-06	Mazda	1210
+month_maker	2026-06	Mercedes Benz	498
+month_maker	2026-06	Mini	188
+month_maker	2026-06	Mitsubishi	948
+month_maker	2026-06	Neta	10
+month_maker	2026-06	Nissan	347
+month_maker	2026-06	Perodua	27517
+month_maker	2026-06	Peugeot	32
+month_maker	2026-06	Porsche	171
+month_maker	2026-06	Proton	15450
+month_maker	2026-06	Rolls Royce	6
+month_maker	2026-06	Smart	33
+month_maker	2026-06	Subaru	89
+month_maker	2026-06	Suzuki	119
+month_maker	2026-06	TQ Wuling	120
+month_maker	2026-06	Tesla	935
+month_maker	2026-06	Toyota	9705
+month_maker	2026-06	Volkswagen	85
+month_maker	2026-06	Volvo	168
+month_maker	2026-06	Weststar Maxus	4
+month_maker	2026-06	Xpeng	181
+month_maker	2026-06	Zeekr	459
+month_maker	2026-07	Alfa Romeo	3
+month_maker	2026-07	Aston Martin	2
+month_maker	2026-07	Audi	43
+month_maker	2026-07	BMW	518
+month_maker	2026-07	BYD	1226
+month_maker	2026-07	Bentley	6
+month_maker	2026-07	Bison	1
+month_maker	2026-07	Boon Koon	7
+month_maker	2026-07	Bufori Malaysia	1
+month_maker	2026-07	Cam	38
+month_maker	2026-07	Caterham	1
+month_maker	2026-07	Chery	2588
+month_maker	2026-07	Chevrolet	4
+month_maker	2026-07	Citroen	1
+month_maker	2026-07	Daihatsu	15
+month_maker	2026-07	Daimler	11
+month_maker	2026-07	Denza	66
+month_maker	2026-07	Dodge/Commer	1
+month_maker	2026-07	Dong Feng	77
+month_maker	2026-07	Ferrari	15
+month_maker	2026-07	Fiat	1
+month_maker	2026-07	Ford	244
+month_maker	2026-07	Foton	42
+month_maker	2026-07	GAC	79
+month_maker	2026-07	Go Auto	1
+month_maker	2026-07	Great Wall	747
+month_maker	2026-07	Honda	5369
+month_maker	2026-07	Hyundai	69
+month_maker	2026-07	Isuzu	423
+month_maker	2026-07	JAC	8
+month_maker	2026-07	Jaguar	2
+month_maker	2026-07	Jeep	8
+month_maker	2026-07	Jetour	1216
+month_maker	2026-07	Kia	67
+month_maker	2026-07	Lamborghini	23
+month_maker	2026-07	Land Rover	84
+month_maker	2026-07	Leapmotor	337
+month_maker	2026-07	Lexus	656
+month_maker	2026-07	Lotus	6
+month_maker	2026-07	MG	173
+month_maker	2026-07	Maserati	4
+month_maker	2026-07	Mazda	1027
+month_maker	2026-07	McLaren	2
+month_maker	2026-07	Mercedes Benz	579
+month_maker	2026-07	Mini	165
+month_maker	2026-07	Mitsubishi	1012
+month_maker	2026-07	Neta	12
+month_maker	2026-07	Nissan	426
+month_maker	2026-07	Perodua	31842
+month_maker	2026-07	Peugeot	26
+month_maker	2026-07	Porsche	218
+month_maker	2026-07	Proton	17018
+month_maker	2026-07	Renault	2
+month_maker	2026-07	Rolls Royce	6
+month_maker	2026-07	Skyworth	1
+month_maker	2026-07	Smart	28
+month_maker	2026-07	Subaru	102
+month_maker	2026-07	Suzuki	147
+month_maker	2026-07	TQ Wuling	102
+month_maker	2026-07	Tesla	605
+month_maker	2026-07	Toyota	11822
+month_maker	2026-07	Volkswagen	102
+month_maker	2026-07	Volvo	50
+month_maker	2026-07	Weststar Maxus	4
+month_maker	2026-07	Xpeng	72
+month_maker	2026-07	Zeekr	476
+month_maker	2026-07	iCaur	1
+month_maker	2026-08	Alfa Romeo	1
+month_maker	2026-08	Aston Martin	3
+month_maker	2026-08	Audi	31
+month_maker	2026-08	BMW	479
+month_maker	2026-08	BYD	571
+month_maker	2026-08	Bentley	1
+month_maker	2026-08	Bison	1
+month_maker	2026-08	Bmw	1
+month_maker	2026-08	Boon Koon	1
+month_maker	2026-08	Cam	29
+month_maker	2026-08	Chery	2644
+month_maker	2026-08	Chevrolet	2
+month_maker	2026-08	Daihatsu	9
+month_maker	2026-08	Denza	64
+month_maker	2026-08	Dong Feng	45
+month_maker	2026-08	Ferrari	16
+month_maker	2026-08	Fiat	1
+month_maker	2026-08	Ford	181
+month_maker	2026-08	Foton	23
+month_maker	2026-08	GAC	59
+month_maker	2026-08	GAC Aion	1
+month_maker	2026-08	Great Wall	695
+month_maker	2026-08	Honda	4276
+month_maker	2026-08	Hyundai	75
+month_maker	2026-08	Isuzu	437
+month_maker	2026-08	JAC	7
+month_maker	2026-08	JMS	3
+month_maker	2026-08	Jaecoo	3
+month_maker	2026-08	Jeep	7
+month_maker	2026-08	Jetour	1239
+month_maker	2026-08	Kia	71
+month_maker	2026-08	Lamborghini	18
+month_maker	2026-08	Land Rover	59
+month_maker	2026-08	Leapmotor	219
+month_maker	2026-08	Lepas	3
+month_maker	2026-08	Lexus	584
+month_maker	2026-08	Lotus	2
+month_maker	2026-08	MG	140
+month_maker	2026-08	Maserati	5
+month_maker	2026-08	Maxus	13
+month_maker	2026-08	Mazda	822
+month_maker	2026-08	McLaren	1
+month_maker	2026-08	Mclaren	1
+month_maker	2026-08	Mercedes Benz	480
+month_maker	2026-08	Mini	151
+month_maker	2026-08	Mitsubishi	1045
+month_maker	2026-08	Neta	7
+month_maker	2026-08	Nissan	329
+month_maker	2026-08	Perodua	29422
+month_maker	2026-08	Peugeot	27
+month_maker	2026-08	Porsche	193
+month_maker	2026-08	Proton	20141
+month_maker	2026-08	Rolls Royce	6
+month_maker	2026-08	Smart	14
+month_maker	2026-08	Subaru	73
+month_maker	2026-08	Suzuki	113
+month_maker	2026-08	TQ Wuling	71
+month_maker	2026-08	Tesla	1166
+month_maker	2026-08	Toyota	10529
+month_maker	2026-08	Volkswagen	98
+month_maker	2026-08	Volvo	75
+month_maker	2026-08	Weststar Maxus	4
+month_maker	2026-08	Xpeng	94
+month_maker	2026-08	Zeekr	395
+state	Johor	ALL	22003
+state	Kedah	ALL	6236
+state	Kelantan	ALL	4188
+state	Melaka	ALL	3767
+state	Negeri Sembilan	ALL	2756
+state	Pahang	ALL	4771
+state	Perak	ALL	6249
+state	Perlis	ALL	959
+state	Pulau Pinang	ALL	9887
+state	Rakan Niaga	ALL	1244912
+state	Sabah	ALL	18795
+state	Sarawak	ALL	17738
+state	Selangor	ALL	24641
+state	Terengganu	ALL	2708
+state	W.P. Kuala Lumpur	ALL	67194
+total	ALL	ALL	1436804
