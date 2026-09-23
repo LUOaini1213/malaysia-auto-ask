@@ -161,6 +161,17 @@ class ReadmeNumbers(unittest.TestCase):
         m = self.grab("公开锚点来源", r"2025 TIV ([\d,]+)")
         self.assertEqual(int(m.group(1).replace(",", "")), total)
 
+    def test_lineage_counts_match_the_seeded_database(self):
+        seed()
+        conn = connect(DB_PATH)
+        nodes = conn.execute("SELECT COUNT(*) FROM lineage_node").fetchone()[0]
+        edges = conn.execute("SELECT COUNT(*) FROM lineage_edge").fetchone()[0]
+        conn.close()
+        m = self.grab("可从指标走回 ODS", r"(\d+) 个节点、(\d+) 条表级边")
+        self.assertEqual((int(m.group(1)), int(m.group(2))), (nodes, edges))
+        m = self.grab("table-level lineage", r"lineage \((\d+) nodes, (\d+) edges\)")
+        self.assertEqual((int(m.group(1)), int(m.group(2))), (nodes, edges))
+
     # ---------------- 266 组模板 × 筛选（对 test_filter_contract 的组合数） ----------------
 
     def test_template_counts_match_the_registry(self):

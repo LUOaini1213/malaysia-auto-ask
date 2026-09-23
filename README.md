@@ -22,7 +22,7 @@ Source code, frozen aggregate inputs and verification evidence are included here
 **Ask-the-data demo for the Malaysian car market, standard library only.** A question in
 natural language becomes an intent through a deterministic rule parser (regex plus a
 hand-written lexicon, `malaysia_ask/intent.py`), then a whitelisted SQL template, then a
-table with its metric definition, owner and table-level lineage. The one design decision
+table with its metric definition, owner and table-level lineage (14 nodes, 20 edges). The one design decision
 that matters:
 when the question does not say *which* number it wants — wholesale (TIV) or registrations,
 which disagree by up to 17% in a given month — the system **stops and asks** instead of
@@ -112,7 +112,7 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 | DWD | `fact_month` | 年-月-车型-区域：`tiv_units`、`registration_units` |
 | ADS | `ads_brand_year` / `ads_brand_month` | 品牌年 / 月汇总 |
 | 指标 | `metric_dict` | 口径、owner、版本 |
-| 血缘 | `lineage_node` / `lineage_edge` | 表级边，可从指标走回 ODS |
+| 血缘 | `lineage_node` / `lineage_edge` | 14 个节点、20 条表级边，可从指标走回 ODS |
 
 全年、无区域、无能源的品牌合计走 ADS；带月 / 区域 / 能源 / 车型走 DWD。
 
