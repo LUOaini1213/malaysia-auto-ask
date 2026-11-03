@@ -25,6 +25,8 @@ COLUMNS = ("date_reg", "type", "maker", "model", "colour", "fuel", "state")
 TSV_COLUMNS = ("source_sha256", "source_row", "date_reg", "vehicle_type", "maker", "model", "colour", "fuel", "state")
 VEHICLE_TYPES = {"motokar", "motokar_pelbagai_utiliti", "jip", "pick_up", "window_van"}
 NULL = "\\N"
+AFTER_ASOF_REJECT = "reject_year"
+AFTER_ASOF_EXCLUDE = "exclude_and_count"
 
 
 def sha256(path: Path) -> str:
@@ -44,6 +46,31 @@ def write_json(path: Path, payload: dict) -> None:
     temporary = path.with_name(path.name + ".tmp")
     temporary.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     temporary.replace(path)
+
+
+def snapshot_status(year: int, digest: str, parquet_rows: int | None = None) -> dict:
+    """Compare a raw file with the snapshot the committed evidence was built from.
+
+    The official URLs serve the latest file, not the 2026-09-17 snapshot. A
+    different hash is reported, never silently treated as "the same data".
+    """
+    snapshot = SOURCES.get("snapshot", {})
+    recorded = snapshot.get("files", {}).get(str(year))
+    if not recorded:
+        return {"matches_recorded_snapshot": None, "message": f"No recorded snapshot for {year}"}
+    status = {"matches_recorded_snapshot": digest == recorded["sha256"],
+              "recorded_on": snapshot.get("recorded_on"), "recorded_sha256": recorded["sha256"],
+              "recorded_parquet_rows": recorded["parquet_rows"], "observed_sha256": digest,
+              "observed_parquet_rows": parquet_rows}
+    if status["matches_recorded_snapshot"]:
+        status["message"] = f"cars_{year}.parquet matches the recorded {snapshot.get('recorded_on')} snapshot"
+    else:
+        status["message"] = (
+            f"SOURCE_DIFFERS_FROM_RECORDED_SNAPSHOT: cars_{year}.parquet sha256 {digest[:12]}... is not the "
+            f"{snapshot.get('recorded_on')} snapshot {recorded['sha256'][:12]}... ({recorded['parquet_rows']} rows). "
+            "Totals will differ from the committed evidence. Rows dated after data_asof fail DQ unless you "
+            "build with --exclude-after-asof (counted exclusion) or a later --data-asof.")
+    return status
 
 
 def remove_owned(path: Path, parent: Path) -> None:
@@ -68,7 +95,8 @@ def download(raw_dir: Path, years: list[int], refresh: bool = False) -> dict:
         if destination.exists() and metadata_file.exists() and not refresh:
             meta = json.loads(metadata_file.read_text(encoding="utf-8"))
             if sha256(destination) == meta.get("source_sha256"):
-                result[str(year)] = {"status": "cached", **meta}
+                result[str(year)] = {"status": "cached", **meta,
+                                     "snapshot": snapshot_status(year, meta["source_sha256"], meta.get("parquet_rows"))}
                 continue
             raise ValueError(f"Raw file checksum mismatch: {destination}; use --refresh to replace")
         temporary = destination.with_suffix(".parquet.part")
@@ -101,7 +129,8 @@ def download(raw_dir: Path, years: list[int], refresh: bool = False) -> dict:
             parquet.close()
             temporary.replace(destination)
             write_json(metadata_file, metadata)
-            result[str(year)] = {"status": "downloaded", **metadata}
+            result[str(year)] = {"status": "downloaded", **metadata,
+                                 "snapshot": snapshot_status(year, metadata["source_sha256"], metadata["parquet_rows"])}
         except Exception:
             if temporary.exists():
                 temporary.unlink()
@@ -159,11 +188,16 @@ def fingerprints_match(manifest: dict, curated_dir: Path) -> bool:
 
 
 def build(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int],
-          data_asof: str = "2026-08-31", failure_after_rows: int | None = None) -> dict:
+          data_asof: str = "2026-08-31", failure_after_rows: int | None = None,
+          exclude_after_asof: bool = False) -> dict:
+    """exclude_after_asof=False (default): any row after data_asof fails the year.
+    True: such rows are skipped and counted as excluded_after_data_asof, so a
+    refreshed upstream file can be cut back to the recorded as-of window."""
     raw_dir, curated_dir, artifact_dir = map(Path, (raw_dir, curated_dir, artifact_dir))
     curated_dir.mkdir(parents=True, exist_ok=True)
     artifact_dir.mkdir(parents=True, exist_ok=True)
     asof = date.fromisoformat(data_asof)
+    policy = AFTER_ASOF_EXCLUDE if exclude_after_asof else AFTER_ASOF_REJECT
     results = {}
     for year in sorted(set(years)):
         source = raw_dir / f"cars_{year}.parquet"
@@ -174,7 +208,9 @@ def build(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
         manifest_file = artifact_dir / f"year_{year}_manifest.json"
         old = json.loads(manifest_file.read_text(encoding="utf-8")) if manifest_file.exists() else {}
         if (failure_after_rows is None and old.get("source_sha256") == digest
-                and old.get("data_asof") == data_asof and fingerprints_match(old, curated_dir)):
+                and old.get("data_asof") == data_asof
+                and old.get("after_asof_policy", AFTER_ASOF_REJECT) == policy
+                and fingerprints_match(old, curated_dir)):
             results[str(year)] = {"status": "skipped", **old}
             continue
         attempt = uuid.uuid4().hex
@@ -187,7 +223,7 @@ def build(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
         journal = {"year": year, "attempt_id": attempt, "started_at": now(), "status": "running", "source_sha256": digest}
         write_json(journal_file, journal)
         handles, counts, reasons, samples = {}, Counter(), Counter(), []
-        input_rows, accepted = 0, 0
+        input_rows, accepted, excluded = 0, 0, 0
         min_date, max_date = None, None
         try:
             for ordinal, raw in enumerate(source_rows(source), 1):
@@ -195,6 +231,9 @@ def build(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
                 try:
                     values = normalize(raw, year, asof)
                 except ValueError as exc:
+                    if exclude_after_asof and str(exc) == "after_data_asof":
+                        excluded += 1
+                        continue
                     reasons[str(exc)] += 1
                     if len(samples) < 50:
                         samples.append({"source_row": ordinal, "reason": str(exc)})
@@ -215,6 +254,7 @@ def build(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
                 handle.close()
             dq = {"year": year, "source_sha256": digest, "input_rows": input_rows,
                   "accepted_rows": accepted, "rejected_rows": sum(reasons.values()),
+                  "after_asof_policy": policy, "excluded_after_data_asof": excluded,
                   "reasons": dict(reasons), "rejected_samples": samples,
                   "duplicate_policy": "Preserve all source rows; no visible-field deduplication",
                   "source_identity": ["source_sha256", "source_row"],
@@ -229,6 +269,8 @@ def build(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
                                      "rows": counts[month], "bytes": file.stat().st_size, "sha256": sha256(file)})
             manifest = {"year": year, "source_sha256": digest, "source_url": meta.get("source_url"),
                         "license": meta.get("license"), "data_asof": data_asof, "rows": accepted,
+                        "after_asof_policy": policy, "excluded_after_data_asof": excluded,
+                        "snapshot": snapshot_status(year, digest, input_rows),
                         "min_date": min_date, "max_date": max_date,
                         "columns": list(TSV_COLUMNS), "partitions": ["registration_year", "registration_month"],
                         "null_marker": NULL, "files": file_records, "built_at": now()}
@@ -258,18 +300,26 @@ def build(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
                     handle.close()
             remove_owned(staging, staging_parent)
     # Oracle is calculated again from the raw source, never by reading the TSV.
-    oracle_summary = generate_oracle(raw_dir, artifact_dir, years, data_asof)
+    oracle_summary = generate_oracle(raw_dir, artifact_dir, years, data_asof, exclude_after_asof)
     report = {"created_at": now(), "data_asof": data_asof, "years": results, "oracle": oracle_summary}
     write_json(artifact_dir / "build_summary.json", report)
     return report
 
 
-def oracle_counts(raw_dir: Path, years: list[int], data_asof: str) -> Counter:
+def oracle_counts(raw_dir: Path, years: list[int], data_asof: str,
+                  exclude_after_asof: bool = False, excluded: Counter | None = None) -> Counter:
     counts = Counter()
     asof = date.fromisoformat(data_asof)
     for year in sorted(set(years)):
         for row in source_rows(Path(raw_dir) / f"cars_{year}.parquet"):
-            values = normalize(row, year, asof)
+            try:
+                values = normalize(row, year, asof)
+            except ValueError as exc:
+                if exclude_after_asof and str(exc) == "after_data_asof":
+                    if excluded is not None:
+                        excluded[year] += 1
+                    continue
+                raise
             counts[(year, int(values[0][5:7]), values[2], values[5], values[6])] += 1
     return counts
 
@@ -281,8 +331,10 @@ def write_table(path: Path, header: tuple, rows) -> None:
         writer.writerows(rows)
 
 
-def generate_oracle(raw_dir: Path, artifact_dir: Path, years: list[int], data_asof: str) -> dict:
-    counts = oracle_counts(raw_dir, years, data_asof)
+def generate_oracle(raw_dir: Path, artifact_dir: Path, years: list[int], data_asof: str,
+                    exclude_after_asof: bool = False) -> dict:
+    excluded = Counter()
+    counts = oracle_counts(raw_dir, years, data_asof, exclude_after_asof, excluded)
     monthly, maker, fuel, month_maker_fuel, dimensions = Counter(), Counter(), Counter(), Counter(), Counter()
     for (year, month, brand, energy, state), n in counts.items():
         monthly[(year, month)] += n
@@ -305,7 +357,10 @@ def generate_oracle(raw_dir: Path, artifact_dir: Path, years: list[int], data_as
     summary = {"rows": sum(counts.values()), "month_maker_fuel_groups": len(month_maker_fuel),
                "month_maker_fuel_state_groups": len(counts), "month_groups": len(monthly),
                "expected_aggregate_rows": len(dimensions), "years": sorted(set(years)),
-               "data_asof": data_asof, "full_year_comparison_warning": "2026 is partial year; compare matched available months only",
+               "data_asof": data_asof,
+               "after_asof_policy": AFTER_ASOF_EXCLUDE if exclude_after_asof else AFTER_ASOF_REJECT,
+               "excluded_after_data_asof": {str(y): excluded[y] for y in sorted(set(years))},
+               "full_year_comparison_warning": "2026 is partial year; compare matched available months only",
                "monthly": [{"year": y, "month": m, "registrations": n} for (y, m), n in sorted(monthly.items())],
                "method": "Python Counter from a separate pass over raw Parquet, not curated TSV or Hive SQL"}
     write_json(artifact_dir / "expected_aggregates_summary.json", summary)
@@ -313,12 +368,14 @@ def generate_oracle(raw_dir: Path, artifact_dir: Path, years: list[int], data_as
 
 
 def check(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int], data_asof: str = "2026-08-31") -> dict:
-    observed, reports = Counter(), {}
+    observed, reports, declared_exclusions = Counter(), {}, {}
     for year in sorted(set(years)):
         manifest = json.loads((artifact_dir / f"year_{year}_manifest.json").read_text(encoding="utf-8"))
         digest = sha256(raw_dir / f"cars_{year}.parquet")
         if digest != manifest["source_sha256"] or not fingerprints_match(manifest, curated_dir):
             raise ValueError(f"Source/output fingerprint mismatch for {year}")
+        policy = manifest.get("after_asof_policy", AFTER_ASOF_REJECT)
+        declared_exclusions[year] = (policy, int(manifest.get("excluded_after_data_asof", 0)))
         seen = set()
         for record in manifest["files"]:
             file = curated_dir / record["path"]
@@ -341,10 +398,20 @@ def check(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
             if count != record["rows"]:
                 raise ValueError("Partition row-count mismatch")
         expected_rows = pq.ParquetFile(raw_dir / f"cars_{year}.parquet").metadata.num_rows
-        if len(seen) != expected_rows or min(seen) != 1 or max(seen) != expected_rows:
+        excluded_rows = declared_exclusions[year][1]
+        if (len(seen) + excluded_rows != expected_rows or min(seen) < 1 or max(seen) > expected_rows
+                or (not excluded_rows and (min(seen) != 1 or max(seen) != expected_rows))):
             raise ValueError("Missing source rows or ordinal outside source range")
-        reports[str(year)] = {"rows": len(seen), "unique_source_row_identities": len(seen), "files": len(manifest["files"])}
-    expected = oracle_counts(raw_dir, years, data_asof)
+        reports[str(year)] = {"rows": len(seen), "unique_source_row_identities": len(seen), "files": len(manifest["files"]),
+                              "after_asof_policy": declared_exclusions[year][0],
+                              "excluded_after_data_asof": excluded_rows}
+    policies = {policy for policy, _ in declared_exclusions.values()}
+    if len(policies) > 1:
+        raise ValueError("Years were built with different after-asof policies; rebuild them together")
+    # The declared exclusion count needs no separate recount: rows + excluded must equal
+    # the Parquet row count (above), and every kept row must match the oracle (below),
+    # so a row hidden as "excluded" or an excluded row kept both fail here.
+    expected = oracle_counts(raw_dir, years, data_asof, AFTER_ASOF_EXCLUDE in policies)
     if observed != expected:
         raise ValueError("Curated aggregates differ from independent raw-data oracle")
     result = {"checked_at": now(), "status": "passed", "rows": sum(observed.values()),
@@ -364,12 +431,20 @@ def main() -> None:
     parser.add_argument("--artifact-dir", type=Path, default=WAREHOUSE / "artifacts/python")
     parser.add_argument("--data-asof", default=SOURCES["data_asof"])
     parser.add_argument("--refresh", action="store_true")
+    parser.add_argument("--exclude-after-asof", action="store_true",
+                        help="Skip and count rows dated after --data-asof instead of failing the year "
+                             "(for an official file refreshed past the recorded snapshot)")
     parser.add_argument("--failure-after-rows", type=int)
     args = parser.parse_args()
     if args.command == "download":
         result = download(args.raw_dir, args.years, args.refresh)
+        for item in result.values():
+            snapshot = item.get("snapshot") or {}
+            if snapshot.get("matches_recorded_snapshot") is False:
+                print("WARNING " + snapshot["message"], file=sys.stderr)
     elif args.command == "build":
-        result = build(args.raw_dir, args.curated_dir, args.artifact_dir, args.years, args.data_asof, args.failure_after_rows)
+        result = build(args.raw_dir, args.curated_dir, args.artifact_dir, args.years, args.data_asof,
+                       args.failure_after_rows, args.exclude_after_asof)
     else:
         result = check(args.raw_dir, args.curated_dir, args.artifact_dir, args.years, args.data_asof)
     print(json.dumps(result, ensure_ascii=False, indent=2))

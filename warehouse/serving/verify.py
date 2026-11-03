@@ -73,8 +73,29 @@ def capture_plans(catalog):
             "interpretation":"Actual plans for 1536 aggregate rows. These are inspection evidence, not a benchmark or an index speedup claim."}
 
 
+COMMITTED = Path(__file__).with_name("evidence") / "20260918" / "acceptance.json"
+
+
+def compare_with_committed(report, committed):
+    """Fields a fresh run must reproduce exactly; timestamps and EXPLAIN text may differ."""
+    problems = []
+    for key in ["status", "tests", "exact_hive_python_mysql_groups", "query_reconciliation_count", "explain_cases"]:
+        if report.get(key) != committed.get(key):
+            problems.append(f"{key}: fresh {report.get(key)!r} != committed {committed.get(key)!r}")
+    if report["query_reconciliations"] != committed["query_reconciliations"]:
+        problems.append("query_reconciliations: names, row counts or pass flags differ")
+    for key in ["version", "hashes", "represented_registration_rows", "mysql_aggregate_rows"]:
+        if report["source"].get(key) != committed["source"].get(key):
+            problems.append(f"source.{key} differs")
+    return problems
+
+
 def main():
+    import argparse
     import os
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check",action="store_true",help="also fail unless the fresh run reproduces evidence/20260918/acceptance.json")
+    args=parser.parse_args()
     os.environ["JPJ_MYSQL_INTEGRATION"]="1"
     ARTIFACTS.mkdir(parents=True,exist_ok=True)
     stream=io.StringIO()
@@ -99,6 +120,11 @@ def main():
             "scope":"Frozen aggregate serving; MySQL does not store the 1436804 registration detail rows."}
     (ARTIFACTS/"acceptance.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps({k:report[k] for k in ["status","mysql_version","tests","exact_hive_python_mysql_groups","query_reconciliation_count","explain_cases"]},indent=2))
+    if args.check:
+        problems=compare_with_committed(report,json.loads(COMMITTED.read_text(encoding="utf-8")))
+        if problems:
+            raise SystemExit("MISMATCH with committed acceptance evidence:\n" + "\n".join(problems))
+        print("ok: fresh MySQL acceptance matches warehouse/serving/evidence/20260918/acceptance.json")
 
 
 if __name__=="__main__":main()

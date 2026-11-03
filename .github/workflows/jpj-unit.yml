@@ -4,11 +4,14 @@ on:
   push:
     paths:
       - 'warehouse/**'
+      - 'scripts/serve.py'
       - '.github/workflows/jpj-unit.yml'
   pull_request:
     paths:
       - 'warehouse/**'
+      - 'scripts/serve.py'
       - '.github/workflows/jpj-unit.yml'
+  workflow_dispatch:
 
 jobs:
   unit:
@@ -28,5 +31,42 @@ jobs:
         run: python -m unittest discover -s warehouse/cluster/tests -v
       - name: MySQL serving input and query contract tests
         run: python -m unittest discover -s warehouse/serving/tests -p 'test_contract.py' -v
+      - name: verify --check rejects drift from the committed acceptance evidence
+        run: python -m unittest discover -s warehouse/serving/selftest -v
       # Full HDFS/Hive/YARN integration is run separately against official data.
       # A green unit job alone is not evidence of distributed execution.
+
+  mysql-acceptance:
+    # Re-runs the README's MySQL acceptance (30 tests, 1,536 three-way aggregates,
+    # 130 query reconciliations) against a real MySQL 8.4.6 on every change,
+    # instead of relying only on the committed evidence/20260918/acceptance.json.
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4.6@sha256:869218921e61d6c3c89820955d63cca42971f0e3e6c1e2792247bbd944ebc6e9
+        env:
+          # Throwaway root password for a service container that lives only for this job.
+          MYSQL_ROOT_PASSWORD: ci-ephemeral-root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -pci-ephemeral-root"
+          --health-interval 5s --health-timeout 5s --health-retries 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r warehouse/serving/requirements.txt
+      - name: Schema and least-privilege reader/writer users
+        env:
+          JPJ_MYSQL_ROOT_PASSWORD: ci-ephemeral-root
+        run: python -m warehouse.serving.provision --host 127.0.0.1 --port 3306
+      - name: Import the verified frozen snapshot
+        run: python -m warehouse.serving.store
+      - name: All 30 serving tests, none skipped
+        env:
+          JPJ_MYSQL_INTEGRATION: '1'
+        run: python -m unittest discover -s warehouse/serving/tests -v
+      - name: Acceptance run must reproduce evidence/20260918/acceptance.json
+        run: python -m warehouse.serving.verify --check

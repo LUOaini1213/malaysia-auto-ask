@@ -38,8 +38,9 @@ Python 3.10+ 和 `jpj/requirements.txt` 中的 PyArrow 用于公共数据处理�
 ```powershell
 python -m pip install -r warehouse/jpj/requirements.txt
 python warehouse/jpj/pipeline.py download
-python warehouse/jpj/pipeline.py build
+python warehouse/jpj/pipeline.py build --exclude-after-asof
 python warehouse/jpj/pipeline.py check
+python warehouse/jpj/compare_snapshot.py
 python -m unittest discover -s warehouse/jpj/tests -v
 python -m unittest discover -s warehouse/jpj/hive -p "test_*.py" -v
 
@@ -49,6 +50,8 @@ python warehouse/jpj/hive/run_hive.py
 ```
 
 在 Linux 中用 `bash warehouse/cluster/start.sh` 启动，随后运行相同的 Python 命令。
+
+官方 URL 始终提供最新文件，不是 2026-09-17 的快照。`jpj/data_sources.json` 的 `snapshot` 记录了当时两份文件的 SHA-256 和行数，`download` 与 `build` 发现不一致时会报 `SOURCE_DIFFERS_FROM_RECORDED_SNAPSHOT`。2026-10 起 `cars_2026.parquet` 已含 9 月记录：默认 `build` 会因 `after_data_asof` 让整年 DQ 失败（保持原设计），加 `--exclude-after-asof` 则跳过截至日之后的行并计数，`check` 独立重数这些被排除的行。2026-11-03 按上面的命令复跑：2026 年文件 640,875 行，排除 74,259 行，保留 1,436,804 行，独立 Python 汇总的 1,536 项与冻结输入逐项相同（[记录](evidence/refresh_check_20261103.json)）；CI 的 `jpj-reproduce.yml` 每次改动 `warehouse/jpj/` 时重做这一步。若发布方修订了截至日之前的记录，这一步会失败。
 
 再次运行 `build` 会检查源文件及产物指纹；下载端默认使用经过校验的本地快照。拉取下一次官方更新时，先核对 `jpj/data_sources.json` 中的发布范围和截至日期，再运行 `download --refresh` 和 `build --data-asof YYYY-MM-DD`。新增年份也要先在来源清单中登记官方 URL。
 
@@ -74,8 +77,12 @@ python warehouse/jpj/hive/run_hive.py
 pwsh -NoProfile -File warehouse/cluster/stop.ps1
 ```
 
-## 面试时能解释什么
+## 值得审阅的设计决策
 
-从来源的登记口径和合法重复行开始，展示数据为什么按年月分区；说明一次中断如何避免发布半个年度，以及第二次运行为什么不会重复累计；然后展示真实 YARN 应用和 SQL 结果如何与独立 Python 汇总核对。当前实现是在 AI 辅助下补做并验证的单节点项目，不能替代独立掌握、生产集群运维经验或未做过的 Spark、Doris、Kettle 经历。
+- 登记口径与合法重复行：公开字段相同的两行可能是两笔真实登记，所以用（文件 SHA-256，源文件行号）做来源身份，不按可见字段去重。
+- 按年月分区、按年发布：一次中断不会发布半个年度，未变化的年度跳过，第二次运行不会重复累计。
+- 验收不只看退出码：真实 YARN 应用终态、Hive 实际输出与独立 Python 汇总逐项核对后才写 `status: passed`。
+
+范围：单节点实验集群，AI 辅助开发；不涉及生产集群运维，也没有使用 Spark、Doris 或 Kettle。
 
 技术参考：[Apache Hive 安装](https://hive.apache.org/docs/latest/admin/manual-installation/)、[Hive DDL](https://hive.apache.org/docs/latest/language/languagemanual-ddl/)、[Hadoop 单节点配置](https://hadoop.apache.org/docs/r3.3.6/hadoop-project-dist/hadoop-common/SingleCluster.html)。

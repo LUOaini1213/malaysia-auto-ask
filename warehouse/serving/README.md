@@ -18,6 +18,8 @@ $jpjPython = 'warehouse/runtime/mysql-venv/Scripts/python.exe'
 # 浏览器 http://127.0.0.1:8777/
 ```
 
+已有自己的 MySQL 8.4（不用 Docker/WSL）时，用 `JPJ_MYSQL_ROOT_PASSWORD=... python -m warehouse.serving.provision --host 127.0.0.1 --port 3306` 代替 `ops start`：建库建表、生成 reader/writer 随机密码并写入被 Git 忽略的 `runtime/mysql-serving/config.json`，不打印密码。CI 的 `mysql-acceptance` 作业就是这样在 MySQL 8.4.6 服务容器上运行的。
+
 Linux 对应 venv 解释器为 `warehouse/runtime/mysql-venv/bin/python`；生命周期脚本在 Linux 直接调用 Docker。此次真实验收环境是 Windows + WSL Ubuntu-24.04；没有把 Linux 原生启动写成已验证结果。无需为查询层重跑 Hive 或再次下载明细。冻结输入与独立 Python 汇总均随代码保留。
 
 `ops start` 创建专属容器 `jpj-mysql-serving-20260918`、卷 `jpj-mysql-serving-20260918-data`。固定官方镜像：
@@ -83,8 +85,10 @@ MySQL 仅映射 `127.0.0.1:13306`，限制 2 CPU、1.5 GiB 内存、256 MiB buff
 ```powershell
 $env:JPJ_MYSQL_INTEGRATION='1'
 & $jpjPython -m unittest discover -s warehouse/serving/tests -v
-& $jpjPython -m warehouse.serving.verify
+& $jpjPython -m warehouse.serving.verify --check
 ```
+
+`--check` 要求这次运行与提交的 `evidence/20260918/acceptance.json` 一致（30 项运行、0 跳过、1,536 组、同样的 130 项核对及其行数），否则失败。CI（`.github/workflows/jpj-unit.yml` 的 `mysql-acceptance`）每次改动 `warehouse/` 或 `scripts/serve.py` 都重跑这三条命令。
 
 2026-09-18 实际 MySQL 8.4.6 验收：
 

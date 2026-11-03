@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-11-03",
+  "commands": [
+    "python warehouse/jpj/pipeline.py download",
+    "python warehouse/jpj/pipeline.py build --exclude-after-asof",
+    "python warehouse/jpj/pipeline.py check",
+    "python warehouse/jpj/compare_snapshot.py --record <this file>"
+  ],
+  "data_asof": "2026-08-31",
+  "check_status": "passed",
+  "years": {
+    "2025": {
+      "source_sha256": "bde5d31a7ed5121dcac2ec9920ae587e936cb579f71c79a1222ce62d6cae13d1",
+      "rows": 870188,
+      "excluded_after_data_asof": 0,
+      "after_asof_policy": "exclude_and_count",
+      "matches_recorded_snapshot": true
+    },
+    "2026": {
+      "source_sha256": "6056f6d8e9038d64817ffe8fb46f169ec1ec76c9106ea92773eea4c69ae95385",
+      "rows": 566616,
+      "excluded_after_data_asof": 74259,
+      "after_asof_policy": "exclude_and_count",
+      "matches_recorded_snapshot": false
+    }
+  },
+  "rows": 1436804,
+  "aggregate_rows": 1536,
+  "committed_aggregate_rows": 1536,
+  "only_in_fresh": 0,
+  "only_in_committed": 0,
+  "fresh_aggregates_sha256_lf": "02bbb334e24a6ec2b1805f92bdd6d4996e391536dea504f65e3a00c31fd08c35",
+  "committed_aggregates_sha256_lf": "02bbb334e24a6ec2b1805f92bdd6d4996e391536dea504f65e3a00c31fd08c35",
+  "identical": true
+}

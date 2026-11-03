@@ -11,6 +11,15 @@
     "2025": "https://storage.data.gov.my/transportation/cars_2025.parquet",
     "2026": "https://storage.data.gov.my/transportation/cars_2026.parquet"
   },
+  "snapshot": {
+    "recorded_on": "2026-09-17",
+    "evidence": "warehouse/evidence/20260917_152407_7272aa",
+    "note": "The URLs above always serve the latest official file. These are the files the committed evidence was built from; pipeline.py download reports any difference.",
+    "files": {
+      "2025": {"sha256": "bde5d31a7ed5121dcac2ec9920ae587e936cb579f71c79a1222ce62d6cae13d1", "parquet_rows": 870188},
+      "2026": {"sha256": "6a1a1e8d50126b807429997e31df1102a1e367a3983f089a49a1da9aed66f647", "parquet_rows": 566616}
+    }
+  },
   "source_columns": ["date_reg", "type", "maker", "model", "colour", "fuel", "state"],
   "row_grain": "One registration transaction, without a published unique transaction ID",
   "caveats": [
