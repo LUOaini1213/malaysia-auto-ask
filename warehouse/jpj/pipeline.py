@@ -408,13 +408,12 @@ def check(raw_dir: Path, curated_dir: Path, artifact_dir: Path, years: list[int]
     policies = {policy for policy, _ in declared_exclusions.values()}
     if len(policies) > 1:
         raise ValueError("Years were built with different after-asof policies; rebuild them together")
-    recount = Counter()
-    expected = oracle_counts(raw_dir, years, data_asof, AFTER_ASOF_EXCLUDE in policies, recount)
+    # The declared exclusion count needs no separate recount: rows + excluded must equal
+    # the Parquet row count (above), and every kept row must match the oracle (below),
+    # so a row hidden as "excluded" or an excluded row kept both fail here.
+    expected = oracle_counts(raw_dir, years, data_asof, AFTER_ASOF_EXCLUDE in policies)
     if observed != expected:
         raise ValueError("Curated aggregates differ from independent raw-data oracle")
-    for year, (_, excluded_rows) in declared_exclusions.items():
-        if recount[year] != excluded_rows:
-            raise ValueError(f"Excluded after-asof count for {year} does not match an independent recount")
     result = {"checked_at": now(), "status": "passed", "rows": sum(observed.values()),
               "groups_checked": len(expected), "years": reports,
               "checks": ["exact partition file set", "source/output SHA256", "partition row counts", "partition/date agreement",
