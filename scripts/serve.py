@@ -110,7 +110,8 @@ def render_body(r: dict) -> str:
     ]
     rows = r.get("rows") or []
     if not rows:
-        return "".join(lines) + "</tr></table><p>无结果</p>" + render_lineage(r.get("lineage"))
+        note = r.get("empty_result") or "无结果"
+        return "".join(lines) + '</tr></table><div class="warn">%s</div>' % escape(note) + render_lineage(r.get("lineage"))
     keys = list(rows[0].keys())
     lines.append("".join("<th>%s</th>" % escape(k) for k in keys) + "</tr>")
     for row in rows[:20]:
@@ -236,7 +237,16 @@ if __name__ == "__main__":
     if "--demo" not in sys.argv:
         # The default website now serves the verified JPJ -> MySQL snapshot.
         # Legacy deterministic simulation remains explicit at /demo or --demo.
-        from warehouse.serving.service import main
+        try:
+            from warehouse.serving.service import main
+        except ImportError as exc:
+            raise SystemExit(
+                "The default real-data website needs third-party packages and a running MySQL "
+                f"({exc.name or exc} is missing).\n"
+                "  Real JPJ data: pip install -r warehouse/serving/requirements.txt, then follow "
+                "warehouse/serving/README.md\n"
+                "  Standard-library demo: python scripts/serve.py --demo"
+            ) from None
         if len(sys.argv) > 1 and sys.argv[1].isdigit():
             sys.argv = [sys.argv[0], "--port", sys.argv[1]]
         main()

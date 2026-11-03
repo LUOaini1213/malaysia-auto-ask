@@ -169,6 +169,15 @@ class QuestionRegressions(unittest.TestCase):
         self.assertFalse(result["hitl"])
         self.assertEqual(result["params"]["energy"], "ev")
         self.assertEqual(result["rows"], [])
+        # An empty table must say why, and must not read as "the real market sold 0".
+        note = result["empty_result"]
+        self.assertTrue(note.startswith("EMPTY_RESULT:"))
+        self.assertIn("brand=Toyota", note)
+        self.assertIn("energy=ev", note)
+        self.assertIn("不代表真实市场为 0", note)
+        self.assertIn(note, result["trace"]["notes"])
+        # Answers with rows carry no such note.
+        self.assertNotIn("empty_result", ask("2025全年协会口径TIV哪家第一", db_path=self.path))
 
     def test_ev_monthly_trend_excludes_other_energy(self):
         ev = ask("2025年纯电TIV各月趋势", db_path=self.path)

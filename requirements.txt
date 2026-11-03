@@ -1,6 +1,9 @@
-# No third-party runtime dependencies: the demo, the web page, the evaluation
-# and the ablation use only the Python standard library (sqlite3, http.server,
-# json, re, unittest). Python 3.10 or newer.
+# The legacy simulation demo (python scripts/serve.py --demo, ask_cli.py, eval.py,
+# ablation.py and tests/) uses only the Python standard library. Python 3.10+.
+#
+# The default `python scripts/serve.py` serves the real JPJ data and needs
+# warehouse/serving/requirements.txt plus a running MySQL; see
+# warehouse/serving/README.md. The JPJ pipeline needs warehouse/jpj/requirements.txt.
 #
 # Optional, for the pytest runner instead of `python -m unittest`:
 # pytest>=7

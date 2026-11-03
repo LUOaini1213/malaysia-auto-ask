@@ -103,7 +103,10 @@ METRICS = [
     ),
 ]
 
-# Public year anchors (units). 2025 TIV 820,752; 2024 TIV 816,747.
+# Year anchors (units), described as TIV-style: 2025 total 820,752; 2024 total 816,747.
+# Source links were not kept. 2025 Perodua 359,904 and BYD 14,407 equal the JPJ 2025
+# registration counts in warehouse/ exactly (scripts/anchor_vs_jpj.py), so some anchors are
+# registration-based, not wholesale. 2024 BYD 8,000 and Chery 9,000 are rounded placeholders.
 BRAND_YEAR = {
     2024: {
         "Perodua": 358102,
