@@ -51,7 +51,7 @@ python warehouse/jpj/hive/run_hive.py
 
 在 Linux 中用 `bash warehouse/cluster/start.sh` 启动，随后运行相同的 Python 命令。
 
-官方 URL 始终提供最新文件，不是 2026-09-17 的快照。`jpj/data_sources.json` 的 `snapshot` 记录了当时两份文件的 SHA-256 和行数，`download` 与 `build` 发现不一致时会报 `SOURCE_DIFFERS_FROM_RECORDED_SNAPSHOT`。2026-10 起 `cars_2026.parquet` 已含 9 月记录：默认 `build` 会因 `after_data_asof` 让整年 DQ 失败（保持原设计），加 `--exclude-after-asof` 则跳过截至日之后的行并计数，`check` 独立重数这些被排除的行。2026-11-03 按上面的命令复跑：2026 年文件 640,875 行，排除 74,259 行，保留 1,436,804 行，独立 Python 汇总的 1,536 项与冻结输入逐项相同（[记录](evidence/refresh_check_20261103.json)）；CI 的 `jpj-reproduce.yml` 每次改动 `warehouse/jpj/` 时重做这一步。若发布方修订了截至日之前的记录，这一步会失败。
+官方 URL 始终提供最新文件，不是 2026-09-17 的快照。`jpj/data_sources.json` 的 `snapshot` 记录了当时两份文件的 SHA-256 和行数，`download` 与 `build` 发现不一致时会报 `SOURCE_DIFFERS_FROM_RECORDED_SNAPSHOT`。2026-10 起 `cars_2026.parquet` 已含 9 月记录：默认 `build` 会因 `after_data_asof` 让整年 DQ 失败（保持原设计），加 `--exclude-after-asof` 则跳过截至日之后的行并计数，`check` 要求保留行数加排除行数等于 Parquet 行数，且保留的行与独立 Python 汇总逐项相等。2026-11-03 按上面的命令复跑：2026 年文件 640,875 行，排除 74,259 行，保留 1,436,804 行，独立 Python 汇总的 1,536 项与冻结输入逐项相同（[记录](evidence/refresh_check_20261103.json)）；CI 的 `jpj-reproduce.yml` 每次改动 `warehouse/jpj/` 时重做这一步。若发布方修订了截至日之前的记录，这一步会失败。
 
 再次运行 `build` 会检查源文件及产物指纹；下载端默认使用经过校验的本地快照。拉取下一次官方更新时，先核对 `jpj/data_sources.json` 中的发布范围和截至日期，再运行 `download --refresh` 和 `build --data-asof YYYY-MM-DD`。新增年份也要先在来源清单中登记官方 URL。
 
