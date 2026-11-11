@@ -366,6 +366,18 @@ class PipelineContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "independent raw-data oracle"):
             check(self.raw, self.curated, self.artifacts, [2026], data_asof=ASOF)
 
+    def test_exclusion_covers_only_after_asof_rows(self) -> None:
+        # Opting in must not turn any other bad row into a counted exclusion:
+        # the year still fails DQ and nothing is published.
+        self.write_source(2026, [registration("2026-08-31"), registration("2026-09-01"),
+                                 registration("2026-08-30", type="lorry")])
+        with self.assertRaisesRegex(ValueError, "failed DQ"):
+            self.run_build([2026], exclude_after_asof=True)
+        self.assertEqual(self.tsv_files(2026), [])
+        report = self.assert_rejected_report(2026, 1)
+        self.assertEqual(report["reasons"], {"unknown_vehicle_type": 1})
+        self.assertEqual(report["excluded_after_data_asof"], 1)
+
     def test_policy_change_rebuilds_instead_of_skipping(self) -> None:
         self.write_source(2026, [registration("2026-08-31"), registration("2026-09-01")])
         self.run_build([2026], exclude_after_asof=True)
