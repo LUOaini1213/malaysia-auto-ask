@@ -1,4 +1,6 @@
 """All SQL aggregations must agree with an independent, row-by-row oracle."""
+import html
+import importlib.util
 import itertools
 import sqlite3
 import sys
@@ -176,6 +178,14 @@ class QuestionRegressions(unittest.TestCase):
         self.assertIn("energy=ev", note)
         self.assertIn("不代表真实市场为 0", note)
         self.assertIn(note, result["trace"]["notes"])
+        # The EVs it names are exactly the demo's EV models, written out here, not derived.
+        self.assertIn("energy=ev 的车型只有：Proton e.MAS 5、BYD Atto 3、BYD Seal。", note)
+        # The demo page shows the same note instead of a bare "无结果".
+        spec = importlib.util.spec_from_file_location(
+            "demo_serve", Path(__file__).resolve().parents[1] / "scripts" / "serve.py")
+        serve = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(serve)
+        self.assertIn(html.escape(note), serve.render_body(result))
         # Answers with rows carry no such note.
         self.assertNotIn("empty_result", ask("2025全年协会口径TIV哪家第一", db_path=self.path))
 

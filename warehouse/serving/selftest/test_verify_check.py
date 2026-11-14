@@ -32,6 +32,9 @@ class VerifyCheck(unittest.TestCase):
             lambda r: r["query_reconciliations"].pop(),
             lambda r: r["query_reconciliations"][0].update(rows=19),
             lambda r: r["source"].update(represented_registration_rows=1511063),
+            lambda r: r["source"]["hashes"].update(oracle_aggregates_sha256="0" * 64),
+            lambda r: r["source"].update(mysql_aggregate_rows=1535),
+            lambda r: r["source"].update(version="another-run"),
         ):
             fresh = copy.deepcopy(self.committed)
             mutate(fresh)
