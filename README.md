@@ -1,8 +1,15 @@
 # malaysia-auto-ask
 
 [![ci](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml/badge.svg)](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/ci.yml)
+[![JPJ pipeline unit tests](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/jpj-unit.yml/badge.svg)](https://github.com/LUOaini1213/malaysia-auto-ask/actions/workflows/jpj-unit.yml)
 
-## JPJ registration analytics: Python, SQL and MySQL
+Two projects share this repo:
+
+- **JPJ registration warehouse (real data, current).** 1,436,804 official JPJ car registrations (2025-01 to 2026-08) go through Python validation and a single-node HDFS / Hive / YARN run into 1,536 aggregates, served read-only from MySQL 8.4.6 through a fixed-SQL API and a local web page. Hive, an independent Python pass and MySQL agree on all 1,536 aggregates, and 130 query reconciliations pass; CI repeats the MySQL acceptance and rebuilds the 1,536 aggregates from the official files.
+- **Ask-the-data demo (synthetic data, legacy).** A rule parser, whitelisted SQL templates and a guard that stops on ambiguous questions: 266 template × filter combinations match an independent oracle; on a self-written 30-question suite it answers 22 and stops 8, and with the guard off all 8 get a silent answer.
+- **Limits.** The Hive/YARN run is a one-off single-node lab run (2026-09-17 evidence), not re-run in CI; MySQL stores aggregates, not the 1.4M records; the demo's monthly, regional and channel splits are synthetic, and two of its 2025 "TIV" anchors equal JPJ registration counts exactly ([comparison](#演示锚点与仓内-jpj-登记数对照)). Questions and gold answers are self-written. Development was AI-assisted.
+
+## JPJ registration warehouse: Python, Hive, SQL and MySQL
 
 The current project processes **1,436,804 official JPJ registration records** covering January 2025 to August 2026. Python validation and a single-node HDFS / Hive / YARN pipeline produce **1,536 aggregate rows**, served through MySQL 8.4.6, a read-only SQL API and a local web interface. Results include metric definitions, source versions, hashes and parameterized SQL. The original synthetic-data demo remains separately labelled under `/demo`.
 
@@ -13,11 +20,17 @@ The current project processes **1,436,804 official JPJ registration records** co
 
 Source code, frozen aggregate inputs and verification evidence are included here. The web service runs locally; this repository is not a hosted database service. MySQL stores aggregates, not the original registration-level records. Development was AI-assisted; the evidence distinguishes deterministic tests from model performance.
 
-**默认网页现已接入真实 JPJ 登记数据。** Python / Hive / YARN 的已验收汇总通过版本化事务导入 MySQL 8.4.6，再由固定 SQL API 和网页查询。每次结果展示登记口径、月份、SQL、来源版本和文件哈希。旧 SQLite 模拟演示保留在显式 `/demo` 入口，不混入真实结果。两套解析均为规则实现，不调用大模型。
+The real-data page runs at `http://127.0.0.1:8777/` after the MySQL setup in [warehouse/serving/README.md](warehouse/serving/README.md); without those packages `python scripts/serve.py` explains what is missing, and `python scripts/serve.py --demo` starts the standard-library demo. The `mysql-acceptance` job in `.github/workflows/jpj-unit.yml` re-runs the 30 tests on a MySQL 8.4.6 service container and `python -m warehouse.serving.verify --check` fails unless the result equals the committed acceptance evidence. The official 2026 file has since been refreshed past the snapshot; `pipeline.py download` reports that, and `build --exclude-after-asof` cuts it back to 2026-08-31 ([re-run record](warehouse/evidence/refresh_check_20261103.json)).
 
-真实数据网页：`http://127.0.0.1:8777/`。首次启动 MySQL 与导入步骤见 [真实查询层说明](warehouse/serving/README.md)。已完成 30 项测试、1,536 项三方汇总对账和 130 项查询结果核对；[验收证据](warehouse/serving/evidence/20260918/acceptance.json) 含实际运行口径。代码与冻结汇总可在本仓库查看，网页按说明在本机启动。
+## 真实公开数据仓库（2026-09）
 
-## 旧模拟演示技术说明
+新增 [JPJ 汽车登记数据管道与数仓](warehouse/README.md)：接入官方 2025 年和 2026 年截至 8 月的 **1,436,804 条登记记录**，用 Python 校验、按年月分区后写入 HDFS，执行 Hive / YARN / Tez 作业生成 ORC 明细及月度汇总。单节点全量运行中，**20 个分区、1,536 项跨引擎汇总核对全部通过**。
+
+这条链路保留合法重复登记，支持年度快照重建、未变化批次跳过、失败后恢复及来源追踪。运行前后核对输入指纹，并确认 YARN 应用终态与实际输出。开发使用 AI 辅助；完整证据和同月份同比分析见 [本次验收报告](warehouse/evidence/20260917_152407_7272aa/result.md)。MySQL 查询层的 30 项测试、1,536 项三方汇总对账和 130 项查询核对由 CI 在 MySQL 8.4.6 服务容器上重跑。
+
+新数仓的指标是登记量。默认 `/` 与 `/desk` 已查询真实 MySQL 汇总；原模拟页移至 `/demo` 与 `/demo/desk`，也可使用 `--demo` 单独启动。MySQL 保存 **1,536 项冻结汇总**，不是重新导入 143 万条明细。下面的“无第三方包”只适用于旧模拟演示；真实链路的启动命令见 [查询层说明](warehouse/serving/README.md)。
+
+## Legacy ask-the-data demo (synthetic data) / 旧模拟演示技术说明
 
 **Ask-the-data demo for the Malaysian car market, standard library only.** A question in
 natural language becomes an intent through a deterministic rule parser (regex plus a
@@ -45,18 +58,10 @@ using Python, HDFS, Hive and YARN/Tez; its MySQL serving layer is now the defaul
 口径问句走 **词重叠检索**（`口径.md` + `metric_dict` + 血缘节点），不是向量 RAG。  
 目的：把「问数」做成可评测的最小闭环——SQL 分层、指标口径、表级血缘、停问策略各占一层，每层都能单独验。
 
-下方原有 SQLite 问数演示使用模拟月度明细；新增的真实 JPJ 数据仓库见下一节。项目用于个人开发与测试。
+下方原有 SQLite 问数演示使用模拟月度明细；真实 JPJ 数据仓库见上文。项目用于个人开发与测试。
 
 品牌全年合计按公开报道锚定（2025 年 TIV 820,752；Perodua 359,904 等）。  
 月 × 区域 × 车型是固定种子拆出来的演示数。TIV 和上牌是两列，允许对不上。
-
-## 真实公开数据仓库（2026-09）
-
-新增 [JPJ 汽车登记数据管道与数仓](warehouse/README.md)：接入官方 2025 年和 2026 年截至 8 月的 **1,436,804 条登记记录**，用 Python 校验、按年月分区后写入 HDFS，执行 Hive / YARN / Tez 作业生成 ORC 明细及月度汇总。单节点全量运行中，**20 个分区、1,536 项跨引擎汇总核对全部通过**。
-
-这条链路保留合法重复登记，支持年度快照重建、未变化批次跳过、失败后恢复及来源追踪。运行前后核对输入指纹，并确认 YARN 应用终态与实际输出。开发使用 AI 辅助；完整证据和同月份同比分析见 [本次验收报告](warehouse/evidence/20260917_152407_7272aa/result.md)。
-
-新数仓的指标是登记量。默认 `/` 与 `/desk` 已查询真实 MySQL 汇总；原模拟页移至 `/demo` 与 `/demo/desk`，也可使用 `--demo` 单独启动。MySQL 保存 **1,536 项冻结汇总**，不是重新导入 143 万条明细。下面的“无第三方包”只适用于旧模拟演示；真实链路的启动命令见 [查询层说明](warehouse/serving/README.md)。
 
 ## 怎么跑旧模拟演示
 
@@ -76,8 +81,10 @@ python scripts/serve.py --demo
 # 海外一线工作台 http://127.0.0.1:8766/desk
 ```
 
+![第一条演示命令「2025全年协会口径TIV哪家第一」的结果：走 ADS 汇总表，带口径、SQL 和表级血缘](docs/img/ask_tiv.png)
+
 无第三方包。Python 3.10+，只用标准库 sqlite3。CI（`.github/workflows/ci.yml`）在 3.10 / 3.11 / 3.12 上跑同样三条命令：
-单元测试、`eval.py --check`、`ablation.py --check`。后两条意味着**仓里提交的两份评测产物都由 CI 逐字段比对**——
+单元测试、`eval.py --check`、`ablation.py --check`（另在 Windows 3.11 上再跑一遍，并加跑 `anchor_vs_jpj.py --check`）。后两条意味着**仓里提交的两份评测产物都由 CI 逐字段比对**——
 `eval/last_run.json` 或 `eval/ablation.json` 与当前代码跑出来的结果只要差一个字段，CI 就红。
 再往前一步：README 里引用产物的数字（λ 表、口径翻转对照、λ 敏感性区间、评测表各格、公开锚点）
 由 `tests/test_readme_numbers.py` 从 README 原文里抠出来，逐个与 `eval/*.json`、`malaysia_ask/db.py`
@@ -100,8 +107,29 @@ reg[m] = λ[m] × tiv[m] + (1 − λ[m−1]) × tiv[m−1]
 - **区域**：上牌发生在终端所在州，巴生谷 1.05、东马 0.92、其余 0.98。
 - **跨年**：1 月消化的是上一年 12 月压在渠道里的货。
 
-因此年合计两套数接近（滞后基本对冲），月度背离明显——这与真实市场一致。
-λ 是假设值，不是实测。
+因此在这个模型里，年合计两套数接近（滞后基本对冲），月度背离明显。这是 λ 假设推出的结构，
+没有和真实的月度 TIV 核对过；λ 是假设值，不是实测。仓内真实登记数与演示锚点的对照见下一节。
+
+## 演示锚点与仓内 JPJ 登记数对照
+
+`python scripts/anchor_vs_jpj.py` 把 `malaysia_ask/db.py` 的 2025 年品牌锚点与本仓 JPJ 冻结汇总（2025 年 `month_maker` 行）放在一起，
+结果提交在 `eval/anchor_vs_jpj.json`，CI 用 `--check` 重算比对，`tests/test_anchor_vs_jpj.py` 再把下表与它逐格核对。
+
+| 品牌 | 演示锚点（称 TIV） | JPJ 2025 登记 | 差 |
+|------|------|------|------|
+| Perodua | 359,904 | 359,904 | 0.00% |
+| Proton | 151,564 | 151,561 | 0.00% |
+| Honda | 72,301 | 75,486 | −4.22% |
+| Toyota | 70,352 | 129,071 | −45.49% |
+| Mazda | 9,277 | 9,588 | −3.24% |
+| BYD | 14,407 | 14,407 | 0.00% |
+| Chery | 15,300 | 31,666 | −51.68% |
+| 合计（演示含 Others） | 820,752 | 870,188 | |
+
+- Perodua、BYD 两个锚点与 JPJ 登记数逐台相等，Proton 只差 3 台：这些「TIV」锚点至少部分是登记口径，而不是批发数。
+  所以演示里「TIV 与上牌在月度上背离」是模型设定，不是从真实数据里测出来的。
+- JPJ 里 Toyota 高于 Honda，与演示的先后相反。JPJ 统计数据集里的全部车型类别（含皮卡、厢式车），冻结汇总没有车型类别维度，
+  所以这一行不能直接说明乘用车排名；但下文「最挤的一对是 Honda / Toyota」只描述演示数据内部，不能拿来推断真实市场的排名稳健性。
 
 ## 演示分层
 
@@ -235,3 +263,4 @@ python scripts/eval.py --check
 - Proton 是国产车品牌；库里没有 Geely 品牌行
 
 公开锚点来源：MAA 2025 TIV 820,752；Perodua / Proton / Honda / Toyota / Mazda 等品牌年为公开报道。其余拆分是演示。
+来源链接没有随仓保存。Perodua、BYD 两个锚点与仓内 JPJ 2025 登记数相等（见上方对照）；2024 年的 BYD 8,000、Chery 9,000 是取整占位数，不是公开数。

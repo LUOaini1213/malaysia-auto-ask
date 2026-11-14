@@ -1,0 +1,34 @@
+name: JPJ rebuild from the official files
+
+# Downloads the two public JPJ Parquet files (about 1.2 MB, CC BY 4.0), rebuilds
+# the curated partitions and the independent Python oracle, and fails unless the
+# 1,536 aggregates equal warehouse/serving/inputs/expected_aggregates.tsv.
+# The official 2026 file has been refreshed past the 2026-09-17 snapshot, so the
+# build cuts it back to data_asof 2026-08-31 and counts the excluded rows.
+# A red run here can also mean the publisher revised rows dated on or before
+# 2026-08-31; compare the printed sha256 values with warehouse/jpj/data_sources.json.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'warehouse/jpj/**'
+      - '.github/workflows/jpj-reproduce.yml'
+  pull_request:
+    paths:
+      - 'warehouse/jpj/**'
+      - '.github/workflows/jpj-reproduce.yml'
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r warehouse/jpj/requirements.txt
+      - run: python warehouse/jpj/pipeline.py download
+      - run: python warehouse/jpj/pipeline.py build --exclude-after-asof
+      - run: python warehouse/jpj/pipeline.py check
+      - run: python warehouse/jpj/compare_snapshot.py

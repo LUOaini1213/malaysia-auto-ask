@@ -25,7 +25,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from warehouse.jpj.pipeline import build, check  # noqa: E402
+from warehouse.jpj.pipeline import SOURCES, build, check, snapshot_status  # noqa: E402
 
 
 ASOF = "2026-08-31"
@@ -309,6 +309,109 @@ class PipelineContractTests(unittest.TestCase):
             self.run_build([2026])
         self.assertEqual(self.tsv_files(2026), [])
         self.assert_rejected_report(2026, 1)
+
+    def test_after_asof_rows_can_be_excluded_and_counted_explicitly(self) -> None:
+        """A refreshed official file has rows past the recorded as-of date.
+
+        Opting in with exclude_after_asof cuts it back to the as-of window, records
+        how many rows were skipped, and check() accepts the count only when kept +
+        excluded equals the Parquet row count.
+        """
+        self.write_source(2026, [registration("2026-08-31"), registration("2026-09-01"),
+                                 registration("2026-08-30")])
+        result = self.run_build([2026], exclude_after_asof=True)
+        self.assertEqual(result["years"]["2026"]["rows"], 2)
+        self.assertEqual(result["years"]["2026"]["excluded_after_data_asof"], 1)
+        self.assertEqual(result["oracle"]["rows"], 2)
+        self.assertEqual(result["oracle"]["excluded_after_data_asof"], {"2026": 1})
+        dq = json.loads((self.artifacts / "year_2026_dq.json").read_text(encoding="utf-8"))
+        self.assertEqual((dq["rejected_rows"], dq["excluded_after_data_asof"]), (0, 1))
+        self.assertEqual({row["date_reg"] for row in self.rows(2026)}, {"2026-08-30", "2026-08-31"})
+        report = check(self.raw, self.curated, self.artifacts, [2026], data_asof=ASOF)
+        self.assertEqual((report["status"], report["rows"]), ("passed", 2))
+        self.assertEqual(report["years"]["2026"]["excluded_after_data_asof"], 1)
+        # A tampered exclusion count breaks kept + excluded = Parquet rows.
+        manifest_path = self.artifacts / "year_2026_manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["excluded_after_data_asof"] = 0
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        with self.assertRaises(ValueError):
+            check(self.raw, self.curated, self.artifacts, [2026], data_asof=ASOF)
+
+    def test_valid_row_relabelled_as_excluded_fails_the_oracle_check(self) -> None:
+        """check() keeps no separate recount of excluded rows; the oracle comparison covers it.
+
+        Drop a valid pre-asof row from the curated TSV and re-sign the manifest so
+        the fingerprints, the partition count and rows + excluded = Parquet rows all
+        still hold. Only the comparison with the independent raw-data oracle is left
+        to notice the missing registration, so this test fails if that comparison
+        is ever disabled.
+        """
+        self.write_source(2026, [registration("2026-08-31"), registration("2026-09-01"),
+                                 registration("2026-08-30")])
+        self.run_build([2026], exclude_after_asof=True)
+        manifest_path = self.artifacts / "year_2026_manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        record = next(r for r in manifest["files"] if r["rows"] == 2)
+        tsv = self.curated / record["path"]
+        kept = [line for line in tsv.read_bytes().splitlines(keepends=True)
+                if b"\t2026-08-30\t" not in line]
+        self.assertEqual(len(kept), 1)
+        tsv.write_bytes(b"".join(kept))
+        record.update(rows=1, bytes=tsv.stat().st_size,
+                      sha256=hashlib.sha256(tsv.read_bytes()).hexdigest())
+        manifest["rows"] = 1
+        manifest["excluded_after_data_asof"] = 2
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "independent raw-data oracle"):
+            check(self.raw, self.curated, self.artifacts, [2026], data_asof=ASOF)
+
+    def test_exclusion_covers_only_after_asof_rows(self) -> None:
+        # Opting in must not turn any other bad row into a counted exclusion:
+        # the year still fails DQ and nothing is published.
+        self.write_source(2026, [registration("2026-08-31"), registration("2026-09-01"),
+                                 registration("2026-08-30", type="lorry")])
+        with self.assertRaisesRegex(ValueError, "failed DQ"):
+            self.run_build([2026], exclude_after_asof=True)
+        self.assertEqual(self.tsv_files(2026), [])
+        report = self.assert_rejected_report(2026, 1)
+        self.assertEqual(report["reasons"], {"unknown_vehicle_type": 1})
+        self.assertEqual(report["excluded_after_data_asof"], 1)
+
+    def test_policy_change_rebuilds_instead_of_skipping(self) -> None:
+        self.write_source(2026, [registration("2026-08-31"), registration("2026-09-01")])
+        self.run_build([2026], exclude_after_asof=True)
+        with self.assertRaises((ValueError, RuntimeError)):
+            self.run_build([2026])
+
+    def test_policy_change_is_not_served_from_the_build_cache(self) -> None:
+        # Without post-asof rows both policies give the same output, so only the
+        # cache key can tell them apart: the second build must not be "skipped".
+        self.write_source(2026, [registration("2026-08-31")])
+        self.run_build([2026], exclude_after_asof=True)
+        again = self.run_build([2026])
+        self.assertNotEqual(again["years"]["2026"]["status"], "skipped")
+        self.assertEqual(again["years"]["2026"]["after_asof_policy"], "reject_year")
+
+    def test_recorded_snapshot_matches_committed_evidence(self) -> None:
+        """data_sources.json pins the files the committed 1,436,804-row evidence came from."""
+        evidence = REPOSITORY_ROOT / SOURCES["snapshot"]["evidence"]
+        total = 0
+        for year, recorded in SOURCES["snapshot"]["files"].items():
+            manifest = json.loads((evidence / f"year_{year}_manifest.json").read_text(encoding="utf-8"))
+            dq = json.loads((evidence / f"year_{year}_dq.json").read_text(encoding="utf-8"))
+            with self.subTest(year=year):
+                self.assertEqual(recorded["sha256"], manifest["source_sha256"])
+                self.assertEqual(recorded["sha256"], dq["source_sha256"])
+                self.assertEqual(recorded["parquet_rows"], dq["input_rows"])
+                self.assertEqual(recorded["parquet_rows"], manifest["rows"])
+            total += manifest["rows"]
+        self.assertEqual(total, 1436804)
+        same = snapshot_status(2026, SOURCES["snapshot"]["files"]["2026"]["sha256"])
+        self.assertTrue(same["matches_recorded_snapshot"])
+        other = snapshot_status(2026, "0" * 64, 640875)
+        self.assertFalse(other["matches_recorded_snapshot"])
+        self.assertIn("SOURCE_DIFFERS_FROM_RECORDED_SNAPSHOT", other["message"])
 
     def test_registration_outside_source_year_is_rejected(self) -> None:
         self.write_source(2026, [registration("2025-12-31")])

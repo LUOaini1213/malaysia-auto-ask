@@ -1,0 +1,105 @@
+{
+  "year": 2025,
+  "sources": {
+    "demo_anchor": "malaysia_ask/db.py BRAND_YEAR[2025]",
+    "jpj_registrations": "warehouse/evidence/20260917_152407_7272aa/hive_aggregates.tsv (month_maker rows, maker label upper-cased)"
+  },
+  "demo_total": 820752,
+  "jpj_total": 870188,
+  "brands": [
+    {
+      "brand": "Perodua",
+      "jpj_maker_label": "PERODUA",
+      "demo_anchor": 359904,
+      "jpj_registrations": 359904,
+      "difference": 0,
+      "difference_pct": 0.0,
+      "exact_match": true
+    },
+    {
+      "brand": "Proton",
+      "jpj_maker_label": "PROTON",
+      "demo_anchor": 151564,
+      "jpj_registrations": 151561,
+      "difference": 3,
+      "difference_pct": 0.0,
+      "exact_match": false
+    },
+    {
+      "brand": "Honda",
+      "jpj_maker_label": "HONDA",
+      "demo_anchor": 72301,
+      "jpj_registrations": 75486,
+      "difference": -3185,
+      "difference_pct": -4.22,
+      "exact_match": false
+    },
+    {
+      "brand": "Toyota",
+      "jpj_maker_label": "TOYOTA",
+      "demo_anchor": 70352,
+      "jpj_registrations": 129071,
+      "difference": -58719,
+      "difference_pct": -45.49,
+      "exact_match": false
+    },
+    {
+      "brand": "Mazda",
+      "jpj_maker_label": "MAZDA",
+      "demo_anchor": 9277,
+      "jpj_registrations": 9588,
+      "difference": -311,
+      "difference_pct": -3.24,
+      "exact_match": false
+    },
+    {
+      "brand": "BYD",
+      "jpj_maker_label": "BYD",
+      "demo_anchor": 14407,
+      "jpj_registrations": 14407,
+      "difference": 0,
+      "difference_pct": 0.0,
+      "exact_match": true
+    },
+    {
+      "brand": "Chery",
+      "jpj_maker_label": "CHERY",
+      "demo_anchor": 15300,
+      "jpj_registrations": 31666,
+      "difference": -16366,
+      "difference_pct": -51.68,
+      "exact_match": false
+    }
+  ],
+  "exact_matches": [
+    "Perodua",
+    "BYD"
+  ],
+  "demo_anchor_order": [
+    "Perodua",
+    "Proton",
+    "Honda",
+    "Toyota",
+    "Chery",
+    "BYD",
+    "Mazda"
+  ],
+  "jpj_order": [
+    "Perodua",
+    "Proton",
+    "Toyota",
+    "Honda",
+    "Chery",
+    "BYD",
+    "Mazda"
+  ],
+  "honda_above_toyota": {
+    "demo_anchor": true,
+    "jpj": false
+  },
+  "caveats": [
+    "JPJ counts registrations, not wholesale TIV; the demo calls its anchors TIV-style.",
+    "JPJ counts every vehicle type in the dataset (car, MPV, jeep, pick-up, window van); the committed aggregates have no vehicle-type split, so Toyota includes Hilux-type pick-ups.",
+    "Brand labels are matched by upper-cased maker name only; no group consolidation."
+  ]
+}

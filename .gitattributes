@@ -1,0 +1,7 @@
+# Text is stored and checked out with LF on every OS, so hashes and byte comparisons
+# of committed text agree between Windows and Linux. warehouse/.gitattributes keeps
+# the frozen evidence byte-for-byte (-text); those rules take precedence there.
+* text=auto eol=lf
+*.png binary
+*.parquet binary
+*.db binary
